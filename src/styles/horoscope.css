@@ -1,0 +1,86 @@
+/* ── HOROSCOPE ── */
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+}
+.zodiac-btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.8rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+}
+.zodiac-btn:hover,
+.zodiac-btn.active { border-color: var(--violet); background: var(--violet-dim); }
+.zodiac-symbol { font-size: 1.4rem; }
+.zodiac-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.horoscope-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2rem;
+  animation: fade-in 0.5s ease;
+}
+.horoscope-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.horoscope-sign    { font-size: 2.5rem; }
+.horoscope-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.horoscope-date    { font-size: 1rem; color: var(--text-muted); font-style: italic; }
+.horoscope-text {
+  font-size: 1.1rem;
+  line-height: 1.85;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+.horoscope-aspects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+.aspect-item { text-align: center; }
+.aspect-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+.aspect-value { font-size: 1.05rem; color: var(--gold); font-style: italic; }
+
+.horoscope-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .zodiac-grid           { grid-template-columns: repeat(3, 1fr); }
+  .horoscope-aspects     { grid-template-columns: 1fr 1fr 1fr; }
+}

@@ -1,0 +1,203 @@
+/* =====================================================
+   MÍSTICA — Global Styles
+   Variáveis, reset, bg animado, layout base
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* ── CSS VARIABLES ── */
+:root {
+  --void:          #050508;
+  --deep:          #0a0a12;
+  --surface:       #0f0f1a;
+  --panel:         #14141f;
+  --border:        rgba(139, 90, 200, 0.18);
+  --gold:          #c9a84c;
+  --gold-light:    #e8c96a;
+  --gold-dim:      rgba(201, 168, 76, 0.3);
+  --violet:        #8b5ac8;
+  --violet-light:  #a97ee0;
+  --violet-dim:    rgba(139, 90, 200, 0.15);
+  --rose:          #c85a8b;
+  --rose-dim:      rgba(200, 90, 139, 0.2);
+  --text:          #f5f0fc;
+  --text-muted:    rgba(245, 240, 252, 0.92);
+  --text-dim:      rgba(245, 240, 252, 0.72);
+  --glow:          0 0 40px rgba(139, 90, 200, 0.25);
+  --glow-gold:     0 0 30px rgba(201, 168, 76, 0.3);
+}
+
+/* ── RESET ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar                 { width: 4px; }
+::-webkit-scrollbar-track           { background: var(--void); }
+::-webkit-scrollbar-thumb           { background: var(--violet-dim); border-radius: 2px; }
+
+/* ── NOISE TEXTURE ── */
+.noise::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── STAR CANVAS ── */
+.stars-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NEBULA BG ── */
+.nebula {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.nebula-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.12;
+  animation: nebula-drift 20s ease-in-out infinite alternate;
+}
+.nebula-orb:nth-child(1) { width: 600px; height: 600px; background: var(--violet); top: -200px;  left: -100px; animation-duration: 25s; }
+.nebula-orb:nth-child(2) { width: 400px; height: 400px; background: var(--rose);   bottom: -100px; right: -50px; animation-duration: 18s; animation-delay: -8s; }
+.nebula-orb:nth-child(3) { width: 300px; height: 300px; background: var(--gold);   top: 40%;    left: 50%;    animation-duration: 30s; animation-delay: -15s; }
+
+@keyframes nebula-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* ── LAYOUT ── */
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* ── COMMON BUTTONS ── */
+.btn-primary {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--violet), var(--rose));
+  border: none;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 30px rgba(139, 90, 200, 0.4);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(139, 90, 200, 0.5); }
+
+.btn-secondary {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.2rem;
+  background: transparent;
+  border: 1px solid rgba(139, 90, 200, 0.5);
+  border-radius: 2px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-secondary:hover { border-color: var(--violet-light); color: var(--violet-light); }
+
+/* ── SECTION COMMON ── */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 0.8rem;
+  opacity: 1;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+.section-desc {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 1.2rem;
+  max-width: 560px;
+  margin: 0 auto 3.5rem;
+  line-height: 1.7;
+}
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  margin: 1.2rem auto;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.6rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover  { color: var(--text); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── FADE IN ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

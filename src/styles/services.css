@@ -1,0 +1,150 @@
+/* ── SERVICES GRID ── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.service-card {
+  background: var(--panel);
+  padding: 2.5rem 2rem;
+  cursor: pointer;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid transparent;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--violet-dim);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.service-card:hover::before              { opacity: 1; }
+.service-card:hover                      { border-color: var(--violet); }
+.service-card:hover .service-icon        { transform: scale(1.1) rotate(5deg); }
+
+.service-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.2rem;
+  display: block;
+  transition: transform 0.4s;
+}
+.service-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+  color: var(--text);
+}
+.service-arcane {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.9rem;
+  opacity: 0.85;
+}
+.service-hook {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+.service-price {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.service-price-tag {
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-dim);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+.service-badge {
+  position: absolute;
+  top: 1.2rem; right: 1.2rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--rose-dim);
+  color: var(--rose);
+  border-radius: 20px;
+}
+
+/* ── HOW IT WORKS / STEPS ── */
+.steps-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 4rem;
+  position: relative;
+}
+.steps-row::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--violet-dim), var(--gold-dim), var(--violet-dim), transparent);
+}
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 0 1rem;
+  position: relative;
+}
+.step-num {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  color: var(--gold);
+  margin: 0 auto 1rem;
+}
+.step-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+.step-desc { font-size: 1rem; color: var(--text-muted); font-style: italic; line-height: 1.5; }
+
+/* ── CTA BANNER ── */
+.cta-banner {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 0 2rem;
+  background: linear-gradient(135deg, rgba(139,90,200,0.06), rgba(200,90,139,0.04));
+}
+
+@media (max-width: 768px) {
+  .steps-row { flex-direction: column; align-items: center; }
+  .steps-row::before { display: none; }
+}
