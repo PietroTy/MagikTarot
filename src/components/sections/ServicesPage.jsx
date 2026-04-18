@@ -1,8 +1,10 @@
 import '../../styles/services.css';
-import { SERVICES } from '../../data/mysticaData';
+import { useData } from '../../context/DataContext';
 import { ServiceCard } from './Home';
 
 function ServicesPage({ setActiveModal }) {
+  const { data: { services: SERVICES } } = useData();
+
   return (
     <div className="section" style={{ paddingTop: '7rem' }}>
       <div className="section-eyebrow">Portais do Conhecimento Oculto</div>

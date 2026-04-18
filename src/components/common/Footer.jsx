@@ -1,7 +1,8 @@
 import '../../styles/footer.css';
-import { SERVICES } from '../../data/mysticaData';
+import { useData } from '../../context/DataContext';
 
 function Footer({ setActivePage }) {
+  const { data: { services: SERVICES } } = useData();
   return (
     <footer className="site-footer">
       <div className="footer-grid">

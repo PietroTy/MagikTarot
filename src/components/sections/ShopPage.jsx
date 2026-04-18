@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import '../../styles/shop.css';
-import { PRODUCTS } from '../../data/mysticaData';
+import { useData } from '../../context/DataContext';
 
 const SHOP_TABS = ['Todos', 'Cristais', 'Velas', 'Baralhos', 'Ervas'];
 
 function ShopPage() {
+  const { data: { products: PRODUCTS } } = useData();
   const [activeTab, setActiveTab] = useState('Todos');
 
   const filtered = activeTab === 'Todos'

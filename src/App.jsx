@@ -18,9 +18,23 @@ import ShopPage      from './components/sections/ShopPage';
 // Modal
 import ServiceModal  from './components/modals/ServiceModal';
 
+import { useData } from './context/DataContext';
+
 function App() {
   const [activePage,  setActivePage]  = useState('home');
   const [activeModal, setActiveModal] = useState(null);
+  const { loading } = useData();
+
+  if (loading) {
+    return (
+      <div className="noise" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'white' }}>
+        <div className="ai-loading">
+          <div className="ai-orb" />
+          <div className="ai-text">Conectando ao oráculo...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

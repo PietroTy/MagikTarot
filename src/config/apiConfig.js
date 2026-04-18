@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://guitar-libs-furnishings-varying.trycloudflare.com',
+    BACKEND_URL: 'http://localhost:3003',
 
     // Endpoints de catálogo
     ENDPOINTS: {
@@ -27,10 +27,9 @@ export const API_CONFIG = {
         tarotCards:   '/data/tarot-cards',
         howItWorks:   '/data/how-it-works',
 
-        // PIX
-        pixCreate:    '/pix/create',           // POST
-        pixStatus:    '/pix/:id/status',       // GET  (use getPixStatusUrl)
-        pixConfirm:   '/pix/:id/confirm',      // POST (use getPixConfirmUrl)
+        // Pagamentos (Mercado Pago)
+        paymentCreate:    '/payment/create',           // POST
+        paymentStatus:    '/payment/:id/status',       // GET  (use getPaymentStatusUrl)
 
         // Leituras
         readings:     '/readings',             // POST / GET
@@ -49,14 +48,9 @@ export function getApiUrl(endpoint) {
     return `${baseUrl}${path}`;
 }
 
-/** URL de status PIX para um pedido específico */
-export function getPixStatusUrl(pixId) {
-    return `${API_CONFIG.BACKEND_URL}/pix/${pixId}/status`;
-}
-
-/** URL de confirmação PIX para um pedido específico (uso manual/teste) */
-export function getPixConfirmUrl(pixId) {
-    return `${API_CONFIG.BACKEND_URL}/pix/${pixId}/confirm`;
+/** URL de status MP para um pedido específico */
+export function getPaymentStatusUrl(orderId) {
+    return `${API_CONFIG.BACKEND_URL}/payment/${orderId}/status`;
 }
 
 /** URL de uma leitura específica */

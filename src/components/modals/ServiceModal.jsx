@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import '../../styles/modal.css';
-import FakeQR from './FakeQR';
 import { solicitarLeitura } from '../../services/aiService';
-import { createPixOrder, checkPixStatus, confirmPixManually } from '../../services/pixService';
+import { createOrder, checkPaymentStatus } from '../../services/paymentService';
 
 // ─────────────────────────────────────────────────────────
 // PROMPT BUILDER — transforma o formulário em contexto para a IA
@@ -332,9 +331,9 @@ function FormFields({ service, form, updateForm }) {
           </div>
         </div>
         <div className="form-group">
-          <label className="form-label">A linha que mais sente que conta sua história</label>
+          <label className="form-label">A linha que mais ressoa com sua história</label>
           <select className="form-select" value={form.linha} onChange={e => updateForm('linha', e.target.value)}>
-            <option value="">Qual linha ressoa com você?</option>
+            <option value="">Qual linha você mais nota?</option>
             <option value="Linha da Vida">Linha da Vida</option>
             <option value="Linha do Coração">Linha do Coração</option>
             <option value="Linha da Mente">Linha da Mente</option>
@@ -368,7 +367,6 @@ const INITIAL_FORM = {
   linha: '', outraTela: '',
 };
 
-// Cartas mockadas (em produção viriam do backend via /data/tarot-cards)
 const TAROT_CARDS_FALLBACK = [
   { name: 'O Louco',       icon: '🃏' },
   { name: 'A Sacerdotisa', icon: '🌙' },
@@ -383,16 +381,15 @@ const TAROT_CARDS_FALLBACK = [
 ];
 
 function ServiceModal({ service, onClose }) {
-  // ── estado do fluxo ──────────────────────────────────
-  // form → pix → pix_waiting → loading → result
-  const [step,          setStep]          = useState('form');
-  const [form,          setForm]          = useState(INITIAL_FORM);
+  // ── fluxo: form → mp_creating → mp_checkout → loading → result
+  const [step,         setStep]        = useState('form');
+  const [form,         setForm]        = useState(INITIAL_FORM);
 
-  // PIX
-  const [pixId,         setPixId]         = useState(null);
-  const [copyCode,      setCopyCode]      = useState('');
-  const [pixError,      setPixError]      = useState('');
-  const [pixStatus,     setPixStatus]     = useState('pending'); // pending | paid | error
+  // Pagamento MP
+  const [orderId,      setOrderId]     = useState(null);
+  const [checkoutUrl,  setCheckoutUrl] = useState('');
+  const [payError,     setPayError]    = useState('');
+  const [payStatus,    setPayStatus]   = useState('pending'); // pending | approved | rejected | cancelled
   const pollingRef = useRef(null);
 
   // Resultado
@@ -408,64 +405,55 @@ function ServiceModal({ service, onClose }) {
     return () => { if (pollingRef.current) clearInterval(pollingRef.current); };
   }, []);
 
-  // ── STEP 1 → 2: criar pedido PIX no backend ──────────
+  // ── STEP 1 → 2: criar pedido no backend e abrir checkout MP ──
   const handleSubmit = async () => {
-    setPixError('');
-    setStep('pix_creating');
+    setPayError('');
+    setStep('mp_creating');
     try {
-      const order = await createPixOrder({
+      const order = await createOrder({
         serviceId:   service.id,
         serviceName: service.name,
         price:       service.price,
         formData:    form,
       });
-      setPixId(order.pixId);
-      setCopyCode(order.copyPasteCode || '');
-      setPixStatus('pending');
-      setStep('pix');
-      startPolling(order.pixId);
+      setOrderId(order.orderId);
+      setCheckoutUrl(order.checkoutUrl);
+      setPayStatus('pending');
+      setStep('mp_checkout');
+      startPolling(order.orderId);
     } catch (err) {
-      setPixError('Não foi possível iniciar o pagamento. Tente novamente.');
+      setPayError('Não foi possível iniciar o pagamento. Tente novamente.');
       setStep('form');
     }
   };
 
-  // ── polling automático de status PIX ─────────────────
+  // ── polling automático de status de pagamento ─────────
   const startPolling = (id) => {
     if (pollingRef.current) clearInterval(pollingRef.current);
     pollingRef.current = setInterval(async () => {
       try {
-        const { status } = await checkPixStatus(id);
-        setPixStatus(status);
-        if (status === 'paid') {
+        const { status } = await checkPaymentStatus(id);
+        setPayStatus(status);
+        if (status === 'approved') {
           clearInterval(pollingRef.current);
           pollingRef.current = null;
           iniciarLeitura(id);
         }
-        if (status === 'expired') {
+        if (status === 'rejected' || status === 'cancelled') {
           clearInterval(pollingRef.current);
           pollingRef.current = null;
-          setPixError('O tempo do pagamento expirou. Feche e tente novamente.');
+          setPayError('O pagamento foi recusado ou cancelado. Feche e tente novamente.');
         }
-      } catch { /* erros de rede pontuais são ignorados */ }
+      } catch { /* erros pontuais de rede são ignorados */ }
     }, 4000);
   };
 
-  // ── confirmação manual (botão no step PIX, para testes) ──
-  const handleManualConfirm = async () => {
-    if (!pixId) return;
-    setPixError('');
-    try {
-      await confirmPixManually(pixId);
-      setPixStatus('paid');
-      if (pollingRef.current) { clearInterval(pollingRef.current); pollingRef.current = null; }
-      iniciarLeitura(pixId);
-    } catch (err) {
-      setPixError('Erro ao confirmar pagamento: ' + err.message);
-    }
+  // ── Abrir checkout MP em nova aba ─────────────────────
+  const handleOpenCheckout = () => {
+    if (checkoutUrl) window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
   };
 
-  // ── STEP 3: gerar leitura via IA (exige pixId pago) ──
+  // ── STEP 3: gerar leitura via IA (exige orderId aprovado) ──
   const iniciarLeitura = async (id) => {
     setStep('loading');
     setReadingError('');
@@ -480,14 +468,14 @@ function ServiceModal({ service, onClose }) {
 
     try {
       const { answer } = await solicitarLeitura({
-        pixId:       id || pixId,
+        orderId:     id || orderId,
         serviceType: service.type,
         messages,
       });
       setReading(answer);
     } catch (err) {
       if (err.message === 'pagamento_pendente') {
-        setReadingError('Pagamento ainda não confirmado. Aguarde ou contate o suporte.');
+        setReadingError('Pagamento ainda não confirmado pelo Mercado Pago. Aguarde ou contate o suporte.');
       } else {
         setReading('Os véus resistem por ora... Os Arcanos recolhem suas forças. Tente novamente em instantes.');
       }
@@ -495,11 +483,6 @@ function ServiceModal({ service, onClose }) {
 
     setStep('result');
     picked.forEach((_, i) => setTimeout(() => setRevealed(prev => [...prev, i]), i * 700 + 500));
-  };
-
-  // ── copiar código PIX ─────────────────────────────────
-  const handleCopyCode = () => {
-    if (copyCode) navigator.clipboard.writeText(copyCode).catch(() => {});
   };
 
   // ─────────────────────────────────────────────────────
@@ -521,6 +504,12 @@ function ServiceModal({ service, onClose }) {
 
             <FormFields service={service} form={form} updateForm={updateForm} />
 
+            {payError && (
+              <div style={{ color: '#ff6b6b', fontSize: '0.85rem', textAlign: 'center', marginTop: '0.5rem' }}>
+                {payError}
+              </div>
+            )}
+
             <button
               className="btn-primary"
               style={{ width: '100%', marginTop: '1rem' }}
@@ -531,60 +520,77 @@ function ServiceModal({ service, onClose }) {
           </>
         )}
 
-        {/* ── CRIANDO PEDIDO PIX ── */}
-        {step === 'pix_creating' && (
+        {/* ── CRIANDO PEDIDO ── */}
+        {step === 'mp_creating' && (
           <div className="ai-loading">
             <div className="modal-eyebrow" style={{ textAlign: 'center' }}>✦ Abrindo portal de pagamento</div>
             <div className="ai-orb" />
-            <div className="ai-text">Preparando seu sigilo bancário...</div>
+            <div className="ai-text">Preparando o ritual de acesso...</div>
           </div>
         )}
 
-        {/* ── PIX ── */}
-        {step === 'pix' && (
+        {/* ── CHECKOUT MERCADO PAGO ── */}
+        {step === 'mp_checkout' && (
           <div className="pix-panel">
-            <div className="modal-eyebrow">✦ Ritual de acesso via PIX</div>
-            <div className="modal-title" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-              O Portal está se abrindo
+            <div className="modal-eyebrow">✦ Ritual de acesso</div>
+            <div className="modal-title" style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
+              O Portal aguarda sua confirmação
+            </div>
+            <div className="modal-subtitle" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              Clique no botão abaixo para realizar o pagamento de forma segura pelo Mercado Pago. A leitura se inicia automaticamente após a confirmação.
             </div>
 
-            <div className="pix-qr"><FakeQR /></div>
+            {/* Valor */}
             <div className="pix-amount">{service.price}</div>
-            <div className="pix-label">Escaneie o Sigilo Bancário para selar o acesso</div>
 
-            <button className="pix-copy-btn" onClick={handleCopyCode}>
-              📋 Copiar código de acesso PIX
+            {/* Botão Mercado Pago */}
+            <button
+              onClick={handleOpenCheckout}
+              style={{
+                display:         'flex',
+                alignItems:      'center',
+                justifyContent:  'center',
+                gap:             '0.6rem',
+                width:           '100%',
+                padding:         '0.9rem 1.5rem',
+                background:      '#009EE3',
+                color:           '#fff',
+                border:          'none',
+                borderRadius:    '8px',
+                fontSize:        '1rem',
+                fontWeight:      '600',
+                cursor:          'pointer',
+                marginBottom:    '1rem',
+                letterSpacing:   '0.01em',
+              }}
+            >
+              {/* Logo MP inline SVG */}
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="11" fill="#fff"/>
+                <path d="M5.5 11.5c1.2-2.4 3.6-4 6.5-4 2 0 3.8.8 5.1 2.1" stroke="#009EE3" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M16.5 10.5c-1.2 2.4-3.6 4-6.5 4-2 0-3.8-.8-5.1-2.1" stroke="#009EE3" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
+              Pagar com Mercado Pago
             </button>
 
-            {/* Status do pagamento */}
+            {/* Status do polling */}
             <div className="pix-status">
-              <div className={`pix-dot ${pixStatus === 'paid' ? 'pix-dot--paid' : ''}`} />
+              <div className={`pix-dot ${payStatus === 'approved' ? 'pix-dot--paid' : ''}`} />
               <span>
-                {pixStatus === 'paid'
-                  ? '✅ Pagamento confirmado!'
-                  : 'Aguardando a confirmação do ritual...'}
+                {payStatus === 'approved'
+                  ? '✅ Pagamento confirmado — iniciando leitura...'
+                  : 'Aguardando confirmação do pagamento...'}
               </span>
             </div>
 
-            {pixError && (
+            {payError && (
               <div style={{ color: '#ff6b6b', fontSize: '0.85rem', textAlign: 'center', marginTop: '0.5rem' }}>
-                {pixError}
+                {payError}
               </div>
             )}
 
-            <div className="pix-confirm">
-              {/* Botão de confirmação manual — remover quando webhook estiver ativo */}
-              <button
-                className="btn-primary"
-                style={{ width: '100%' }}
-                onClick={handleManualConfirm}
-                disabled={pixStatus === 'paid'}
-              >
-                ✦ {pixStatus === 'paid' ? 'Pagamento confirmado — iniciando...' : 'Confirmar pagamento → iniciar leitura'}
-              </button>
-              <div style={{ fontSize: '0.72rem', opacity: 0.45, textAlign: 'center', marginTop: '0.6rem' }}>
-                A leitura só será gerada após confirmação do pagamento
-              </div>
+            <div style={{ fontSize: '0.72rem', opacity: 0.4, textAlign: 'center', marginTop: '1rem' }}>
+              Após pagar, o oráculo se ativa automaticamente — não é preciso voltar aqui.
             </div>
           </div>
         )}

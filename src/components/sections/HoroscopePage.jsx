@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import '../../styles/horoscope.css';
-import { ZODIAC, HOROSCOPES } from '../../data/mysticaData';
+import { useData } from '../../context/DataContext';
 
 function HoroscopePage() {
+  const { data: { zodiac: ZODIAC, horoscopes: HOROSCOPES } } = useData();
   const [activeZodiac, setActiveZodiac] = useState(null);
 
   return (

@@ -1,7 +1,6 @@
 import '../../styles/services.css';
-import { HOW_IT_WORKS, SERVICES } from '../../data/mysticaData';
 import '../../styles/testimonials.css';
-import { TESTIMONIALS } from '../../data/mysticaData';
+import { useData } from '../../context/DataContext';
 
 function ServiceCard({ s, onOpen }) {
   return (
@@ -19,6 +18,7 @@ function ServiceCard({ s, onOpen }) {
 }
 
 function HowItWorks() {
+  const { data: { howItWorks: HOW_IT_WORKS } } = useData();
   return (
     <div className="section">
       <div className="section-eyebrow">Como funciona</div>
@@ -39,6 +39,7 @@ function HowItWorks() {
 }
 
 function Testimonials() {
+  const { data: { testimonials: TESTIMONIALS } } = useData();
   return (
     <div className="section">
       <div className="section-eyebrow">Depoimentos</div>
@@ -82,6 +83,7 @@ function CtaBanner({ setActivePage }) {
 }
 
 function Home({ setActivePage, setActiveModal }) {
+  const { data: { services: SERVICES } } = useData();
   return (
     <>
       {/* HOW IT WORKS */}
