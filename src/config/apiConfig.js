@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://allows-twins-producers-upgrades.trycloudflare.com',
+    BACKEND_URL: 'https://provincial-scheduling-gmt-tournaments.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
