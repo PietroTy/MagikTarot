@@ -1,9 +1,10 @@
 /* ── FOOTER ── */
 .site-footer {
-  border-top: 1px solid var(--border);
-  padding: 3rem 2rem 2rem;
+  border-top: 1px solid var(--gold-dim);
+  padding: 5rem 2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--deep);
 }
 .footer-grid {
   display: grid;
@@ -13,11 +14,12 @@
 }
 .footer-brand {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 1rem;
-  background: linear-gradient(135deg, var(--gold-light), var(--violet-light));
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
 }
 .footer-desc    { font-size: 0.85rem; color: var(--text-dim); font-style: italic; line-height: 1.6; }
 .footer-heading {

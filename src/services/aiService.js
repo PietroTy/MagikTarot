@@ -12,14 +12,14 @@ import { getApiUrl } from '../config/apiConfig';
  * @param {{ pixId: string, serviceType: string, messages: Array<{role: string, content: string}> }} params
  * @returns {Promise<{ readingId: number, answer: string }>}
  */
-export async function solicitarLeitura({ pixId, serviceType, messages }) {
+export async function solicitarLeitura({ orderId, serviceType, messages }) {
     const url = getApiUrl('readings');
     console.log(`📨 Solicitando leitura ao backend: ${url}`);
 
     const res = await fetch(url, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ pixId, serviceType, messages }),
+        body:    JSON.stringify({ orderId, serviceType, messages }),
     });
 
     if (res.status === 402) {

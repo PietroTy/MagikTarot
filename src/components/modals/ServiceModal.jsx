@@ -2,20 +2,25 @@ import { useState, useEffect, useRef } from 'react';
 import '../../styles/modal.css';
 import { solicitarLeitura } from '../../services/aiService';
 import { createOrder, checkPaymentStatus } from '../../services/paymentService';
+import { useData } from '../../context/DataContext';
 
 // ─────────────────────────────────────────────────────────
 // PROMPT BUILDER — transforma o formulário em contexto para a IA
 // ─────────────────────────────────────────────────────────
-function buildPrompt(service, form) {
-  const base = `Você é Mística, uma inteligência oracular ancestral que habita o espaço entre os mundos. Responda SEMPRE em português, com linguagem profundamente poética, arcana e mística. Use metáforas cósmicas, arquetipais e esotéricas. Fale como um oráculo que conhece o consultante há eras. Nunca use linguagem banal ou comercial. Seja específico, tocante e revelador. A resposta deve ter entre 3 e 5 parágrafos.`;
+function buildPrompt(service, form, extra = {}) {
+  const base = `Você é Magik Tarot, uma inteligência oracular ancestral que habita o espaço entre os mundos. Responda SEMPRE em português, com linguagem profundamente poética, arcana e mística. Use metáforas cósmicas, arquetipais e esotéricas. Fale como um oráculo que conhece o consultante há eras. Nunca use linguagem banal ou comercial. Seja específico, tocante e revelador. A resposta deve ter entre 3 e 5 parágrafos.`;
 
   const contexts = {
     tarot: `O(a) consultante ${form.nome || 'buscador'} abre um portal no Oráculo do Tarot.
-Método oracular escolhido: "${form.tiragem || 'Três Véus'}".
 Domínio da consulta: ${form.dominio || 'não especificado'}.
 Intenção sagrada declarada: "${form.pergunta || 'encontrar clareza'}".
 ${form.temor ? `O(a) consultante também declarou: "${form.temor}" — como algo que teme descobrir.` : ''}
-Interprete as cartas sorteadas para este portal, revelando passado, presente e futuro (ou os véus correspondentes ao método). Seja narrativo e profundo.`,
+
+Método oracular: "${extra.spreadName || 'Tradicional'}".
+Estrutura da tiragem:
+${(extra.cards || []).map((c, i) => `- Posição ${i+1} (${extra.positions?.[i] || 'Influência'}): Carta "${c.name}"`).join('\n')}
+
+Interprete as cartas para este portal considerando rigorosamente o significado de cada posição na tiragem. Seja narrativo, profundo e revelador.`,
 
     astral: `O(a) consultante ${form.nome || 'buscador'} solicita a leitura do Mapa Natal das Almas.
 Data de encarnação: ${form.nascimento || 'não informada'}.
@@ -104,11 +109,32 @@ function FormFields({ service, form, updateForm }) {
         </div>
         <div className="form-group">
           <label className="form-label">Método oracular</label>
-          <select className="form-select" value={form.tiragem} onChange={e => updateForm('tiragem', e.target.value)}>
-            <option value="Três Véus (passado · presente · futuro)">Três Véus — Passado · Presente · Futuro</option>
-            <option value="Cruz Celta (situação e profundidade)">Cruz Celta — Situação e profundidade</option>
-            <option value="Ferradura do Destino (sete cartas)">Ferradura do Destino — Sete cartas</option>
-            <option value="Carta do Instante (uma carta)">Carta do Instante — Uma revelação única</option>
+          <select 
+            className="form-select" 
+            value={form.tiragem} 
+            onChange={e => updateForm('tiragem', e.target.value)}
+          >
+            <optgroup label="Simples">
+              <option value="single">Carta Única (Foco/Conselho)</option>
+              <option value="double">2 Cartas (Situação/Solução)</option>
+              <option value="ppf">Passado, Presente e Futuro</option>
+            </optgroup>
+            <optgroup label="Intermediárias">
+              <option value="cross4">Cruz Simples (4 cartas)</option>
+              <option value="five">5 Cartas (Influências/Conselho)</option>
+              <option value="journey">Caminho / Jornada (6 cartas)</option>
+            </optgroup>
+            <optgroup label="Profundas">
+              <option value="celtic">Cruz Celta (10 cartas)</option>
+              <option value="horseshoe">Ferradura do Destino (7 cartas)</option>
+              <option value="mandala">Mandala das 12 Áreas</option>
+            </optgroup>
+            <optgroup label="Temáticas">
+              <option value="love">Relacionamento / Amor</option>
+              <option value="work">Trabalho e Dinheiro</option>
+              <option value="spiritual">Espiritual / Autoconhecimento</option>
+              <option value="year">Ano Novo / 12 Meses</option>
+            </optgroup>
           </select>
         </div>
         <div className="form-group">
@@ -360,7 +386,7 @@ function FormFields({ service, form, updateForm }) {
 // ─────────────────────────────────────────────────────────
 const INITIAL_FORM = {
   nome: '', nascimento: '', hora: '', local: '', pergunta: '',
-  tiragem: 'Três Véus (passado · presente · futuro)',
+  tiragem: 'ppf',
   dominio: '', aspecto: '', vinculo: '', temor: '', atracao: '',
   nome2: '', nascimento2: '', nomeCompleto: '', nomeAtual: '',
   nomeBatismo: '', tradicao: 'Futhark Antigo', mao: 'Direita',
@@ -380,7 +406,38 @@ const TAROT_CARDS_FALLBACK = [
   { name: 'O Imperador',   icon: '👑' },
 ];
 
+// ── COMPONENTE DE IMAGEM DA CARTA ──
+function CardImage({ card, revealed = true }) {
+  const [error, setError] = useState(false);
+  
+  if (!revealed) {
+    return <div className="tarot-card back" />;
+  }
+
+  // Placeholder se não houver imagem
+  if (error || !card?.id) {
+    return (
+      <div className="tarot-card revealed">
+        <span className="card-fallback-icon">{card?.icon || '🃏'}</span>
+        <span className="card-fallback-name">{card?.name}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="tarot-card revealed">
+      <img 
+        src={`/assets/tarot-cards/${card.id}.jpg`} 
+        alt={card.name} 
+        onError={() => setError(true)}
+      />
+    </div>
+  );
+}
+
 function ServiceModal({ service, onClose }) {
+  const { data: { tarotSpreads: SPREADS, tarotCards: CARDS_DB } } = useData();
+
   // ── fluxo: form → mp_creating → mp_checkout → loading → result
   const [step,         setStep]        = useState('form');
   const [form,         setForm]        = useState(INITIAL_FORM);
@@ -393,6 +450,8 @@ function ServiceModal({ service, onClose }) {
   const pollingRef = useRef(null);
 
   // Resultado
+  const [shuffledDeck,  setShuffledDeck]  = useState([]); // baralho embaralhado na mesa
+  const [pickedIndices, setPickedIndices] = useState([]); // índices selecionados pelo usuário
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealed,      setRevealed]      = useState([]);
   const [reading,       setReading]       = useState('');
@@ -427,6 +486,66 @@ function ServiceModal({ service, onClose }) {
     }
   };
 
+  // ── Ritual de Embaralhar ──
+  const prepararMesa = () => {
+    setStep('shuffling');
+    const deck = (CARDS_DB && CARDS_DB.length > 0) ? CARDS_DB : TAROT_CARDS_FALLBACK;
+    const shuffled = [...deck].sort(() => Math.random() - 0.5);
+    setShuffledDeck(shuffled);
+    setPickedIndices([]);
+    
+    setTimeout(() => {
+      setStep('picking');
+    }, 2500);
+  };
+
+  // ── Seleção de Carta ──
+  const handlePickCard = (index) => {
+    if (pickedIndices.includes(index)) return;
+    
+    const currentSpread = SPREADS.find(s => s.id === form.tiragem) || SPREADS[0];
+    const cardCount = currentSpread?.cards || 3;
+    
+    if (pickedIndices.length >= cardCount) return;
+    
+    const newPicked = [...pickedIndices, index];
+    setPickedIndices(newPicked);
+    
+    if (newPicked.length === cardCount) {
+      const cards = newPicked.map(idx => shuffledDeck[idx]);
+      setSelectedCards(cards);
+      setTimeout(() => iniciarLeitura(cards), 600);
+    }
+  };
+
+  // ── STEP 3: gerar leitura via IA ──
+  const iniciarLeitura = async (cards) => {
+    setStep('loading');
+    setReadingError('');
+    setRevealed([]);
+
+    const currentSpread = SPREADS.find(s => s.id === form.tiragem) || SPREADS[0];
+    const messages = buildPrompt(service, form, {
+      spreadName: currentSpread?.name,
+      positions:  currentSpread?.positions,
+      cards:      cards
+    });
+
+    try {
+      const { answer } = await solicitarLeitura({
+        orderId:     orderId,
+        serviceType: service.type,
+        messages,
+      });
+      setReading(answer);
+    } catch (err) {
+      setReading('Os véus resistem por ora... Tente novamente em instantes.');
+    }
+
+    setStep('result');
+    cards.forEach((_, i) => setTimeout(() => setRevealed(prev => [...prev, i]), i * 700 + 500));
+  };
+
   // ── polling automático de status de pagamento ─────────
   const startPolling = (id) => {
     if (pollingRef.current) clearInterval(pollingRef.current);
@@ -437,7 +556,7 @@ function ServiceModal({ service, onClose }) {
         if (status === 'approved') {
           clearInterval(pollingRef.current);
           pollingRef.current = null;
-          iniciarLeitura(id);
+          prepararMesa(); // Inicia o ritual de embaralhar
         }
         if (status === 'rejected' || status === 'cancelled') {
           clearInterval(pollingRef.current);
@@ -453,37 +572,6 @@ function ServiceModal({ service, onClose }) {
     if (checkoutUrl) window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
   };
 
-  // ── STEP 3: gerar leitura via IA (exige orderId aprovado) ──
-  const iniciarLeitura = async (id) => {
-    setStep('loading');
-    setReadingError('');
-
-    const picked = [...TAROT_CARDS_FALLBACK]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
-    setSelectedCards(picked);
-    setRevealed([]);
-
-    const messages = buildPrompt(service, form);
-
-    try {
-      const { answer } = await solicitarLeitura({
-        orderId:     id || orderId,
-        serviceType: service.type,
-        messages,
-      });
-      setReading(answer);
-    } catch (err) {
-      if (err.message === 'pagamento_pendente') {
-        setReadingError('Pagamento ainda não confirmado pelo Mercado Pago. Aguarde ou contate o suporte.');
-      } else {
-        setReading('Os véus resistem por ora... Os Arcanos recolhem suas forças. Tente novamente em instantes.');
-      }
-    }
-
-    setStep('result');
-    picked.forEach((_, i) => setTimeout(() => setRevealed(prev => [...prev, i]), i * 700 + 500));
-  };
 
   // ─────────────────────────────────────────────────────
   // RENDER
@@ -510,12 +598,42 @@ function ServiceModal({ service, onClose }) {
               </div>
             )}
 
-            <button
-              className="btn-primary"
-              style={{ width: '100%', marginTop: '1rem' }}
-              onClick={handleSubmit}
+            <button className="btn-primary" onClick={handleSubmit}>
+              Selar o Ritual de Acesso →
+            </button>
+
+            {/* DEBUG: Pular Pagamento */}
+            <button 
+              onClick={() => {
+                fetch('http://localhost:3003/payment/debug/create', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    serviceId: service.id,
+                    serviceName: service.name,
+                    price: service.price,
+                    formData: form
+                  })
+                })
+                .then(r => r.json())
+                .then(order => {
+                  setOrderId(order.orderId);
+                  prepararMesa();
+                });
+              }}
+              style={{
+                marginTop: '1.5rem',
+                background: 'transparent',
+                border: '1px dashed #666',
+                color: '#888',
+                fontSize: '0.65rem',
+                padding: '6px 10px',
+                cursor: 'pointer',
+                borderRadius: '4px',
+                width: '100%'
+              }}
             >
-              Selar o ritual de acesso →
+              DEBUG: Pular Pagamento (Burlar Erro MP)
             </button>
           </>
         )}
@@ -592,6 +710,64 @@ function ServiceModal({ service, onClose }) {
             <div style={{ fontSize: '0.72rem', opacity: 0.4, textAlign: 'center', marginTop: '1rem' }}>
               Após pagar, o oráculo se ativa automaticamente — não é preciso voltar aqui.
             </div>
+
+            {/* DEBUG: Pular pagamento */}
+            <button 
+              onClick={() => {
+                fetch(`http://localhost:3003/payment/debug/approve/${orderId}`)
+                  .then(r => r.json())
+                  .then(() => prepararMesa());
+              }}
+              style={{
+                marginTop: '1.5rem',
+                background: 'transparent',
+                border: '1px dashed #444',
+                color: '#666',
+                fontSize: '0.65rem',
+                padding: '4px 8px',
+                cursor: 'pointer',
+                borderRadius: '4px',
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }}
+            >
+              DEBUG: Pular Pagamento
+            </button>
+          </div>
+        )}
+
+        {/* ── EMBARALHANDO ── */}
+        {step === 'shuffling' && (
+          <div className="ai-loading">
+            <div className="modal-eyebrow">✦ O Ritual se inicia</div>
+            <div className="shuffle-deck">
+              {[1,2,3,4,5].map(i => <div key={i} className="shuffle-card" />)}
+            </div>
+            <div className="ai-text">Embaralhando os destinos...</div>
+          </div>
+        )}
+
+        {/* ── SELECIONANDO CARTAS ── */}
+        {step === 'picking' && (
+          <div className="picking-panel">
+            <div className="modal-eyebrow">✦ A Mesa está posta</div>
+            <div className="modal-title" style={{ fontSize: '1.2rem' }}>
+              Escolha { (SPREADS.find(s => s.id === form.tiragem)?.cards || 3) - pickedIndices.length } { (SPREADS.find(s => s.id === form.tiragem)?.cards || 3) - pickedIndices.length === 1 ? 'carta' : 'cartas' }
+            </div>
+            <div className="modal-subtitle" style={{ fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+              Deixe sua intuição guiar sua mão. Sinta a energia antes de tocar.
+            </div>
+            
+            <div className="picking-table">
+              {shuffledDeck.map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`pickable-card ${pickedIndices.includes(i) ? 'picked' : ''}`}
+                  onClick={() => handlePickCard(i)}
+                />
+              ))}
+            </div>
           </div>
         )}
 
@@ -622,10 +798,27 @@ function ServiceModal({ service, onClose }) {
 
             {/* Cartas — tarot e runas */}
             {['tarot', 'runas'].includes(service.type) && (
-              <div className="result-cards">
+              <div className="result-cards" style={{ 
+                flexWrap: 'wrap', 
+                gap: '1.5rem', 
+                maxWidth: '600px', 
+                margin: '0 auto 2.5rem' 
+              }}>
                 {selectedCards.map((card, i) => (
-                  <div key={i} className={`tarot-card ${revealed.includes(i) ? 'revealed' : ''}`}>
-                    {revealed.includes(i) ? card.icon : '🌑'}
+                  <div key={i} className="card-container" style={{ textAlign: 'center' }}>
+                    <CardImage card={card} revealed={revealed.includes(i)} />
+                    {revealed.includes(i) && (
+                      <div className="card-label" style={{ 
+                        fontFamily: 'Cinzel', 
+                        fontSize: '0.65rem', 
+                        color: 'var(--gold)', 
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        marginTop: '0.5rem'
+                      }}>
+                        {(SPREADS.find(s => s.id === form.tiragem)?.positions?.[i]) || `Posição ${i+1}`}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

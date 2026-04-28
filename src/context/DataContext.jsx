@@ -12,6 +12,7 @@ export function DataProvider({ children }) {
     testimonials: [],
     horoscopes: {},
     tarotCards: [],
+    tarotSpreads: [],
     howItWorks: [],
   });
   const [loading, setLoading] = useState(true);
@@ -22,7 +23,7 @@ export function DataProvider({ children }) {
       try {
         const [
           services, zodiac, products, blogPosts,
-          testimonials, horoscopes, tarotCards, howItWorks
+          testimonials, horoscopes, tarotCards, tarotSpreads, howItWorks
         ] = await Promise.all([
           dataService.fetchServices(),
           dataService.fetchZodiac(),
@@ -31,12 +32,13 @@ export function DataProvider({ children }) {
           dataService.fetchTestimonials(),
           dataService.fetchHoroscopes(),
           dataService.fetchTarotCards(),
+          dataService.fetchTarotSpreads(),
           dataService.fetchHowItWorks()
         ]);
 
         setData({
           services, zodiac, products, blogPosts,
-          testimonials, horoscopes, tarotCards, howItWorks
+          testimonials, horoscopes, tarotCards, tarotSpreads, howItWorks
         });
         setLoading(false);
       } catch (err) {

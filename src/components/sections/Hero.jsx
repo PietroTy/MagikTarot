@@ -9,7 +9,7 @@ function Hero({ setActivePage }) {
       <h1 className="hero-title">Os Mistérios<br />Revelados</h1>
       <p className="hero-sub">
         Oráculo do Tarot, Mapa Natal das Almas, Registros Akáshicos e muito mais —
-        interpretados pela mais avançada inteligência mística do Brasil.
+        interpretados pela mais avançada inteligência Magik Tarot do Brasil.
       </p>
       <div className="hero-buttons">
         <button className="btn-primary" onClick={() => setActivePage('servicos')}>

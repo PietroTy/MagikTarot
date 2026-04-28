@@ -2,25 +2,27 @@
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 0 2rem;
-  height: 70px;
+  z-index: 1000;
+  padding: 0 4rem;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(180deg, rgba(5,5,8,0.95) 0%, transparent 100%);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(26, 11, 46, 0.7); /* Cosmos Semi-transparent */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--gold-dim);
 }
 .nav-logo {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--gold-light), var(--violet-light));
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   cursor: pointer;
+  text-shadow: 0 0 15px var(--gold-dim);
 }
 .nav-links {
   display: flex;
@@ -40,7 +42,7 @@
   cursor: pointer;
 }
 .nav-links a:hover,
-.nav-link-btn:hover { color: var(--gold-light); }
+.nav-link-btn:hover { color: var(--gold); text-shadow: 0 0 10px var(--gold-dim); }
 
 .nav-cta {
   font-family: 'Cinzel', serif;

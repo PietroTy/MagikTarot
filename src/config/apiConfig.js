@@ -25,6 +25,7 @@ export const API_CONFIG = {
         testimonials: '/data/testimonials',
         horoscopes:   '/data/horoscopes',
         tarotCards:   '/data/tarot-cards',
+        tarotSpreads: '/data/tarot-spreads',
         howItWorks:   '/data/how-it-works',
 
         // Pagamentos (Mercado Pago)

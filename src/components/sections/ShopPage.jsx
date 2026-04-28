@@ -14,7 +14,7 @@ function ShopPage() {
 
   return (
     <div className="section" style={{ paddingTop: '7rem' }}>
-      <div className="section-eyebrow">Loja Mística</div>
+      <div className="section-eyebrow">Loja Magik Tarot</div>
       <div className="section-title">Ferramentas Sagradas</div>
       <div className="divider" />
       <div className="section-desc" style={{ marginBottom: '0.5rem' }}>

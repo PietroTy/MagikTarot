@@ -20,4 +20,5 @@ export const fetchBlogPosts    = () => fetchEndpoint('blogPosts');
 export const fetchTestimonials = () => fetchEndpoint('testimonials');
 export const fetchHoroscopes   = () => fetchEndpoint('horoscopes');
 export const fetchTarotCards   = () => fetchEndpoint('tarotCards');
+export const fetchTarotSpreads = () => fetchEndpoint('tarotSpreads');
 export const fetchHowItWorks   = () => fetchEndpoint('howItWorks');

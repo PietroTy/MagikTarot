@@ -7,7 +7,7 @@ function Footer({ setActivePage }) {
     <footer className="site-footer">
       <div className="footer-grid">
         <div>
-          <div className="footer-brand">Mística</div>
+          <div className="footer-brand">Magik Tarot</div>
           <div className="footer-desc">
             Sabedoria ancestral e tecnologia moderna unidos para iluminar seu caminho.
             Mais de 12.000 consultas realizadas com profundidade e precisão.
@@ -45,7 +45,7 @@ function Footer({ setActivePage }) {
       </div>
 
       <div className="footer-bottom">
-        <div className="footer-copy">© 2026 Mística. Todos os direitos reservados.</div>
+        <div className="footer-copy">© 2026 Magik Tarot. Todos os direitos reservados.</div>
         <div className="footer-copy">Desenvolvido com ✨ e muito propósito</div>
       </div>
     </footer>

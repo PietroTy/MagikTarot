@@ -5,21 +5,38 @@
   gap: 1.5rem;
 }
 .shop-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1 / 1.6; /* Tarot Proportion */
+  position: relative;
 }
-.shop-card:hover { border-color: var(--violet); transform: translateY(-3px); }
+.shop-card:hover { 
+  border-color: var(--gold); 
+  transform: translateY(-10px) rotateX(5deg) rotateY(5deg); 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px var(--gold-dim);
+}
 .shop-img {
-  height: 160px;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3.5rem;
-  background: linear-gradient(135deg, var(--panel), var(--violet-dim));
+  font-size: 4rem;
+  background: linear-gradient(135deg, var(--deep), var(--surface));
+  position: relative;
+  overflow: hidden;
+}
+.shop-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--magenta-glow) 0%, transparent 70%);
+  opacity: 0.3;
 }
 .shop-body   { padding: 1.2rem; }
 .shop-name {
@@ -34,17 +51,18 @@
 .shop-price     { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold-light); }
 .shop-link-btn {
   font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding: 0.45rem 1rem;
-  border: 1px solid var(--violet);
-  border-radius: 2px;
-  background: transparent;
-  color: var(--violet-light);
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  background: var(--deep);
+  color: var(--gold);
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s;
   white-space: nowrap;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
-.shop-link-btn:hover { background: var(--violet-dim); color: var(--text); }
+.shop-link-btn:hover { border-color: var(--gold); background: var(--gold-dim); color: white; }

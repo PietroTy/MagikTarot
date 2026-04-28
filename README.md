@@ -1,4 +1,4 @@
-# Mística
+# Magik Tarot
 
 Plataforma de consultas místicas com IA — tarot, mapa astral, numerologia, horóscopo e muito mais.
 

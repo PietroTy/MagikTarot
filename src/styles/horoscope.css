@@ -6,20 +6,20 @@
   margin-bottom: 3rem;
 }
 .zodiac-btn {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 1rem;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   align-items: center;
 }
 .zodiac-btn:hover,
-.zodiac-btn.active { border-color: var(--violet); background: var(--violet-dim); }
+.zodiac-btn.active { border-color: var(--gold); background: var(--panel); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 .zodiac-symbol { font-size: 1.4rem; }
 .zodiac-name {
   font-family: 'Cinzel', serif;
@@ -29,11 +29,12 @@
   color: var(--text-muted);
 }
 .horoscope-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
+  padding: 2.5rem;
   animation: fade-in 0.5s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 .horoscope-header {
   display: flex;

@@ -10,7 +10,7 @@ function Nav({ setActivePage }) {
   return (
     <nav className="nav">
       <div className="nav-logo" onClick={() => setActivePage('home')}>
-        Mística
+        Magik Tarot
       </div>
 
       <ul className="nav-links">

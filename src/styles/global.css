@@ -1,30 +1,30 @@
 /* =====================================================
-   MÍSTICA — Global Styles
+   MAGIK TAROT — Global Styles
    Variáveis, reset, bg animado, layout base
    ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
 /* ── CSS VARIABLES ── */
 :root {
-  --void:          #050508;
-  --deep:          #0a0a12;
-  --surface:       #0f0f1a;
-  --panel:         #14141f;
-  --border:        rgba(139, 90, 200, 0.18);
-  --gold:          #c9a84c;
-  --gold-light:    #e8c96a;
-  --gold-dim:      rgba(201, 168, 76, 0.3);
-  --violet:        #8b5ac8;
-  --violet-light:  #a97ee0;
-  --violet-dim:    rgba(139, 90, 200, 0.15);
-  --rose:          #c85a8b;
-  --rose-dim:      rgba(200, 90, 139, 0.2);
-  --text:          #f5f0fc;
-  --text-muted:    rgba(245, 240, 252, 0.92);
-  --text-dim:      rgba(245, 240, 252, 0.72);
-  --glow:          0 0 40px rgba(139, 90, 200, 0.25);
-  --glow-gold:     0 0 30px rgba(201, 168, 76, 0.3);
+  --void:          #1a0b2e; /* Cosmos (Deep Purple) */
+  --deep:          #130822;
+  --surface:       #24123e;
+  --panel:         #2a164a;
+  --border:        rgba(212, 175, 55, 0.2); /* Gold-tinted border */
+  --gold:          #d4af37; /* Celestial Gold */
+  --gold-light:    #f1d37a;
+  --gold-dim:      rgba(212, 175, 55, 0.3);
+  --violet:        #5d2e8c;
+  --violet-light:  #8e44ad; /* Nebula Magenta */
+  --violet-dim:    rgba(142, 68, 173, 0.2);
+  --magenta:       #8e44ad;
+  --magenta-glow:  rgba(142, 68, 173, 0.5);
+  --text:          #f0f3f4; /* Star White */
+  --text-muted:    rgba(240, 243, 244, 0.85);
+  --text-dim:      rgba(240, 243, 244, 0.65);
+  --glow:          0 0 25px rgba(142, 68, 173, 0.4);
+  --glow-gold:     0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 /* ── RESET ── */
@@ -37,8 +37,9 @@
 body {
   background: var(--void);
   color: var(--text);
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   overflow-x: hidden;
   cursor: default;
 }
@@ -82,9 +83,9 @@ body {
   opacity: 0.12;
   animation: nebula-drift 20s ease-in-out infinite alternate;
 }
-.nebula-orb:nth-child(1) { width: 600px; height: 600px; background: var(--violet); top: -200px;  left: -100px; animation-duration: 25s; }
-.nebula-orb:nth-child(2) { width: 400px; height: 400px; background: var(--rose);   bottom: -100px; right: -50px; animation-duration: 18s; animation-delay: -8s; }
-.nebula-orb:nth-child(3) { width: 300px; height: 300px; background: var(--gold);   top: 40%;    left: 50%;    animation-duration: 30s; animation-delay: -15s; }
+.nebula-orb:nth-child(1) { width: 600px; height: 600px; background: var(--violet-light); top: -200px;  left: -100px; animation-duration: 25s; }
+.nebula-orb:nth-child(2) { width: 400px; height: 400px; background: var(--magenta);      bottom: -100px; right: -50px; animation-duration: 18s; animation-delay: -8s; }
+.nebula-orb:nth-child(3) { width: 300px; height: 300px; background: var(--gold);         top: 40%;    left: 50%;    animation-duration: 30s; animation-delay: -15s; }
 
 @keyframes nebula-drift {
   from { transform: translate(0, 0) scale(1); }
@@ -101,34 +102,40 @@ body {
 /* ── COMMON BUTTONS ── */
 .btn-primary {
   font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding: 0.9rem 2.2rem;
-  background: linear-gradient(135deg, var(--violet), var(--rose));
-  border: none;
-  border-radius: 2px;
+  padding: 1rem 2.4rem;
+  background: linear-gradient(135deg, var(--deep), var(--magenta));
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
   color: white;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 30px rgba(139, 90, 200, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px var(--magenta-glow);
+  position: relative;
+  overflow: hidden;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(139, 90, 200, 0.5); }
+.btn-primary:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px var(--magenta-glow);
+  border-color: var(--gold);
+}
 
 .btn-secondary {
   font-family: 'Cinzel', serif;
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding: 0.9rem 2.2rem;
+  padding: 1rem 2.4rem;
   background: transparent;
-  border: 1px solid rgba(139, 90, 200, 0.5);
-  border-radius: 2px;
-  color: var(--text-muted);
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  color: var(--gold);
   cursor: pointer;
   transition: all 0.3s;
 }
-.btn-secondary:hover { border-color: var(--violet-light); color: var(--violet-light); }
+.btn-secondary:hover { border-color: var(--gold); background: var(--gold-dim); color: var(--text); }
 
 /* ── SECTION COMMON ── */
 .section {
@@ -165,10 +172,11 @@ body {
   line-height: 1.7;
 }
 .divider {
-  width: 60px;
+  width: 120px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-  margin: 1.2rem auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 1.5rem auto;
+  opacity: 0.6;
 }
 
 /* ── TABS ── */

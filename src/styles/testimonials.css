@@ -5,12 +5,14 @@
   gap: 1.5rem;
 }
 .testimonial-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
+  padding: 2.5rem;
   position: relative;
+  transition: transform 0.3s;
 }
+.testimonial-card:hover { transform: translateY(-5px); border-color: var(--gold); }
 .testimonial-stars {
   color: var(--gold);
   font-size: 1rem;
@@ -30,14 +32,15 @@
   gap: 0.8rem;
 }
 .testimonial-avatar {
-  width: 36px; height: 36px;
+  width: 40px; height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--violet-dim), var(--rose-dim));
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--deep), var(--gold-dim));
+  border: 1px solid var(--gold-dim);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  color: var(--gold);
 }
 .testimonial-name {
   font-family: 'Cinzel', serif;
