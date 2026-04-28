@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'http://localhost:3003',
+    BACKEND_URL: 'https://legitimate-icq-essentials-devon.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
