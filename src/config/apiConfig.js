@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://beds-system-phil-detailed.trycloudflare.com',
+    BACKEND_URL: 'https://securities-domains-renewable-acknowledge.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
