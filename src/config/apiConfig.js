@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://john-soap-perspective-behind.trycloudflare.com',
+    BACKEND_URL: 'https://beds-system-phil-detailed.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
