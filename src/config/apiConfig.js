@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://provincial-scheduling-gmt-tournaments.trycloudflare.com',
+    BACKEND_URL: 'https://john-soap-perspective-behind.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
