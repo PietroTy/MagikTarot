@@ -411,7 +411,13 @@ function CardImage({ card, revealed = true }) {
   const [error, setError] = useState(false);
   
   if (!revealed) {
-    return <div className="tarot-card back" />;
+    return (
+      <div className="tarot-card back">
+        <img src="/assets/tarot-cards/back.jpg" alt="Verso" onError={(e) => {
+          e.target.style.display = 'none';
+        }} />
+      </div>
+    );
   }
 
   // Placeholder se não houver imagem
@@ -742,7 +748,11 @@ function ServiceModal({ service, onClose }) {
           <div className="ai-loading">
             <div className="modal-eyebrow">✦ O Ritual se inicia</div>
             <div className="shuffle-deck">
-              {[1,2,3,4,5].map(i => <div key={i} className="shuffle-card" />)}
+              {[1,2,3,4,5].map(i => (
+                <div key={i} className="shuffle-card">
+                  <img src="/assets/tarot-cards/back.jpg" alt="" />
+                </div>
+              ))}
             </div>
             <div className="ai-text">Embaralhando os destinos...</div>
           </div>
@@ -760,12 +770,14 @@ function ServiceModal({ service, onClose }) {
             </div>
             
             <div className="picking-table">
-              {shuffledDeck.map((_, i) => (
+              {shuffledDeck.map((card, i) => (
                 <div 
                   key={i} 
                   className={`pickable-card ${pickedIndices.includes(i) ? 'picked' : ''}`}
                   onClick={() => handlePickCard(i)}
-                />
+                >
+                  <CardImage card={card} revealed={false} />
+                </div>
               ))}
             </div>
           </div>

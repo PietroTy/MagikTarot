@@ -1,12 +1,15 @@
 
-> backend@1.0.0 start
+> magik-tarot-backend@1.0.0 start
 > node server.js
 
-[dotenv@17.3.1] injecting env (1) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
-Backend iniciado
-API URL: https://chat.maritaca.ai/api/chat/completions
-API Key carregada: sim
-Servidor rodando em http://localhost:3001
-Chat endpoint: http://localhost:3001/chat
-Config endpoint: http://localhost:3001/config
-Health endpoint: http://localhost:3001/health
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Backend Magik Tarot iniciado
+Maritaca API Key : ok
+MP Access Token  : ok
+Modo Sandbox MP  : true
+
+Servidor: https://guitar-libs-furnishings-varying.trycloudflare.com
+Catálogo : /data/services | /data/products | /data/zodiac ...
+Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
+Leituras : POST /readings | GET /readings/:id
+
