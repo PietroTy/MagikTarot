@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://myself-does-builds-collectibles.trycloudflare.com',
+    BACKEND_URL: 'https://modified-rapid-asset-laden.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
