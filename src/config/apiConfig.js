@@ -5,8 +5,8 @@
  */
 
 export const API_CONFIG = {
-    // URL do backend — atualizada automaticamente por deploy.sh
-    BACKEND_URL: 'https://modified-rapid-asset-laden.trycloudflare.com',
+    // URL do backend — lida do .env.local ou usa localhost:3003 em dev
+    BACKEND_URL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:3003',
 
     // Endpoints de catálogo
     ENDPOINTS: {

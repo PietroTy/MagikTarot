@@ -2,7 +2,7 @@
 > magik-tarot-backend@1.0.0 start
 > node server.js
 
-[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.3.1] injecting env (6) from .env -- tip: 🤖 agentic secret storage: https://dotenvx.com/as2
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -13,3 +13,36 @@ Catálogo : /data/services | /data/products | /data/zodiac ...
 Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
 Leituras : POST /readings | GET /readings/:id
 
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777943238573
+[Reading] Leitura #1 gerada para pedido DEBUG-1777943238573
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777944695868
+[Reading] Leitura #2 gerada para pedido DEBUG-1777944695868
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777944926402
+[Reading] Leitura #3 gerada para pedido DEBUG-1777944926402
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777945274823
+[Reading] Leitura #4 gerada para pedido DEBUG-1777945274823
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777945504287
+[Reading] Leitura #5 gerada para pedido DEBUG-1777945504287
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777945528944
+[MP] Criando preferência para ORD-000001. FrontURL: https://pietroty.github.io/MagikTarot
+[MP] Preferência criada: ORD-000001 — Tarot do Amor R$0.01
+[Reading] Leitura #6 gerada para pedido DEBUG-1777945528944
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777946028195
+[Reading] Leitura #7 gerada para pedido DEBUG-1777946028195
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777946085035
+[Reading] Leitura #8 gerada para pedido DEBUG-1777946085035
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777946715080
+[Reading] Leitura #9 gerada para pedido DEBUG-1777946715080
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777947134719
+[Reading] Leitura #10 gerada para pedido DEBUG-1777947134719
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777947238039
+[Reading] Leitura #11 gerada para pedido DEBUG-1777947238039
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777947536352
+[Reading] Leitura #12 gerada para pedido DEBUG-1777947536352
+[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1777947563601
+[Reading] Leitura #13 gerada para pedido DEBUG-1777947563601
+[MP] Criando preferência para ORD-000002. FrontURL: https://pietroty.github.io/MagikTarot
+[MP] Preferência criada: ORD-000002 — Test R$49.9
+[MP Webhook] Erro ao processar notificação: Payment not found
+[DEBUG] ✅ Pagamento aprovado manualmente: ORD-000002
+Killed

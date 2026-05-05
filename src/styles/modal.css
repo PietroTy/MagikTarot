@@ -217,8 +217,8 @@
 /* ── SHUFFLE ANIMATION ── */
 .shuffle-deck {
   position: relative;
-  height: 120px;
-  width: 80px;
+  height: 180px;
+  width: 120px;
   margin-bottom: 1rem;
 }
 .shuffle-card {
@@ -226,8 +226,8 @@
   inset: 0;
   background: var(--deep);
   border: 1px solid var(--gold-dim);
-  border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
   animation: shuffle-move 2s ease-in-out infinite;
   overflow: hidden;
 }
@@ -243,48 +243,194 @@
 
 @keyframes shuffle-move {
   0%, 100% { transform: translate(0, 0) rotate(0); }
-  25%  { transform: translate(-30px, -5px) rotate(-10deg); z-index: 10; }
-  50%  { transform: translate(30px, 5px) rotate(10deg); z-index: 1; }
-  75%  { transform: translate(0, 10px) rotate(0); }
+  25%  { transform: translate(-40px, -8px) rotate(-12deg); z-index: 10; }
+  50%  { transform: translate(40px, 8px) rotate(12deg); z-index: 1; }
+  75%  { transform: translate(0, 12px) rotate(0); }
 }
 
-/* ── PICKING TABLE ── */
-.picking-panel { text-align: center; }
-.picking-table {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 1rem;
-  background: rgba(0,0,0,0.2);
-  border-radius: 8px;
-  border: 1px solid var(--gold-dim);
-}
-.pickable-card {
-  width: 60px;
-  aspect-ratio: 2/3;
-  cursor: pointer;
-  transition: all 0.3s;
+/* ── PICKING PAGE (inline page mode) ── */
+.picking-page {
   position: relative;
-}
-.pickable-card .tarot-card {
   width: 100%;
-  height: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fade-in 0.4s ease;
 }
-.pickable-card::after {
-  display: none;
+.picking-page-header {
+  position: relative;
+  text-align: center;
+  padding: 3rem 4rem 2rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, rgba(26,7,58,0.9), transparent);
 }
-.pickable-card:hover {
-  transform: translateY(-5px) scale(1.05);
+.picking-page-fan {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+/*
+  Leque invertido e centralizado:
+  - O pivô fica ACIMA das cartas (arco descendente / lustre)
+  - Cartas centralizadas no container com margens negativas
+*/
+.picking-page-fan .fan-card-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -30px;       /* Ajuste visual para centralizar o arco */
+  margin-left: -55px;      /* metade de 110px */
+  width: 110px;
+  transform-origin: 55px -320px;  /* pivô 320px acima */
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+}
+.picking-page-fan .fan-card-body {
+  width: 110px;
+  aspect-ratio: 768 / 1376;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+}
+.picking-page-fan .fan-card-wrap:hover .fan-card-body {
+  transform: translateY(30px) scale(1.1);
+  box-shadow: 0 24px 60px rgba(212, 175, 55, 0.5), 0 0 30px rgba(212, 175, 55, 0.2);
   border-color: var(--gold);
-  box-shadow: 0 0 15px var(--gold-dim);
 }
-.pickable-card.picked {
+.picking-page-fan .fan-card-wrap.picked {
   opacity: 0;
-  transform: scale(0.5);
   pointer-events: none;
+}
+.picking-page-fan .fan-card-wrap.picked .fan-card-body {
+  transform: translateY(80px) scale(0.4);
+}
+.picking-page-fan .fan-card-body .tarot-card {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 10px;
+}
+
+/* ── FAN TABLE (picking phase) ── */
+.picking-panel { text-align: center; }
+
+.fan-table {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+  margin: 0 auto;
+  /* Leque invertido: as cartas abrem de cima pra baixo */
+}
+
+/* Pivô ACIMA da carta — cartas penduradas para baixo */
+.fan-card-wrap {
+  position: absolute;
+  top: 20px;             /* topo visível dentro do container */
+  left: 50%;
+  margin-left: -42px;
+  width: 84px;
+  transform-origin: 42px -260px; /* pivô 260px ACIMA da borda superior da carta */
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+}
+
+/* Corpo interno — hover levanta (agora levanta = sobe = translateY negativo) */
+.fan-card-body {
+  width: 84px;
+  aspect-ratio: 768 / 1376;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+}
+
+.fan-card-body .tarot-card {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 8px;
+}
+
+.fan-card-wrap:hover .fan-card-body {
+  transform: translateY(20px) scale(1.12);
+  box-shadow:
+    0 20px 50px rgba(212, 175, 55, 0.45),
+    0 0 25px rgba(212, 175, 55, 0.2);
+  border-color: var(--gold);
+}
+
+.fan-card-wrap.picked {
+  opacity: 0;
+  pointer-events: none;
+}
+.fan-card-wrap.picked .fan-card-body {
+  transform: translateY(50px) scale(0.5);
+}
+
+/* ── DECK OPTIONS (checkboxes no form) ── */
+.deck-options {
+  margin-top: 1.2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.deck-option-row {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s;
+}
+.deck-option-row:hover { border-color: var(--gold-dim); }
+.deck-option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+.deck-option-check {
+  margin-top: 3px;
+  accent-color: var(--gold);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.deck-option-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: -1px;
+}
+.deck-option-label strong {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+.deck-option-label small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.75;
+  line-height: 1.4;
 }
 
 /* ── RESULT PANEL ── */
@@ -292,14 +438,18 @@
 .result-cards {
   display: flex;
   justify-content: center;
-  gap: 0.75rem;
+  flex-wrap: nowrap;
+  gap: 1.2rem;
   margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
 }
 .tarot-card {
-  width: 100px;
-  aspect-ratio: 2/3;
+  width: 150px;
+  flex-shrink: 0;
+  aspect-ratio: 768 / 1376;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: linear-gradient(135deg, var(--surface), var(--panel));
   display: flex;
   flex-direction: column;
@@ -331,7 +481,8 @@
 .tarot-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  display: block;
 }
 .card-fallback-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .card-fallback-name {
@@ -355,8 +506,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0 0 calc(20% - 1.5rem);
-  min-width: 80px;
+  flex: 0 0 auto;
+  min-width: 150px;
 }
 .card-label {
   animation: fade-in 0.8s ease forwards;
@@ -428,4 +579,207 @@
 
 @media (max-width: 768px) {
   .form-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════════
+   REVELATION PAGE — tela inteira de revelação
+══════════════════════════════════════════════════════ */
+/* ── REVELATION PAGE (inline page mode) ── */
+.revelation-page {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fade-in 0.5s ease;
+}
+
+/* ── Header ── */
+.revelation-header {
+  position: relative;
+  text-align: center;
+  padding: 3rem 4rem 2rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, rgba(26,7,58,0.9), transparent);
+}
+.revelation-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.85;
+  margin-bottom: 0.7rem;
+}
+.revelation-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-light) 0%, #fff 50%, var(--violet-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.6rem;
+  line-height: 1.2;
+}
+.revelation-subtitle {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.8;
+}
+.revelation-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+.revelation-close:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 12px var(--gold-dim);
+}
+
+/* ── Cards Strip ── */
+.revelation-cards-strip {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2.5rem 3rem;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) transparent;
+}
+.revelation-cards-strip::-webkit-scrollbar { height: 4px; }
+.revelation-cards-strip::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+.revelation-card-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+.revelation-card-wrap {
+  width: 170px;
+  aspect-ratio: 768 / 1376;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.revelation-card-wrap .tarot-card {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 12px;
+  border: none;
+}
+.revelation-card-wrap.rev-revealed {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 1px var(--gold-dim),
+    0 15px 60px rgba(212, 175, 55, 0.35),
+    0 0 80px rgba(212, 175, 55, 0.12);
+  animation: rev-card-appear 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes rev-card-appear {
+  0%   { transform: rotateY(90deg) scale(0.85); opacity: 0; }
+  100% { transform: rotateY(0deg)  scale(1);    opacity: 1; }
+}
+.revelation-card-wrap.rev-back {
+  opacity: 0.7;
+  filter: grayscale(0.3);
+}
+
+.revelation-card-info {
+  text-align: center;
+  animation: fade-in 0.6s ease forwards;
+}
+.revelation-card-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+.revelation-card-position {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
+}
+
+/* ── Reading ── */
+.revelation-reading-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 3rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) transparent;
+}
+.revelation-reading-wrap::-webkit-scrollbar { width: 4px; }
+.revelation-reading-wrap::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+.revelation-reading {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2rem 0 1.5rem;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.9;
+  color: var(--text-muted);
+  position: relative;
+}
+.revelation-reading::before {
+  content: '"';
+  position: absolute;
+  top: 1rem; left: -1rem;
+  font-size: 5rem;
+  color: var(--violet-dim);
+  font-family: 'Cinzel Decorative', serif;
+  line-height: 1;
+  opacity: 0.4;
+}
+
+/* ── Footer ── */
+.revelation-footer {
+  flex-shrink: 0;
+  padding: 1.5rem 3rem 2.5rem;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  background: linear-gradient(to top, rgba(5,2,16,0.95), transparent);
+}
+.revelation-btn {
+  min-width: 320px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 768px) {
+  .revelation-header { padding: 2rem 1.5rem 1.5rem; }
+  .revelation-title  { font-size: 1.4rem; }
+  .revelation-cards-strip { padding: 1.5rem 1rem; gap: 1rem; }
+  .revelation-card-wrap { width: 120px; }
+  .revelation-reading-wrap { padding: 0 1rem; }
+  .revelation-footer { padding: 1rem 1rem 2rem; }
+  .revelation-btn { min-width: unset; width: 100%; }
 }

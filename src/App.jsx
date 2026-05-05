@@ -23,6 +23,7 @@ import { useData } from './context/DataContext';
 function App() {
   const [activePage,  setActivePage]  = useState('home');
   const [activeModal, setActiveModal] = useState(null);
+  const [modalStep,   setModalStep]   = useState('form');
   const { loading } = useData();
 
   if (loading) {
@@ -35,6 +36,8 @@ function App() {
       </div>
     );
   }
+
+  const isModalFullScreen = activeModal && (modalStep === 'picking' || modalStep === 'result');
 
   return (
     <>
@@ -52,29 +55,33 @@ function App() {
 
         {/* ── Pages ── */}
         <div className="app">
-
-          {activePage === 'home'      && (
+          {!isModalFullScreen && (
             <>
-              <Hero setActivePage={setActivePage} />
-              <Home setActivePage={setActivePage} setActiveModal={setActiveModal} />
+              {activePage === 'home'      && (
+                <>
+                  <Hero setActivePage={setActivePage} />
+                  <Home setActivePage={setActivePage} setActiveModal={setActiveModal} />
+                </>
+              )}
+
+              {activePage === 'servicos'  && <ServicesPage  setActiveModal={setActiveModal} />}
+              {activePage === 'horoscopo' && <HoroscopePage />}
+              {activePage === 'loja'      && <ShopPage />}
             </>
           )}
 
-          {activePage === 'servicos'  && <ServicesPage  setActiveModal={setActiveModal} />}
-          {activePage === 'horoscopo' && <HoroscopePage />}
-          {activePage === 'loja'      && <ShopPage />}
+          {/* ── Modal ── */}
+          {activeModal && (
+            <ServiceModal
+              service={activeModal}
+              onClose={() => { setActiveModal(null); setModalStep('form'); }}
+              onStepChange={setModalStep}
+            />
+          )}
 
           {/* ── Footer ── */}
           <Footer setActivePage={setActivePage} />
         </div>
-
-        {/* ── Modal ── */}
-        {activeModal && (
-          <ServiceModal
-            service={activeModal}
-            onClose={() => setActiveModal(null)}
-          />
-        )}
       </div>
     </>
   );
