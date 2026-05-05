@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — lida do .env.local ou usa localhost:3003 em dev
-    BACKEND_URL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:3003',
+    BACKEND_URL: 'https://pure-guest-stuck-ban.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
