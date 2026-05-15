@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — lida do .env.local ou usa localhost:3003 em dev
-    BACKEND_URL: 'https://ourselves-numeric-maintains-vertex.trycloudflare.com',
+    BACKEND_URL: 'https://some-skirts-smile-soil.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
