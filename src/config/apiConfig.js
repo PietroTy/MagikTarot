@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — lida do .env.local ou usa localhost:3003 em dev
-    BACKEND_URL: 'https://archives-donald-gray-transparency.trycloudflare.com',
+    BACKEND_URL: 'https://optics-filters-aid-dawn.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
