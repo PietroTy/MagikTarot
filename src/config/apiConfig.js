@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
     // URL do backend — lida do .env.local ou usa localhost:3003 em dev
-    BACKEND_URL: 'https://geological-mozilla-conferencing-sofa.trycloudflare.com',
+    BACKEND_URL: 'https://sympathy-souls-heritage-blocked.trycloudflare.com',
 
     // Endpoints de catálogo
     ENDPOINTS: {
