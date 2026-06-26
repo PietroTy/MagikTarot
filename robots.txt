@@ -1,3 +1,27 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+
+# Allow indexable pages
+Allow: /
+Allow: /#/
+Allow: /#/consultas
+Allow: /#/consultas/*
+Allow: /#/consulta/*
+Allow: /#/blog
+Allow: /#/blog/*
+Allow: /#/significados/*
+Allow: /#/duvidas-frequentes
+Allow: /#/sobre
+Allow: /#/horoscopo
+Allow: /#/loja
+
+# Disallow private results, rituals, checkouts and legal policies
+Disallow: /#/resultado/*
+Disallow: /#/ritual/*
+Disallow: /#/pagamento-confirmado
+Disallow: /#/politica-de-privacidade
+Disallow: /#/termos-de-uso
+
+# Host & Sitemap
+Host: https://pietroty.github.io/MagikTarot
+Sitemap: https://pietroty.github.io/MagikTarot/sitemap.xml
