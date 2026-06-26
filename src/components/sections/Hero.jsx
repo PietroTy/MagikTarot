@@ -1,7 +1,9 @@
 import '../../styles/hero.css';
 import Sigil from '../common/Sigil';
 
-function Hero({ setActivePage }) {
+import { Link } from 'react-router-dom';
+
+function Hero() {
   return (
     <section className="hero">
       <Sigil />
@@ -12,12 +14,12 @@ function Hero({ setActivePage }) {
         interpretados pela mais avançada inteligência Magik Tarot do Brasil.
       </p>
       <div className="hero-buttons">
-        <button className="btn-primary" onClick={() => setActivePage('servicos')}>
+        <Link to="/servicos" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
           Cruzar o véu — abrir uma consulta
-        </button>
-        <button className="btn-secondary" onClick={() => setActivePage('horoscopo')}>
+        </Link>
+        <Link to="/horoscopo" className="btn-secondary" style={{ display: 'inline-block', textDecoration: 'none' }}>
           Revelar meu horóscopo
-        </button>
+        </Link>
       </div>
       <div className="hero-scroll">
         <span>Rolar</span>↓

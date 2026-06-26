@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 // Styles
 import './styles/global.css';
@@ -15,13 +16,15 @@ import ServicesPage  from './components/sections/ServicesPage';
 import HoroscopePage from './components/sections/HoroscopePage';
 import ShopPage      from './components/sections/ShopPage';
 
+// Pages to create
+import ResultPage    from './components/pages/ResultPage';
+
 // Modal
 import ServiceModal  from './components/modals/ServiceModal';
 
 import { useData } from './context/DataContext';
 
 function App() {
-  const [activePage,  setActivePage]  = useState('home');
   const [activeModal, setActiveModal] = useState(null);
   const [modalStep,   setModalStep]   = useState('form');
   const { loading } = useData();
@@ -51,23 +54,23 @@ function App() {
         </div>
 
         {/* ── Navigation ── */}
-        <Nav setActivePage={setActivePage} />
+        <Nav />
 
         {/* ── Pages ── */}
         <div className="app">
           {!isModalFullScreen && (
-            <>
-              {activePage === 'home'      && (
+            <Routes>
+              <Route path="/" element={
                 <>
-                  <Hero setActivePage={setActivePage} />
-                  <Home setActivePage={setActivePage} setActiveModal={setActiveModal} />
+                  <Hero />
+                  <Home setActiveModal={setActiveModal} />
                 </>
-              )}
-
-              {activePage === 'servicos'  && <ServicesPage  setActiveModal={setActiveModal} />}
-              {activePage === 'horoscopo' && <HoroscopePage />}
-              {activePage === 'loja'      && <ShopPage />}
-            </>
+              } />
+              <Route path="/servicos" element={<ServicesPage setActiveModal={setActiveModal} />} />
+              <Route path="/horoscopo" element={<HoroscopePage />} />
+              <Route path="/loja" element={<ShopPage />} />
+              <Route path="/resultado/:orderId" element={<ResultPage />} />
+            </Routes>
           )}
 
           {/* ── Modal ── */}
@@ -80,7 +83,7 @@ function App() {
           )}
 
           {/* ── Footer ── */}
-          <Footer setActivePage={setActivePage} />
+          <Footer />
         </div>
       </div>
     </>

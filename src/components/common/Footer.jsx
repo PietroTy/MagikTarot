@@ -1,7 +1,9 @@
 import '../../styles/footer.css';
 import { useData } from '../../context/DataContext';
 
-function Footer({ setActivePage }) {
+import { Link } from 'react-router-dom';
+
+function Footer() {
   const { data: { services: SERVICES } } = useData();
   return (
     <footer className="site-footer">
@@ -19,7 +21,7 @@ function Footer({ setActivePage }) {
           <ul className="footer-links">
             {SERVICES.map(s => (
               <li key={s.id}>
-                <span onClick={() => setActivePage('servicos')}>{s.name}</span>
+                <Link to="/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>{s.name}</Link>
               </li>
             ))}
           </ul>

@@ -1,6 +1,7 @@
 import '../../styles/services.css';
 import '../../styles/testimonials.css';
 import { useData } from '../../context/DataContext';
+import { Link } from 'react-router-dom';
 
 function ServiceCard({ s, onOpen }) {
   return (
@@ -67,7 +68,7 @@ function Testimonials() {
   );
 }
 
-function CtaBanner({ setActivePage }) {
+function CtaBanner() {
   return (
     <div className="cta-banner">
       <div className="section-eyebrow">Primeiro ritual</div>
@@ -75,14 +76,14 @@ function CtaBanner({ setActivePage }) {
         Pronto para cruzar o véu?
       </div>
       <div className="section-desc">Os Arcanos já sabem o que você precisa ouvir. A questão é: você está pronto(a)?</div>
-      <button className="btn-primary" onClick={() => setActivePage('servicos')}>
+      <Link to="/servicos" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
         Abrir um portal de consulta
-      </button>
+      </Link>
     </div>
   );
 }
 
-function Home({ setActivePage, setActiveModal }) {
+function Home({ setActiveModal }) {
   const { data: { services: SERVICES } } = useData();
   return (
     <>
@@ -101,9 +102,9 @@ function Home({ setActivePage, setActiveModal }) {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <button className="btn-secondary" onClick={() => setActivePage('servicos')}>
+          <Link to="/servicos" className="btn-secondary" style={{ display: 'inline-block', textDecoration: 'none' }}>
             Ver todos os portais de consulta →
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -111,7 +112,7 @@ function Home({ setActivePage, setActiveModal }) {
       <Testimonials />
 
       {/* CTA */}
-      <CtaBanner setActivePage={setActivePage} />
+      <CtaBanner />
     </>
   );
 }

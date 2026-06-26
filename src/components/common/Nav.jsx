@@ -1,24 +1,26 @@
 import '../../styles/nav.css';
 
+import { Link } from 'react-router-dom';
+
 const NAV_LINKS = [
-  { label: 'Consultas',         page: 'servicos'  },
-  { label: 'Horóscopo do Dia',  page: 'horoscopo' },
-  { label: 'Loja',              page: 'loja'      },
+  { label: 'Consultas',         path: '/servicos'  },
+  { label: 'Horóscopo do Dia',  path: '/horoscopo' },
+  { label: 'Loja',              path: '/loja'      },
 ];
 
-function Nav({ setActivePage }) {
+function Nav() {
   return (
     <nav className="nav">
-      <div className="nav-logo" onClick={() => setActivePage('home')}>
+      <Link to="/" className="nav-logo" style={{ textDecoration: 'none' }}>
         Magik Tarot
-      </div>
+      </Link>
 
       <ul className="nav-links">
         {NAV_LINKS.map(l => (
-          <li key={l.page}>
-            <span className="nav-link-btn" onClick={() => setActivePage(l.page)}>
+          <li key={l.path}>
+            <Link to={l.path} className="nav-link-btn" style={{ textDecoration: 'none' }}>
               {l.label}
-            </span>
+            </Link>
           </li>
         ))}
       </ul>

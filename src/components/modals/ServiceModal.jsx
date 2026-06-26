@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/modal.css';
 import { solicitarLeitura } from '../../services/aiService';
 import { createOrder, checkPaymentStatus } from '../../services/paymentService';
@@ -16,69 +17,41 @@ function buildPrompt(service, form, extra = {}) {
 REGRA FUNDAMENTAL: Quando interpretar cartas de tarot, CADA CARTA deve receber um parágrafo próprio e dedicado. Nesse parágrafo, você DEVE: (a) identificar a energia arquetípica da carta, (b) conectar essa energia DIRETAMENTE ao tema específico declarado pelo consultante, (c) revelar o que essa posição (passado/presente/futuro ou equivalente) significa para a situação dele. Nunca faça interpretações genéricas — seja cirúrgico e revelador sobre o tema em questão. Finalize com uma síntese das cartas unidas em mensagem coesa. A resposta deve ter entre 4 e 6 parágrafos.`;
 
   const contexts = {
-    tarot: `O(a) consultante ${form.nome || 'buscador'} abre um portal no Oráculo do Tarot.
-Domínio da consulta: ${form.dominio || 'não especificado'}.
-Intenção sagrada declarada: "${form.pergunta || 'encontrar clareza'}".
-${form.temor ? `O(a) consultante também declarou: "${form.temor}" — como algo que teme descobrir.` : ''}
+    'tarot-sim-ou-nao': `O(a) consultante ${form.nome || 'buscador'} deseja uma resposta direta para a seguinte pergunta: "${form.pergunta}".\nCartas reveladas:\n${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}\nInstrução: Dê uma resposta direta de SIM, NÃO ou TALVEZ baseada na carta sorteada, justificando poeticamente o motivo.`,
+    
+    'tarot-do-amor': `O(a) consultante ${form.nome || 'buscador'} busca clareza no amor.
+Status atual: ${form.status_amoroso || 'não informado'}.
+Dúvida principal: "${form.pergunta || 'não informada'}".
+Cartas reveladas:
+${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}
+Instrução: Analise cada carta focando exclusivamente na dinâmica afetiva, revelando obstáculos e conselhos baseados no status amoroso.`,
 
-Método oracular: "${extra.spreadName || 'Tradicional'}".
-Estrutura da tiragem com as cartas reveladas:
-${(extra.cards || []).map((c, i) => `- Posição ${i+1} (${extra.positions?.[i] || 'Influência'}): Carta "${c.name}"${c.reversed ? ' [INVERTIDA — energia bloqueada, sombra, desafio interno]' : ''}`).join('\n')}
+    'tarot-carreira': `O(a) consultante ${form.nome || 'buscador'} busca orientação profissional e financeira.
+Situação atual: ${form.situacao_atual || 'não informada'}.
+Cartas reveladas:
+${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}
+Instrução: Analise as cartas reveladas focando em trabalho, direcionamento de carreira e caminhos para a abundância.`,
 
-INSTRUÇÃO SAGRADA — FORMA DA RESPOSTA:
-Para cada carta listada acima, escreva UM parágrafo completo e profundo que:
-1. Nomeie a carta e descreva seu arquétipo e energia essencial
-2. Explique O QUE ESSA CARTA REVELA ESPECIFICAMENTE sobre o tema "${form.dominio || form.pergunta || 'da consulta'}" na posição que ocupa (${(extra.positions || []).join(', ') || 'esta tiragem'})
-3. Conecte o simbolismo da carta à situação concreta do consultante
+    'energia-do-mes': `O(a) consultante ${form.nome || 'buscador'} busca as tendências e panorama para o mês selecionado: ${form.mes || 'este mês'}.
+Cartas reveladas:
+${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}
+Instrução: Revele as tendências energéticas do mês, oportunidades que surgirão e bloqueios que precisam de atenção.`,
 
-Depois das cartas, escreva um parágrafo final de síntese que une as energias das cartas em uma mensagem oracular coesa.
-Seja poético, profundo e revelador. Nunca genérico — cada carta tem uma mensagem específica para ESTA situação.`,
+    'mapa-astral': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura do Mapa Natal Astrológico.
+Data de nascimento: ${form.nascimento || 'não informada'}.
+Hora exata: ${form.hora || 'não informada'}.
+Local de nascimento: ${form.local || 'não informado'}.
+Instrução: Faça uma leitura profunda baseada nessas coordenadas, revelando os posicionamentos prováveis de Sol, Lua e Ascendente. Descreva os pontos fortes, desafios emocionais e propósito de vida.`,
 
-    astral: `O(a) consultante ${form.nome || 'buscador'} solicita a leitura do Mapa Natal das Almas.
-Data de encarnação: ${form.nascimento || 'não informada'}.
-Hora exata da chegada: ${form.hora || 'não informada'}.
-Local de encarnação: ${form.local || 'não informado'}.
-Aspecto que deseja iluminar: ${form.aspecto || 'propósito de vida'}.
-Inquietação existencial declarada: "${form.pergunta || 'sem resposta ainda'}".
-Faça uma leitura profunda do mapa natal, revelando os arquétipos planetários dominantes, missão de alma e desafios cármicos.`,
-
-    sinastria: `O(a) consultante ${form.nome || 'buscador'} solicita a Sinastria das Almas.
-Seus dados: ${form.nome || '?'}, nascido(a) em ${form.nascimento || '?'}.
-A outra alma: ${form.nome2 || '?'}, nascida em ${form.nascimento2 || '?'}.
-Natureza do vínculo: ${form.vinculo || 'amor romântico'}.
-O que gera turbulência: "${form.pergunta || 'não declarado'}".
-O que atrai de forma inexplicável: "${form.atracao || 'não declarado'}".
-Revele a missão compartilhada destas almas, os pontos de harmonia e tensão cármica, e o que este encontro veio despertar.`,
-
-    numerologia: `O(a) consultante ${form.nome || 'buscador'} solicita a decodificação dos Códigos Numerológicos.
-Nome completo de registro (nascimento): ${form.nomeCompleto || form.nome || 'não informado'}.
-Nome atual: ${form.nomeAtual || 'mesmo do registro'}.
-Data de encarnação: ${form.nascimento || 'não informada'}.
-Missão que deseja decodificar: ${form.dominio || 'propósito de vida'}.
-Calcule e interprete poeticamente: Número de Caminho de Vida, Número de Destino (Expressão) e Número do Ano Pessoal atual. Revele os ciclos, dons e sombras que estes números carregam.`,
-
-    runas: `O(a) consultante ${form.nome || 'buscador'} convoca o Oráculo das Runas.
-Questão direcionada ao oráculo: "${form.pergunta || 'revelar o que é necessário'}".
-Método rúnico escolhido: ${form.tiragem || 'Tríade Nórdica (3 runas)'}.
-Tradição invocada: ${form.tradicao || 'Futhark Antigo'}.
-Interprete as runas para esta consulta com a voz dos ancestrais nórdicos. Cite os nomes das runas em nórdico antigo e seus significados profundos, aplicando-os à situação do consultante.`,
-
-    akasico: `O(a) consultante ${form.nome || 'buscador'} (nome de batismo: ${form.nomeBatismo || form.nome || '?'}) solicita acesso aos Registros Akáshicos.
-Data de encarnação: ${form.nascimento || 'não informada'}.
-O que deseja acessar nos Registros: ${form.aspecto || 'padrões cármicos'}.
-Padrão que se repete sem explicação: "${form.pergunta || 'não declarado'}".
-Situação que parece vir de outro tempo: "${form.outraTela || 'não declarada'}".
-Acesse os Registros Akáshicos desta alma. Revele os padrões cármicos, os contratos de alma ativos e os dons que aguardam ativação. Use linguagem de leitura akáshica autêntica.`,
-
-    quiromancia: `O(a) consultante ${form.nome || 'buscador'} abre o portal da Quiromancia Oracular.
-Mão dominante: ${form.mao || 'direita'}.
-Aspecto a revelar: ${form.aspecto || 'leitura completa'}.
-A linha que mais sente que conta sua história: ${form.linha || 'não declarada'}.
-Situação que deseja iluminar: "${form.pergunta || 'não declarada'}".
-Interprete as linhas da mão como um quiromante ancestral. Revele o que a Linha da Vida, do Coração, da Mente e do Destino descrevem sobre esta alma — e o que a situação declarada revela quando cruzada com estas marcas.`,
+    'sinastria': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura de Sinastria.
+Dados do consultante: Nascido(a) em ${form.nascimento || 'não informado'}.
+Dados da outra pessoa (${form.nome2 || 'desconhecido'}): Nascido(a) em ${form.nascimento2 || 'não informado'}.
+Tipo de vínculo: ${form.vinculo || 'não especificado'}.
+O que deseja entender: "${form.pergunta || 'não declarado'}".
+Instrução: Revele a compatibilidade astrológica e energética entre essas duas pessoas. Explore os pontos de harmonia, tensões cármicas e a missão desse encontro.`
   };
 
-  const userContext = contexts[service.type] || contexts.tarot;
+  const userContext = contexts[service.id] || contexts['tarot-sim-ou-nao'];
 
   return [
     { role: 'system', content: base },
@@ -90,310 +63,152 @@ Interprete as linhas da mão como um quiromante ancestral. Revele o que a Linha 
 // CAMPOS DO FORMULÁRIO POR TIPO DE CONSULTA
 // ─────────────────────────────────────────────────────────
 function FormFields({ service, form, updateForm }) {
-  const tipo = service.type;
+  const id = service.id;
 
   return (
     <>
-      {/* CAMPO COMUM: nome verdadeiro */}
+      {/* CAMPO COMUM: nome */}
       <div className="form-group">
-        <label className="form-label">Seu nome verdadeiro neste plano</label>
+        <label className="form-label">Seu nome ou apelido</label>
         <input
           className="form-input"
           value={form.nome}
           onChange={e => updateForm('nome', e.target.value)}
-          placeholder="Como te chamas no mundo dos vivos?"
+          placeholder="Como prefere ser chamado(a)?"
         />
       </div>
 
-      {/* ── TAROT ── */}
-      {tipo === 'tarot' && <>
+      {['tarot-do-amor', 'mapa-astral'].includes(id) && (
         <div className="form-group">
-          <label className="form-label">Domínio da consulta</label>
-          <select className="form-select" value={form.dominio} onChange={e => updateForm('dominio', e.target.value)}>
-            <option value="">Escolha o domínio...</option>
-            <option value="Amor e relações">Amor e relações</option>
-            <option value="Missão de vida">Missão de vida</option>
-            <option value="Finanças e abundância">Finanças e abundância</option>
-            <option value="Saúde e vitalidade">Saúde e vitalidade</option>
-            <option value="Transformação e renascimento">Transformação e renascimento</option>
-            <option value="Espiritualidade e despertar">Espiritualidade e despertar</option>
-          </select>
+          <label className="form-label">E-mail (para receber a leitura)</label>
+          <input
+            type="email"
+            className="form-input"
+            value={form.email}
+            onChange={e => updateForm('email', e.target.value)}
+            placeholder="seu@email.com"
+          />
         </div>
+      )}
 
+      {/* Tarot Sim ou Não */}
+      {id === 'tarot-sim-ou-nao' && (
         <div className="form-group">
-          <label className="form-label">Intenção sagrada</label>
+          <label className="form-label">Qual é a sua pergunta direta?</label>
           <textarea
             className="form-textarea"
             value={form.pergunta}
             onChange={e => updateForm('pergunta', e.target.value)}
-            placeholder="Qual véu deseja que os Arcanos levantem? Quanto mais profunda a pergunta, mais profunda a revelação..."
+            placeholder="Pense bem e faça uma pergunta que possa ser respondida com Sim ou Não..."
           />
         </div>
-        <div className="form-group" style={{ marginTop: '0.5rem' }}>
-          <label className="form-label">Há algo que teme descobrir? <span style={{opacity:0.5}}>(opcional)</span></label>
-          <textarea
-            className="form-textarea"
-            style={{minHeight:'60px'}}
-            value={form.temor}
-            onChange={e => updateForm('temor', e.target.value)}
-            placeholder="Os Arcanos revelam tudo. Se houver um véu que prefere manter, declare-o aqui..."
-          />
-        </div>
+      )}
 
-        {/* Opções avançadas do baralho */}
-        <div className="deck-options">
-          <div className="deck-option-row">
-            <label className="deck-option-label">
-              <input
-                type="checkbox"
-                className="deck-option-check"
-                checked={form.incluirMenores}
-                onChange={e => updateForm('incluirMenores', e.target.checked)}
-              />
-              <span className="deck-option-icon">🔮</span>
-              <span>
-                <strong>Incluir Arcanos Menores</strong>
-                <small>Adiciona os 56 arcanos menores ao baralho (Paus 🔥, Copas 💧, Espadas ⚔️, Ouros 🟡)</small>
-              </span>
-            </label>
-          </div>
-          <div className="deck-option-row">
-            <label className="deck-option-label">
-              <input
-                type="checkbox"
-                className="deck-option-check"
-                checked={form.permitirInvertidas}
-                onChange={e => updateForm('permitirInvertidas', e.target.checked)}
-              />
-              <span className="deck-option-icon">🔄</span>
-              <span>
-                <strong>Permitir cartas invertidas</strong>
-                <small>35% de chance de cada carta aparecer invertida — revela sombras e bloqueios</small>
-              </span>
-            </label>
-          </div>
-        </div>
-      </>}
-
-      {/* ── MAPA ASTRAL ── */}
-      {tipo === 'astral' && <>
-        <div className="form-grid">
+      {/* Tarot do Amor */}
+      {id === 'tarot-do-amor' && (
+        <>
           <div className="form-group">
-            <label className="form-label">Data de encarnação</label>
-            <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Hora exata da chegada</label>
-            <input type="time" className="form-input" value={form.hora} onChange={e => updateForm('hora', e.target.value)} />
-          </div>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Local de encarnação</label>
-          <input className="form-input" value={form.local} onChange={e => updateForm('local', e.target.value)} placeholder="Cidade, Estado, País" />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Aspecto que deseja iluminar</label>
-          <select className="form-select" value={form.aspecto} onChange={e => updateForm('aspecto', e.target.value)}>
-            <option value="">Escolha o aspecto...</option>
-            <option value="Propósito de vida e missão">Propósito de vida e missão</option>
-            <option value="Missão cármica e lições">Missão cármica e lições</option>
-            <option value="Amor e relações significativas">Amor e relações significativas</option>
-            <option value="Dom latente não manifestado">Dom latente não manifestado</option>
-            <option value="Sombra a integrar">Sombra a integrar e transmutar</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Sua maior inquietação existencial</label>
-          <textarea
-            className="form-textarea"
-            value={form.pergunta}
-            onChange={e => updateForm('pergunta', e.target.value)}
-            placeholder="O que em você ainda não encontrou resposta? O que te mantém acordado(a) na escuridão?"
-          />
-        </div>
-      </>}
-
-      {/* ── SINASTRIA ── */}
-      {tipo === 'sinastria' && <>
-        <div className="form-grid">
-          <div className="form-group">
-            <label className="form-label">Sua data de encarnação</label>
-            <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Nome da outra alma</label>
-            <input className="form-input" value={form.nome2} onChange={e => updateForm('nome2', e.target.value)} placeholder="Como esta alma se chama?" />
-          </div>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Data de encarnação da outra alma</label>
-          <input type="date" className="form-input" value={form.nascimento2} onChange={e => updateForm('nascimento2', e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Natureza do vínculo</label>
-          <select className="form-select" value={form.vinculo} onChange={e => updateForm('vinculo', e.target.value)}>
-            <option value="">Qual a natureza deste elo?</option>
-            <option value="Amor romântico">Amor romântico</option>
-            <option value="Alma gêmea ou chama gêmea">Alma gêmea ou chama gêmea</option>
-            <option value="Parceria e sociedade">Parceria e sociedade</option>
-            <option value="Vínculo familiar">Vínculo familiar</option>
-            <option value="Amizade de alma">Amizade de alma</option>
-            <option value="Rivalidade ou dívida cármica">Rivalidade ou dívida cármica</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">O que gera mais turbulência nesta relação?</label>
-          <textarea className="form-textarea" value={form.pergunta} onChange={e => updateForm('pergunta', e.target.value)} placeholder="Descreva o que cria atrito, confusão ou dor entre vocês..." />
-        </div>
-        <div className="form-group">
-          <label className="form-label">O que te atrai de forma inexplicável nessa alma?</label>
-          <textarea className="form-textarea" style={{minHeight:'60px'}} value={form.atracao} onChange={e => updateForm('atracao', e.target.value)} placeholder="O que não consegues explicar com palavras comuns?" />
-        </div>
-      </>}
-
-      {/* ── NUMEROLOGIA ── */}
-      {tipo === 'numerologia' && <>
-        <div className="form-group">
-          <label className="form-label">Nome completo de registro (nascimento)</label>
-          <input className="form-input" value={form.nomeCompleto} onChange={e => updateForm('nomeCompleto', e.target.value)} placeholder="O nome dado ao nascer carrega vibração primordial" />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Nome que usa atualmente <span style={{opacity:0.5}}>(se diferente)</span></label>
-          <input className="form-input" value={form.nomeAtual} onChange={e => updateForm('nomeAtual', e.target.value)} placeholder="Deixe em branco se é o mesmo" />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Data de encarnação</label>
-          <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Missão que deseja decodificar</label>
-          <select className="form-select" value={form.dominio} onChange={e => updateForm('dominio', e.target.value)}>
-            <option value="">Escolha o foco...</option>
-            <option value="Propósito de vida e missão">Propósito de vida e missão</option>
-            <option value="Talentos ocultos e dons">Talentos ocultos e dons</option>
-            <option value="Ciclo atual e próximo">Ciclo atual e o que vem a seguir</option>
-            <option value="Relacionamentos e vínculos">Relacionamentos e vínculos</option>
-            <option value="Finanças e abundância energética">Finanças e abundância energética</option>
-          </select>
-        </div>
-      </>}
-
-      {/* ── RUNAS ── */}
-      {tipo === 'runas' && <>
-        <div className="form-group">
-          <label className="form-label">Questão para o Oráculo das Runas</label>
-          <textarea
-            className="form-textarea"
-            value={form.pergunta}
-            onChange={e => updateForm('pergunta', e.target.value)}
-            placeholder="As Runas respondem perguntas diretas. Formule com cuidado — cada palavra tem peso."
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Método rúnico</label>
-          <select className="form-select" value={form.tiragem} onChange={e => updateForm('tiragem', e.target.value)}>
-            <option value="Runa do Momento (1 runa)">Runa do Momento — Uma revelação concentrada</option>
-            <option value="Tríade Nórdica (3 runas — passado, presente, futuro)">Tríade Nórdica — Passado, presente, futuro</option>
-            <option value="Cruz de Odin (5 runas — situação completa)">Cruz de Odin — Situação completa (5 runas)</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Tradição invocada</label>
-          <select className="form-select" value={form.tradicao} onChange={e => updateForm('tradicao', e.target.value)}>
-            <option value="Futhark Antigo">Futhark Antigo — As 24 runas primordiais</option>
-            <option value="Armanen">Armanen — 18 runas de von List</option>
-            <option value="Anglo-saxão">Futhorc Anglo-saxão — Tradição das ilhas</option>
-          </select>
-        </div>
-      </>}
-
-      {/* ── AKÁSHICO ── */}
-      {tipo === 'akasico' && <>
-        <div className="form-grid">
-          <div className="form-group">
-            <label className="form-label">Nome de batismo</label>
-            <input className="form-input" value={form.nomeBatismo} onChange={e => updateForm('nomeBatismo', e.target.value)} placeholder="Nome dado ao nascer" />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Data de encarnação</label>
-            <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} />
-          </div>
-        </div>
-        <div className="form-group">
-          <label className="form-label">O que deseja acessar nos Registros</label>
-          <select className="form-select" value={form.aspecto} onChange={e => updateForm('aspecto', e.target.value)}>
-            <option value="">Escolha o acesso...</option>
-            <option value="Padrões cármicos que se repetem">Padrões cármicos que se repetem</option>
-            <option value="Missão de alma nesta encarnação">Missão de alma nesta encarnação</option>
-            <option value="Memórias de vidas anteriores">Memórias de vidas anteriores</option>
-            <option value="Contratos de alma ativos">Contratos de alma ativos</option>
-            <option value="Dons espirituais não ativados">Dons espirituais não ativados</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Padrão que se repete sem explicação</label>
-          <textarea
-            className="form-textarea"
-            value={form.pergunta}
-            onChange={e => updateForm('pergunta', e.target.value)}
-            placeholder="O que acontece repetidamente em sua vida e não encontra lógica no plano físico?"
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Há uma relação, medo ou situação que parece vir de outro tempo?</label>
-          <textarea
-            className="form-textarea"
-            style={{minHeight:'60px'}}
-            value={form.outraTela}
-            onChange={e => updateForm('outraTela', e.target.value)}
-            placeholder="Descreva se houver... Os Registros reconhecem o que a mente racional ignora."
-          />
-        </div>
-      </>}
-
-      {/* ── QUIROMANCIA ── */}
-      {tipo === 'quiromancia' && <>
-        <div className="form-grid">
-          <div className="form-group">
-            <label className="form-label">Mão dominante</label>
-            <select className="form-select" value={form.mao} onChange={e => updateForm('mao', e.target.value)}>
-              <option value="Direita">Direita</option>
-              <option value="Esquerda">Esquerda</option>
-              <option value="Ambidestro">Ambidestro</option>
+            <label className="form-label">Status amoroso atual</label>
+            <select className="form-select" value={form.status_amoroso} onChange={e => updateForm('status_amoroso', e.target.value)}>
+              <option value="">Selecione...</option>
+              <option value="solteiro">Solteiro(a)</option>
+              <option value="ficando">Ficando / Conhecendo alguém</option>
+              <option value="relacionamento">Em um relacionamento sério</option>
+              <option value="termino">Término recente</option>
+              <option value="reconexao">Buscando reconexão</option>
             </select>
           </div>
           <div className="form-group">
-            <label className="form-label">Aspecto a revelar</label>
-            <select className="form-select" value={form.aspecto} onChange={e => updateForm('aspecto', e.target.value)}>
-              <option value="Leitura completa das linhas">Leitura completa das linhas</option>
-              <option value="Linha da Vida — vitalidade e ciclos">Linha da Vida</option>
-              <option value="Linha do Coração — amor e emoções">Linha do Coração</option>
-              <option value="Linha da Mente — pensamento e decisões">Linha da Mente</option>
-              <option value="Linha do Destino — missão e caminho">Linha do Destino</option>
-            </select>
+            <label className="form-label">Qual a sua principal dúvida?</label>
+            <textarea
+              className="form-textarea"
+              value={form.pergunta}
+              onChange={e => updateForm('pergunta', e.target.value)}
+              placeholder="Descreva brevemente o que você quer saber sobre sua vida amorosa..."
+            />
           </div>
-        </div>
+        </>
+      )}
+
+      {/* Tarot Carreira */}
+      {id === 'tarot-carreira' && (
         <div className="form-group">
-          <label className="form-label">A linha que mais ressoa com sua história</label>
-          <select className="form-select" value={form.linha} onChange={e => updateForm('linha', e.target.value)}>
-            <option value="">Qual linha você mais nota?</option>
-            <option value="Linha da Vida">Linha da Vida</option>
-            <option value="Linha do Coração">Linha do Coração</option>
-            <option value="Linha da Mente">Linha da Mente</option>
-            <option value="Linha do Destino">Linha do Destino</option>
-            <option value="Não sei identificar">Não sei identificar — revele tudo</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Situação atual que deseja que as linhas iluminem</label>
+          <label className="form-label">Qual a sua situação profissional atual?</label>
           <textarea
             className="form-textarea"
-            value={form.pergunta}
-            onChange={e => updateForm('pergunta', e.target.value)}
-            placeholder="O que em sua vida pede decifração agora?"
+            value={form.situacao_atual}
+            onChange={e => updateForm('situacao_atual', e.target.value)}
+            placeholder="Ex: Estou buscando emprego, quero mudar de área, tenho um negócio..."
           />
         </div>
-      </>}
+      )}
+
+      {/* Energia do Mês */}
+      {id === 'energia-do-mes' && (
+        <div className="form-group">
+          <label className="form-label">Mês desejado para a leitura</label>
+          <input
+            type="month"
+            className="form-input"
+            value={form.mes}
+            onChange={e => updateForm('mes', e.target.value)}
+          />
+        </div>
+      )}
+
+      {/* Mapa Astral */}
+      {id === 'mapa-astral' && (
+        <>
+          <div className="form-grid">
+            <div className="form-group">
+              <label className="form-label">Data de nascimento</label>
+              <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Hora exata</label>
+              <input type="time" className="form-input" value={form.hora} onChange={e => updateForm('hora', e.target.value)} />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Cidade e Estado de nascimento</label>
+            <input className="form-input" value={form.local} onChange={e => updateForm('local', e.target.value)} placeholder="Ex: São Paulo, SP" />
+          </div>
+        </>
+      )}
+
+      {/* Sinastria */}
+      {id === 'sinastria' && (
+        <>
+          <div className="form-grid">
+            <div className="form-group">
+              <label className="form-label">Sua data de nascimento</label>
+              <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Nome da outra pessoa</label>
+              <input className="form-input" value={form.nome2} onChange={e => updateForm('nome2', e.target.value)} placeholder="Nome ou apelido" />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Data de nascimento da outra pessoa</label>
+            <input type="date" className="form-input" value={form.nascimento2} onChange={e => updateForm('nascimento2', e.target.value)} />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Tipo de vínculo</label>
+            <select className="form-select" value={form.vinculo} onChange={e => updateForm('vinculo', e.target.value)}>
+              <option value="">Selecione...</option>
+              <option value="amoroso">Romântico / Amoroso</option>
+              <option value="amizade">Amizade</option>
+              <option value="profissional">Profissional / Sociedade</option>
+              <option value="familiar">Familiar</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label className="form-label">O que você quer entender sobre essa relação?</label>
+            <textarea className="form-textarea" value={form.pergunta} onChange={e => updateForm('pergunta', e.target.value)} placeholder="Qual a sua maior dúvida?" />
+          </div>
+        </>
+      )}
     </>
   );
 }
@@ -402,12 +217,10 @@ function FormFields({ service, form, updateForm }) {
 // MODAL PRINCIPAL
 // ─────────────────────────────────────────────────────────
 const INITIAL_FORM = {
-  nome: '', nascimento: '', hora: '', local: '', pergunta: '',
-  tiragem: 'ppf',
-  dominio: '', aspecto: '', vinculo: '', temor: '', atracao: '',
-  nome2: '', nascimento2: '', nomeCompleto: '', nomeAtual: '',
-  nomeBatismo: '', tradicao: 'Futhark Antigo', mao: 'Direita',
-  linha: '', outraTela: '',
+  nome: '', email: '', pergunta: '', situacao_atual: '', mes: '',
+  status_amoroso: '', nascimento: '', hora: '', local: '', 
+  nome2: '', nascimento2: '', vinculo: '',
+  tiragem: 'tarot-sim-ou-nao', 
   incluirMenores: false,
   permitirInvertidas: false,
 };
@@ -480,6 +293,7 @@ function CardImage({ card, revealed = true }) {
 }
 
 function ServiceModal({ service, onClose, onStepChange }) {
+  const navigate = useNavigate();
   const { data: { tarotSpreads: SPREADS, tarotCards: CARDS_DB } } = useData();
 
   // ── fluxo: form → mp_creating → mp_checkout → loading → result
@@ -495,12 +309,12 @@ function ServiceModal({ service, onClose, onStepChange }) {
   const [orderId,      setOrderId]     = useState(null);
   const [checkoutUrl,  setCheckoutUrl] = useState('');
   const [payError,     setPayError]    = useState('');
-  const [payStatus,    setPayStatus]   = useState('pending'); // pending | approved | rejected | cancelled
+  const [payStatus,    setPayStatus]   = useState('pending');
   const pollingRef = useRef(null);
 
   // Resultado
-  const [shuffledDeck,  setShuffledDeck]  = useState([]); // baralho embaralhado na mesa
-  const [pickedIndices, setPickedIndices] = useState([]); // índices selecionados pelo usuário
+  const [shuffledDeck,  setShuffledDeck]  = useState([]);
+  const [pickedIndices, setPickedIndices] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealed,      setRevealed]      = useState([]);
   const [reading,       setReading]       = useState('');
@@ -514,11 +328,39 @@ function ServiceModal({ service, onClose, onStepChange }) {
     return () => { if (pollingRef.current) clearInterval(pollingRef.current); };
   }, []);
 
+  // ── Modo debug: pula pagamento, útil para testes locais ──
+  const DEBUG_BYPASS_PAYMENT = process.env.REACT_APP_DEBUG_PAYMENT === 'true';
+
   // ── STEP 1 → 2: criar pedido no backend e abrir checkout MP ──
   const handleSubmit = async () => {
     setPayError('');
     handleSetStep('mp_creating');
     try {
+      if (DEBUG_BYPASS_PAYMENT) {
+        // Cria um pedido já aprovado sem abrir o MP
+        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3003';
+        const res = await fetch(`${baseUrl}/payment/debug/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            serviceId:   service.id,
+            serviceName: service.name,
+            price:       service.price,
+            formData:    form,
+          }),
+        });
+        const order = await res.json();
+        setOrderId(order.orderId);
+        setPayStatus('approved');
+        // Pula direto para embaralhar ou leitura
+        if (service.type === 'tarot') {
+          prepararMesa();
+        } else {
+          iniciarLeitura([]);
+        }
+        return;
+      }
+
       const order = await createOrder({
         serviceId:   service.id,
         serviceName: service.name,
@@ -588,18 +430,17 @@ function ServiceModal({ service, onClose, onStepChange }) {
     });
 
     try {
-      const { answer } = await solicitarLeitura({
+      await solicitarLeitura({
         orderId:     orderId,
         serviceType: service.type,
         messages,
       });
-      setReading(answer);
+      // Fechar modal e navegar para página de resultado
+      onClose();
+      navigate(`/resultado/${orderId}`);
     } catch (err) {
-      setReading('Os véus resistem por ora... Tente novamente em instantes.');
+      setReadingError('Os véus resistem por ora... Tente novamente em instantes.');
     }
-
-    handleSetStep('result');
-    cards.forEach((_, i) => setTimeout(() => setRevealed(prev => [...prev, i]), i * 700 + 500));
   };
 
   // ── polling automático de status de pagamento ─────────
@@ -612,7 +453,11 @@ function ServiceModal({ service, onClose, onStepChange }) {
         if (status === 'approved') {
           clearInterval(pollingRef.current);
           pollingRef.current = null;
-          prepararMesa(); // Inicia o ritual de embaralhar
+          if (service.type === 'tarot') {
+            prepararMesa(); // Inicia o ritual de embaralhar
+          } else {
+            iniciarLeitura([]); // Vai direto para leitura se não tiver cartas
+          }
         }
         if (status === 'rejected' || status === 'cancelled') {
           clearInterval(pollingRef.current);
@@ -696,76 +541,8 @@ function ServiceModal({ service, onClose, onStepChange }) {
   }
 
   // ── FULL PAGE RESULT ──────────────────────────────────
-  if (step === 'result') {
-    const currentSpread = SPREADS.find(s => s.id === form.tiragem) || SPREADS[0];
-    return (
-      <div className="revelation-page">
-        {/* Header */}
-        <div className="revelation-header">
-          <div className="revelation-eyebrow">✦ O Véu foi levantado</div>
-          <h1 className="revelation-title">{service.name} — Revelação</h1>
-          <p className="revelation-subtitle">
-            As forças arquetípicas se manifestaram para <em>{form.nome || 'você'}</em>, buscador(a) da verdade.
-          </p>
-          <button className="revelation-close" onClick={onClose} title="Fechar">✕</button>
-        </div>
+  // A tela de resultado foi movida para ResultPage.jsx
 
-        {/* Cards strip */}
-        {['tarot', 'runas'].includes(service.type) && (
-          <div className="revelation-cards-strip">
-            {selectedCards.map((card, i) => (
-              <div key={i} className="revelation-card-slot">
-                <div className={`revelation-card-wrap ${revealed.includes(i) ? 'rev-revealed' : 'rev-back'}`}>
-                  <CardImage card={card} revealed={revealed.includes(i)} />
-                </div>
-                {revealed.includes(i) && (
-                  <div className="revelation-card-info">
-                    <div className="revelation-card-name">{card.icon} {card.name}</div>
-                    <div className="revelation-card-position">
-                      {currentSpread?.positions?.[i] || `Posição ${i + 1}`}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Numerologia */}
-        {service.type === 'numerologia' && (
-          <div className="num-grid" style={{ maxWidth: '600px', margin: '2rem auto' }}>
-            {[
-              { l: 'Caminho de Vida',     v: Math.floor(Math.random() * 9) + 1 },
-              { l: 'Número de Expressão', v: Math.floor(Math.random() * 9) + 1 },
-              { l: 'Ano Pessoal',         v: Math.floor(Math.random() * 9) + 1 },
-            ].map((n, i) => (
-              <div key={i} className="num-card">
-                <div className="num-value">{n.v}</div>
-                <div className="num-label">{n.l}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Reading */}
-        <div className="revelation-reading-wrap">
-          <div className="revelation-reading">
-            {formatReading(reading)}
-            <div className="result-name">
-              — Oráculo gerado em {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
-            </div>
-          </div>
-        </div>
-
-        {/* Footer button */}
-        <div className="revelation-footer">
-          <button className="btn-primary revelation-btn" onClick={onClose}>
-            Que este oráculo seja guardado ✦
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
