@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // Styles
 import './styles/global.css';
@@ -25,9 +25,22 @@ import ServiceModal  from './components/modals/ServiceModal';
 import { useData } from './context/DataContext';
 
 function App() {
+  const navigate = useNavigate();
   const [activeModal, setActiveModal] = useState(null);
   const [modalStep,   setModalStep]   = useState('form');
   const { loading } = useData();
+
+  // Detecta retorno do Mercado Pago pela URL e redireciona para resultado
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status') || params.get('collection_status');
+    const orderId = params.get('external_reference');
+    if (status === 'approved' && orderId) {
+      // Limpa os parâmetros da URL e vai para a página de resultado
+      window.history.replaceState({}, '', window.location.pathname);
+      navigate(`/resultado/${orderId}`);
+    }
+  }, [navigate]);
 
   if (loading) {
     return (

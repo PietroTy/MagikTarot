@@ -1,37 +1,50 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { API_CONFIG } from '../../config/apiConfig';
+
+const BASE = API_CONFIG.BACKEND_URL;
 
 export default function ResultPage() {
   const { orderId } = useParams();
-  const [reading, setReading] = useState(null);
+  const [answer,  setAnswer]  = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error,   setError]   = useState('');
 
   useEffect(() => {
-    async function fetchReading() {
-      try {
-        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3003';
-        // We actually need to fetch all readings and find the one with this orderId, 
-        // or create an endpoint /readings/order/:orderId
-        const res = await fetch(`${baseUrl}/readings`);
-        if (!res.ok) throw new Error('Falha ao buscar leitura');
-        const data = await res.json();
-        const found = data.find(r => r.orderId === orderId);
-        
-        if (found) {
-          setReading(found);
-        } else {
-          setError('Leitura não encontrada para este pedido.');
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchReading();
+    if (!orderId) { setError('ID do pedido não encontrado.'); setLoading(false); return; }
+    fetchOrGenerate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
+
+  async function fetchOrGenerate() {
+    setLoading(true);
+    setError('');
+    try {
+      // 1. Verifica se já existe uma leitura
+      const listRes = await fetch(`${BASE}/readings`);
+      const list = await listRes.json();
+      const found = list.find(r => r.orderId === orderId);
+      if (found) {
+        setAnswer(found.answer);
+        setLoading(false);
+        return;
+      }
+
+      // 2. Não encontrou → gera automaticamente
+      const genRes = await fetch(`${BASE}/readings/auto-generate/${orderId}`, { method: 'POST' });
+      if (!genRes.ok) {
+        const err = await genRes.json();
+        throw new Error(err.error || `Erro ${genRes.status}`);
+      }
+      const data = await genRes.json();
+      setAnswer(data.answer);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function formatReading(text) {
     if (!text) return null;
@@ -41,7 +54,7 @@ export default function ResultPage() {
         <p key={pi} style={{ marginBottom: '1.4rem', lineHeight: '1.9' }}>
           {parts.map((part, i) =>
             i % 2 === 1
-              ? <strong key={i} style={{ color: 'var(--gold-light)', fontStyle: 'normal' }}>{part}</strong>
+              ? <strong key={i} style={{ color: 'var(--gold-light)' }}>{part}</strong>
               : part
           )}
         </p>
@@ -49,51 +62,56 @@ export default function ResultPage() {
     });
   }
 
-  if (loading) {
-    return (
-      <div className="container" style={{ padding: '8rem 2rem', textAlign: 'center' }}>
-        <h2>Consultando os Registros...</h2>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container" style={{ padding: '8rem 2rem', textAlign: 'center' }}>
-        <h2>Erro</h2>
-        <p>{error}</p>
-        <Link to="/" className="btn-primary">Voltar ao Início</Link>
-      </div>
-    );
-  }
-
   return (
-    <div className="container" style={{ padding: '8rem 2rem' }}>
+    <div style={{ minHeight: '100vh', padding: '8rem 2rem 4rem', maxWidth: '860px', margin: '0 auto' }}>
       <Helmet>
         <title>Sua Leitura | Magik Tarot</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      
-      <div className="revelation-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <div className="revelation-eyebrow">✦ O Véu foi levantado</div>
-        <h1 className="revelation-title">Sua Revelação</h1>
-        <p className="revelation-subtitle">
-          As forças arquetípicas se manifestaram para você.
-        </p>
+
+      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <div style={{ color: 'var(--gold)', letterSpacing: '0.2em', fontSize: '0.8rem', marginBottom: '1rem' }}>
+          ✦ O VÉU FOI LEVANTADO
+        </div>
+        <h1 style={{ fontSize: '2.2rem', fontWeight: 700, marginBottom: '1rem' }}>Sua Revelação</h1>
+        <p style={{ opacity: 0.6 }}>Pedido: <code style={{ fontSize: '0.75rem' }}>{orderId}</code></p>
       </div>
 
-      <div className="revelation-reading-wrap" style={{ maxWidth: '800px', margin: '0 auto', background: 'rgba(20, 20, 25, 0.8)', padding: '2rem', borderRadius: '12px', border: '1px solid rgba(255, 215, 0, 0.1)' }}>
-        <div className="revelation-reading">
-          {formatReading(reading.answer)}
-          <div className="result-name" style={{ marginTop: '2rem', opacity: 0.6 }}>
-            — Oráculo gerado em {new Date(reading.createdAt).toLocaleDateString('pt-BR')}
-          </div>
+      {loading && (
+        <div style={{ textAlign: 'center', padding: '4rem' }}>
+          <div className="ai-orb" style={{ margin: '0 auto 1.5rem' }} />
+          <p>O oráculo está consultando os arquivos cósmicos...</p>
         </div>
-      </div>
-      
-      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-        <Link to="/" className="btn-primary">Guardar e Voltar</Link>
-      </div>
+      )}
+
+      {error && (
+        <div style={{ textAlign: 'center', padding: '3rem', background: 'rgba(255,100,100,0.1)', borderRadius: '12px', marginBottom: '2rem' }}>
+          <p style={{ color: '#ff6b6b', marginBottom: '1.5rem' }}>{error}</p>
+          <button className="btn-secondary" onClick={fetchOrGenerate}>Tentar novamente</button>
+        </div>
+      )}
+
+      {answer && !loading && (
+        <>
+          <div style={{
+            background: 'rgba(20,20,25,0.8)',
+            border: '1px solid rgba(255,215,0,0.15)',
+            borderRadius: '16px',
+            padding: '2.5rem',
+            marginBottom: '3rem',
+          }}>
+            {formatReading(answer)}
+            <div style={{ marginTop: '2rem', opacity: 0.5, fontSize: '0.8rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>
+              — Oráculo gerado em {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <Link to="/" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
+              Guardar e Voltar ✦
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 }
