@@ -21,27 +21,50 @@ function Footer() {
           <ul className="footer-links">
             {SERVICES.map(s => (
               <li key={s.id}>
-                <Link to="/servicos" style={{ textDecoration: 'none', color: 'inherit' }}>{s.name}</Link>
+                <Link to={`/consulta/${s.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  {s.name}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
 
         <div>
-          <div className="footer-heading">Conteúdo</div>
+          <div className="footer-heading">Místicos & Conteúdo</div>
           <ul className="footer-links">
-            {['Horóscopo do Dia', 'Loja Sagrada', 'Afiliados'].map(l => (
-              <li key={l}><span>{l}</span></li>
-            ))}
+            <li>
+              <Link to="/horoscopo" style={{ textDecoration: 'none', color: 'inherit' }}>Horóscopo do Dia</Link>
+            </li>
+            <li>
+              <Link to="/loja" style={{ textDecoration: 'none', color: 'inherit' }}>Loja Sagrada</Link>
+            </li>
+            <li>
+              <Link to="/blog" style={{ textDecoration: 'none', color: 'inherit' }}>Blog do Oráculo</Link>
+            </li>
+            <li>
+              <Link to="/significados/arcanos-maiores" style={{ textDecoration: 'none', color: 'inherit' }}>Arcanos Maiores</Link>
+            </li>
+            <li>
+              <Link to="/significados/signos" style={{ textDecoration: 'none', color: 'inherit' }}>Signos do Zodíaco</Link>
+            </li>
           </ul>
         </div>
 
         <div>
           <div className="footer-heading">Institucional</div>
           <ul className="footer-links">
-            {['Sobre nós', 'Política de Privacidade', 'Termos de Uso', 'Contato'].map(l => (
-              <li key={l}><span>{l}</span></li>
-            ))}
+            <li>
+              <Link to="/sobre" style={{ textDecoration: 'none', color: 'inherit' }}>Sobre Nós</Link>
+            </li>
+            <li>
+              <Link to="/duvidas-frequentes" style={{ textDecoration: 'none', color: 'inherit' }}>Dúvidas Frequentes</Link>
+            </li>
+            <li>
+              <Link to="/politica-de-privacidade" style={{ textDecoration: 'none', color: 'inherit' }}>Política de Privacidade</Link>
+            </li>
+            <li>
+              <Link to="/termos-de-uso" style={{ textDecoration: 'none', color: 'inherit' }}>Termos de Uso</Link>
+            </li>
           </ul>
         </div>
       </div>

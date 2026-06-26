@@ -3,7 +3,7 @@ import '../../styles/nav.css';
 import { Link } from 'react-router-dom';
 
 const NAV_LINKS = [
-  { label: 'Consultas',         path: '/servicos'  },
+  { label: 'Consultas',         path: '/consultas' },
   { label: 'Horóscopo do Dia',  path: '/horoscopo' },
   { label: 'Loja',              path: '/loja'      },
 ];

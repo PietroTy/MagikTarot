@@ -434,6 +434,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
         orderId:     orderId,
         serviceType: service.type,
         messages,
+        cards,
       });
       // Fechar modal e navegar para página de resultado
       onClose();

@@ -2,23 +2,14 @@
 > magik-tarot-backend@1.0.0 start
 > node server.js
 
-[dotenv@17.3.1] injecting env (6) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.3.1] injecting env (5) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
 Modo Sandbox MP  : true
 
-Servidor: https://guitar-libs-furnishings-varying.trycloudflare.com
+Servidor: https://midlands-appreciation-tracking-pasta.trycloudflare.com
 Catálogo : /data/services | /data/products | /data/zodiac ...
 Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
 Leituras : POST /readings | GET /readings/:id
 
-[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1782508210621
-[Reading] Leitura #1 gerada para pedido DEBUG-1782508210621
-[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1782508227985
-[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1782508277208
-[MP] Criando preferência para ORD-000001. FrontURL: https://pietroty.github.io/MagikTarot
-[MP] Preferência criada: ORD-000001 — Tarot Sim ou Não R$9.9
-[DEBUG] 🛠️ Pedido de DEBUG criado e aprovado: DEBUG-1782508763106
-[MP] Criando preferência para ORD-000002. FrontURL: https://pietroty.github.io/MagikTarot
-[MP] Preferência criada: ORD-000002 — Tarot Sim ou Não R$9.9

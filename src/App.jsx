@@ -18,6 +18,17 @@ import ShopPage      from './components/sections/ShopPage';
 
 // Pages to create
 import ResultPage    from './components/pages/ResultPage';
+import PaymentApprovedPage from './components/pages/PaymentApprovedPage';
+import CategoryPage from './components/pages/CategoryPage';
+import ProductPage from './components/pages/ProductPage';
+import BlogPage from './components/pages/BlogPage';
+import BlogPostPage from './components/pages/BlogPostPage';
+import ArcanaPage from './components/pages/ArcanaPage';
+import SignsPage from './components/pages/SignsPage';
+import FaqPage from './components/pages/FaqPage';
+import AboutPage from './components/pages/AboutPage';
+import PrivacyPage from './components/pages/PrivacyPage';
+import TermsPage from './components/pages/TermsPage';
 
 // Modal
 import ServiceModal  from './components/modals/ServiceModal';
@@ -80,9 +91,21 @@ function App() {
                 </>
               } />
               <Route path="/servicos" element={<ServicesPage setActiveModal={setActiveModal} />} />
+              <Route path="/consultas" element={<ServicesPage setActiveModal={setActiveModal} />} />
+              <Route path="/consultas/:category" element={<CategoryPage setActiveModal={setActiveModal} />} />
+              <Route path="/consulta/:serviceId" element={<ProductPage setActiveModal={setActiveModal} />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:postSlug" element={<BlogPostPage />} />
+              <Route path="/significados/arcanos-maiores" element={<ArcanaPage />} />
+              <Route path="/significados/signos" element={<SignsPage />} />
+              <Route style={{ cursor: 'pointer' }} path="/duvidas-frequentes" element={<FaqPage />} />
+              <Route path="/sobre" element={<AboutPage />} />
+              <Route path="/politica-de-privacidade" element={<PrivacyPage />} />
+              <Route path="/termos-de-uso" element={<TermsPage />} />
               <Route path="/horoscopo" element={<HoroscopePage />} />
               <Route path="/loja" element={<ShopPage />} />
               <Route path="/resultado/:orderId" element={<ResultPage />} />
+              <Route path="/pagamento-confirmado" element={<PaymentApprovedPage />} />
             </Routes>
           )}
 
