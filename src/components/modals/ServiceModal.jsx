@@ -78,19 +78,6 @@ function FormFields({ service, form, updateForm }) {
         />
       </div>
 
-      {['tarot-do-amor', 'mapa-astral'].includes(id) && (
-        <div className="form-group">
-          <label className="form-label">E-mail (para receber a leitura)</label>
-          <input
-            type="email"
-            className="form-input"
-            value={form.email}
-            onChange={e => updateForm('email', e.target.value)}
-            placeholder="seu@email.com"
-          />
-        </div>
-      )}
-
       {/* Tarot Sim ou Não */}
       {id === 'tarot-sim-ou-nao' && (
         <div className="form-group">

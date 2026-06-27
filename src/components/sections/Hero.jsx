@@ -7,22 +7,22 @@ function Hero() {
   return (
     <section className="hero">
       <Sigil />
-      <div className="hero-eyebrow">Sabedoria ancestral · Clarividência e Ocultismo</div>
-      <h1 className="hero-title">Os Mistérios<br />Revelados</h1>
+      <div className="hero-eyebrow">Consultas de Tarot Online & Previsões Astrológicas</div>
+      <h1 className="hero-title">O Tarot Revela<br />Seu Caminho</h1>
       <p className="hero-sub">
-        Oráculo do Tarot, Mapa Natal das Almas, Registros Akáshicos e muito mais —
-        desvelados com a profundidade da sabedoria ancestral do Magik Tarot.
+        Respostas diretas e profundas para amor, trabalho, finanças e destino. 
+        Desvele o que o cosmos reservou para sua jornada com a sabedoria do Magik Tarot.
       </p>
       <div className="hero-buttons">
         <Link to="/servicos" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
-          Cruzar o véu — abrir uma consulta
+          Iniciar Consulta de Tarot ✦
         </Link>
         <Link to="/horoscopo" className="btn-secondary" style={{ display: 'inline-block', textDecoration: 'none' }}>
-          Revelar meu horóscopo
+          Ver Meu Horóscopo do Dia
         </Link>
       </div>
       <div className="hero-scroll">
-        <span>Rolar</span>↓
+        <span>Rolar para explorar</span>↓
       </div>
     </section>
   );

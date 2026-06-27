@@ -126,6 +126,21 @@ function ShopPage() {
                     {p.rating}
                   </div>
                 )}
+                {p.pitch && (
+                  <div style={{
+                    fontSize: '0.8rem',
+                    color: '#e5c158',
+                    background: 'rgba(255, 215, 0, 0.05)',
+                    borderLeft: '3px solid var(--gold)',
+                    padding: '0.6rem 0.8rem',
+                    borderRadius: '0 4px 4px 0',
+                    lineHeight: '1.4',
+                    marginBottom: '0.8rem',
+                    fontFamily: 'system-ui, -apple-system, sans-serif'
+                  }}>
+                    {p.pitch}
+                  </div>
+                )}
                 <div className="shop-desc" style={{ 
                   fontSize: '0.8rem', 
                   color: 'var(--text-muted)',

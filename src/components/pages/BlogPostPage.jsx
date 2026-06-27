@@ -1,8 +1,116 @@
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { useData } from '../../context/DataContext';
 
 // Conteúdo rico em texto para cada post do Blog
+// Conteúdo rico em texto para cada post do Blog
 const POSTS_CONTENT = {
+  'como-limpar-e-energizar-seus-cristais-o-guia-definitivo-com-selenita-e-luz-da-lua': {
+    title: 'Como Limpar e Energizar Seus Cristais: O Guia Definitivo com Selenita e Luz da Lua',
+    tag: 'Cristais',
+    date: '26 Jun 2026',
+    icon: '💎',
+    bg: 'linear-gradient(135deg,#1f1a30,#342d4c)',
+    content: (
+      <>
+        <p>Os cristais são condutores naturais de energia. Por interagirem constantemente com o ambiente e com o nosso campo vibracional, eles absorvem tanto energias harmoniosas quanto densas. Com o tempo, essa "saturação" pode diminuir sua eficácia. Por isso, a limpeza e a energização periódica são essenciais.</p>
+        
+        <div className="mystic-quote" style={{
+          background: 'rgba(255, 215, 0, 0.03)',
+          borderLeft: '4px solid var(--gold)',
+          padding: '1.5rem',
+          margin: '2rem 0',
+          borderRadius: '0 8px 8px 0',
+          fontStyle: 'italic',
+          color: 'var(--gold-light)'
+        }}>
+          "A Selenita é o único cristal capaz de se auto-limpar e limpar outras pedras simultaneamente, servindo como um purificador cósmico permanente."
+        </div>
+
+        <h3>Por que a Selenita é Essencial?</h3>
+        <p>Ao contrário da maioria das pedras, a <strong>Selenita Bruta</strong> tem uma estrutura molecular altamente vibracional que não acumula negatividade. Ela atua como um canalizador de pura luz branca. Para limpar qualquer cristal de sua coleção, basta colocá-lo em contato físico com um bastão ou placa de Selenita por pelo menos 15 minutos. É o método mais seguro e prático, especialmente para pedras que não podem entrar em contato com a água.</p>
+
+        <h3>Métodos Seguros de Limpeza</h3>
+        <p>Nem todos os cristais toleram água ou sal. Veja como proceder de forma segura:</p>
+        <ul>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Purificação por Selenita (Recomendado):</strong> Coloque suas pedras sobre um bastão de selenita bruta. É 100% seguro para qualquer cristal.</li>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Defumação Sagrada:</strong> Passe os cristais pela fumaça de um incenso natural de sálvia branca, palo santo ou alecrim.</li>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Água Corrente:</strong> Apenas para pedras duras (como Quartzo). Evite para pedras porosas, metálicas ou solúveis como a própria Selenita.</li>
+        </ul>
+
+        <h3>Energização sob a Luz da Lua</h3>
+        <p>Após limpar as energias antigas, é hora de recarregar a força vital do cristal. A luz lunar é a energia mais sutil, magnética e feminina para esta finalidade. Coloque seus cristais sob a luz da Lua Cheia ou Lua Crescente durante toda a noite. A energia lunar potencializa a intuição e as propriedades curativas das pedras, preparando-as para novos rituais.</p>
+      </>
+    )
+  },
+  'quartzo-verde-como-usar-a-pedra-da-saude-para-reequilibrio-fisico-e-espiritual': {
+    title: 'Quartzo Verde: Como Usar a Pedra da Saúde para Reequilíbrio Físico e Espiritual',
+    tag: 'Cristais',
+    date: '22 Jun 2026',
+    icon: '💚',
+    bg: 'linear-gradient(135deg,#0b2310,#143c1d)',
+    content: (
+      <>
+        <p>O <strong>Quartzo Verde</strong> (também conhecido como Aventurina) é reverenciado há milênios como o cristal definitivo da cura, vitalidade e harmonia. Sintonizado com a vibração do chakra cardíaco e do Raio Verde da cura espiritual, esta pedra atua purificando o corpo físico e mental.</p>
+
+        <div className="mystic-quote" style={{
+          background: 'rgba(255, 215, 0, 0.03)',
+          borderLeft: '4px solid var(--gold)',
+          padding: '1.5rem',
+          margin: '2rem 0',
+          borderRadius: '0 8px 8px 0',
+          fontStyle: 'italic',
+          color: 'var(--gold-light)'
+        }}>
+          "O Quartzo Verde acalma as emoções mais tempestuosas, permitindo que a energia de cura penetre no núcleo das nossas células."
+        </div>
+
+        <h3>Propriedades Terapêuticas</h3>
+        <p>Esta pedra atua como um estabilizador do sistema emocional e físico. Ela dissolve pensamentos nocivos, combate o estresse acumulado e estimula a regeneração celular. Em rituais, o Quartzo Verde é usado para atrair prosperidade e sorte, pois sua cor verde está intimamente ligada à abundância e ao florescimento da vida.</p>
+
+        <h3>Como Utilizar no Dia a Dia?</h3>
+        <ul>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Meditação Cardíaca:</strong> Deite-se e coloque uma ponta de quartzo verde diretamente sobre o peito. Respire profundamente por 10 minutos, visualizando uma luz verde se expandindo pelo seu corpo.</li>
+          <li style={{ marginBottom: '0.8rem' }}><strong>No Trabalho:</strong> Mantenha o cristal sobre a mesa de trabalho para transmutar o cansaço mental e manter o foco tranquilo ao longo do dia.</li>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Banhos Energéticos:</strong> Coloque a pedra próxima à banheira ou use a água energizada com quartzo verde (método indireto) para lavar o rosto e renovar a pele.</li>
+        </ul>
+      </>
+    )
+  },
+  'turmalina-negra-o-cristal-de-protecao-mais-poderoso-contra-negatividade': {
+    title: 'Turmalina Negra: O Cristal de Proteção Mais Poderoso Contra Negatividade',
+    tag: 'Cristais',
+    date: '15 Jun 2026',
+    icon: '🖤',
+    bg: 'linear-gradient(135deg,#0a0a0f,#21212c)',
+    content: (
+      <>
+        <p>Se você busca uma barreira energética impenetrável contra inveja, energias densas, ataques psíquicos e radiação eletromagnética, a <strong>Turmalina Negra Bruta</strong> é o escudo definitivo do reino mineral.</p>
+
+        <div className="mystic-quote" style={{
+          background: 'rgba(255, 215, 0, 0.03)',
+          borderLeft: '4px solid var(--gold)',
+          padding: '1.5rem',
+          margin: '2rem 0',
+          borderRadius: '0 8px 8px 0',
+          fontStyle: 'italic',
+          color: 'var(--gold-light)'
+        }}>
+          "A Turmalina Negra não absorve a energia negativa; ela a repele de volta à terra, transmutando-a em pura força de ancoramento físico."
+        </div>
+
+        <h3>O Escudo Eletromagnético e Psíquico</h3>
+        <p>A Turmalina Negra possui propriedades piroelétricas e piezoelétricas únicas. Ela é capaz de neutralizar a poluição eletromagnética emitida por celulares, computadores e roteadores Wi-Fi. No plano espiritual, ela funciona como um aterrador de energia: remove bloqueios e dispersa tensões emocionais acumuladas no corpo.</p>
+
+        <h3>Como Usar a Turmalina Negra para Proteção?</h3>
+        <ul>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Barreira de Entrada do Lar:</strong> Coloque uma turmalina negra bruta do lado de fora ou logo na porta de entrada da sua casa para impedir que visitas tragam energias densas para o seu lar.</li>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Amuleto de Proteção Pessoal:</strong> Carregue um pequeno pedaço no bolso esquerdo ou use em acessórios quando for a lugares com grande aglomeração ou ambientes de trabalho carregados.</li>
+          <li style={{ marginBottom: '0.8rem' }}><strong>Purificação Eletrônica:</strong> Deixe um cristal pequeno ao lado do seu computador de trabalho ou aparelho roteador para neutralizar ondas nocivas.</li>
+        </ul>
+      </>
+    )
+  },
   'o-arcano-da-torre-quando-tudo-desmorona-para-renascer': {
     title: 'O Arcano da Torre: quando tudo desmorona para renascer',
     tag: 'Tarot',
@@ -206,12 +314,145 @@ const POSTS_CONTENT = {
   }
 };
 
+function generateDynamicContent(postItem) {
+  const title = postItem.title;
+  const tag = postItem.tag;
+  const excerpt = postItem.excerpt;
+
+  let paragraphs = [];
+  let quote = "";
+  let subHeading1 = "";
+  let subHeading2 = "";
+  let listItems = [];
+
+  const lowerTitle = title.toLowerCase();
+
+  if (tag === 'Cristais' || lowerTitle.includes('cristal') || lowerTitle.includes('pedra')) {
+    subHeading1 = "A Vibração Energética do Cristal";
+    subHeading2 = "Como Incorporar em Suas Práticas";
+    quote = `"${title} nos conecta diretamente com as energias sutis da Terra, servindo como um ancorador de vibrações purificadas."`;
+    paragraphs = [
+      `No estudo da cristaloterapia e da magia natural, cada mineral carrega uma assinatura vibracional única gravada pela pressão e calor da Terra ao longo de milhões de anos. O artigo "${title}" nos ensina a sintonizar com essa frequência específica para alinhar nosso bem-estar físico e espiritual.`,
+      `${excerpt} Ao compreender as propriedades cristalinas dessa pedra, podemos criar escudos de proteção em nossas casas, harmonizar nossos chakras e potencializar intenções de cura e prosperidade.`,
+      `Os minerais funcionam como ressonadores. Quando entramos em contato físico com eles ou os mantemos em nossos ambientes de convivência, nosso próprio campo bioenergético começa a se ajustar à estabilidade cristalina da pedra, aliviando tensões e clareando pensamentos.`
+    ];
+    listItems = [
+      "Limpeza Física: Nunca use produtos químicos; prefira água da natureza ou selenita para purificação.",
+      "Consagração: Segure a pedra entre as mãos e declare em voz alta o propósito do cristal.",
+      "Posicionamento: Mantenha-a próxima ao corpo ou em pontos estratégicos do seu quarto ou escritório."
+    ];
+  } else if (tag === 'Tarot' || lowerTitle.includes('arcano') || lowerTitle.includes('carta')) {
+    subHeading1 = "O Simbolismo Arquetípico das Cartas";
+    subHeading2 = "Conselho do Oráculo para o Momento";
+    quote = `"${title} nos convida a olhar para dentro, decifrando as nuances do subconsciente que moldam nossa realidade externa."`;
+    paragraphs = [
+      `O Tarot é muito mais do que um sistema de adivinação; ele é um espelho da alma humana. Cada uma das 78 cartas representa um estágio na jornada do Louco rumo à individuação e sabedoria cósmica. Compreender o significado oculto por trás do artigo "${title}" nos permite antecipar ciclos e agir com sabedoria.`,
+      `${excerpt} Cada detalhe visual das cartas — as cores, os elementos da natureza, os símbolos herméticos e a postura das figuras — contém chaves de interpretação que conectam o plano material ao espiritual.`,
+      `Ao estudar este arcano, somos estimulados a refletir sobre como essa energia se manifesta em nosso dia a dia, seja trazendo a necessidade de ação imediata ou de recolhimento contemplativo.`
+    ];
+    listItems = [
+      "Meditação com a Carta: Visualize-se entrando na cena da carta e dialogue com seus personagens.",
+      "Análise Diária: Retire uma carta pela manhã focando na energia que regerá seu dia.",
+      "Alinhamento Prático: Aplique o conselho central deste arcano nas suas decisões profissionais e afetivas."
+    ];
+  } else if (tag === 'Astrologia' || lowerTitle.includes('signo') || lowerTitle.includes('lua') || lowerTitle.includes('mapa astral')) {
+    subHeading1 = "O Movimento dos Astros e Seus Efeitos";
+    subHeading2 = "Aproveitando a Influência Planetária";
+    quote = `"${title} reflete a antiga lei hermética: o que está em cima é como o que está embaixo. A dança cósmica molda nosso destino."`;
+    paragraphs = [
+      `A Astrologia sagrada estuda a correspondência entre as órbitas dos corpos celestes e a jornada psicológica humana. Através do trânsito de planetas e posições dos signos descritos no artigo "${title}", conseguimos sintonizar nossas intenções com a maré cósmica favorável.`,
+      `${excerpt} Conhecer esses trânsitos planetários nos ajuda a compreender flutuações de humor, impulsos de carreira e as dinâmicas mais profundas de nossos relacionamentos amorosos e familiares.`,
+      `O mapa astral funciona como um mapa rodoviário da alma: ele não determina nossas escolhas, mas aponta as condições do caminho para que possamos guiar nosso destino com livre-arbítrio e consciência.`
+    ];
+    listItems = [
+      "Observe a Fase Lunar: Planeje lançamentos na Lua Crescente e revisões na Lua Minguante.",
+      "Estude seus Planetas Regentes: Compreenda qual força celestial domina sua personalidade.",
+      "Pratique a Escuta Cósmica: Momentos de trânsito tenso pedem paciência e meditação silenciosa."
+    ];
+  } else if (tag === 'Numerologia' || lowerTitle.includes('numero') || lowerTitle.includes('calcula') || lowerTitle.includes('11:11')) {
+    subHeading1 = "A Geometria Sagrada dos Números";
+    subHeading2 = "Como Aplicar a Vibração Numérica";
+    quote = `"${title} revela a ordem matemática que sustenta a criação. Cada número é um portal de autoconhecimento."`;
+    paragraphs = [
+      `A numerologia hermética, cujas bases remontam a Pitágoras, ensina que os números contêm propriedades qualitativas e metafísicas, indo muito além de meras contagens quantitativas. No artigo "${title}", mergulhamos nas mensagens numéricas da nossa vida.`,
+      `${excerpt} Nossos nomes, datas de nascimento e encontros cotidianos carregam frequências numéricas específicas que atraem aprendizados e catalisam transformações espirituais.`,
+      `Ao decifrar esses padrões, você ganha acesso a uma chave de interpretação poderosa para compreender seus talentos ocultos e os principais desafios do seu ciclo atual.`
+    ];
+    listItems = [
+      "Calcule Seu Dia Pessoal: Descubra a energia diária somando sua data de nascimento com o dia atual.",
+      "Identifique Horas Iguais: Preste atenção a sincronicidades como 11:11, 12:12 e 22:22.",
+      "Use Números de Poder: Decore ou use joias com os números que vibram em harmonia com sua alma."
+    ];
+  } else {
+    subHeading1 = "A Sabedoria Oculta das Práticas Místicas";
+    subHeading2 = "Passos Para o Despertar Espiritual";
+    quote = `"${title} nos traz um farol de lucidez espiritual e ferramentas práticas para navegar as transformações da vida."`;
+    paragraphs = [
+      `O caminho do autoconhecimento oracular exige paciência, estudo constante e dedicação sincera à busca da verdade interior. O artigo "${title}" serve como um guia precioso nessa trajetória de ascensão e clareza de propósito.`,
+      `${excerpt} Compreender e integrar estas ferramentas místicas no cotidiano nos conecta de forma íntima com a egrégora de luz e com o fluxo abundante do universo.`,
+      `Permita-se silenciar a mente, absorver esses ensinamentos ancestrais e colocá-los em prática com fé e respeito aos mistérios eternos da criação.`
+    ];
+    listItems = [
+      "Prática Diária: Dedique pelo menos 5 minutos do seu dia a um ritual de conexão espiritual.",
+      "Diário Místico: Anote seus insights, sonhos e tiragens de cartas para acompanhar sua evolução.",
+      "Comunhão com a Natureza: Fortaleça sua raiz espiritual pisando descalço na terra e agradecendo."
+    ];
+  }
+
+  return (
+    <>
+      <p>{paragraphs[0]}</p>
+      
+      <div className="mystic-quote" style={{
+        background: 'rgba(255, 215, 0, 0.03)',
+        borderLeft: '4px solid var(--gold)',
+        padding: '1.5rem',
+        margin: '2rem 0',
+        borderRadius: '0 8px 8px 0',
+        fontStyle: 'italic',
+        color: 'var(--gold-light)'
+      }}>
+        {quote}
+      </div>
+
+      <h3>{subHeading1}</h3>
+      <p>{paragraphs[1]}</p>
+      <p>{paragraphs[2]}</p>
+
+      <h3>{subHeading2}</h3>
+      <p>Para obter os melhores resultados ao aplicar esses conhecimentos em sua vida diária, siga as orientações oraculares abaixo:</p>
+      <ul>
+        {listItems.map((item, idx) => (
+          <li key={idx} style={{ marginBottom: '0.8rem' }}>
+            {item.split(':').length > 1 ? (
+              <><strong>{item.split(':')[0]}:</strong>{item.split(':')[1]}</>
+            ) : item}
+          </li>
+        ))}
+      </ul>
+      
+      <p style={{ marginTop: '2rem' }}>A sabedoria ancestral está sempre à sua disposição. Continue estudando, sintonizando suas energias e permitindo que a luz do cosmos guie seus passos.</p>
+    </>
+  );
+}
+
 export default function BlogPostPage() {
   const { postSlug } = useParams();
+  const { data: { blogPosts } } = useData();
 
-  const post = POSTS_CONTENT[postSlug];
+  const getSlug = (title) => {
+    return title
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .trim();
+  };
 
-  if (!post) {
+  const catalogPost = blogPosts.find(p => getSlug(p.title) === postSlug);
+
+  if (!catalogPost) {
     return (
       <div style={{ minHeight: '100vh', padding: '10rem 2rem', textAlign: 'center' }}>
         <h2 style={{ color: 'var(--gold)', marginBottom: '1.5rem' }}>Artigo Não Encontrado</h2>
@@ -221,6 +462,18 @@ export default function BlogPostPage() {
         </Link>
       </div>
     );
+  }
+
+  let post = POSTS_CONTENT[postSlug];
+  if (!post) {
+    post = {
+      title: catalogPost.title,
+      tag: catalogPost.tag,
+      date: catalogPost.date,
+      icon: catalogPost.icon,
+      bg: catalogPost.bg,
+      content: generateDynamicContent(catalogPost)
+    };
   }
 
   return (

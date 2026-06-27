@@ -47,9 +47,9 @@ function HowItWorks() {
   return (
     <div className="section">
       <div className="section-eyebrow">Como funciona</div>
-      <div className="section-title">Seu caminho para a clareza</div>
+      <div className="section-title">Sua Consulta em 3 Passos</div>
       <div className="divider" />
-      <div className="section-desc">Um processo simples, rápido e profundo.</div>
+      <div className="section-desc">Um processo simples, 100% confidencial e com respostas na hora.</div>
       <div className="steps-row">
         {HOW_IT_WORKS.map((s, i) => (
           <div key={i} className="step">
@@ -68,13 +68,13 @@ function HowItWorks() {
 function CtaBanner() {
   return (
     <div className="cta-banner">
-      <div className="section-eyebrow">Primeiro ritual</div>
+      <div className="section-eyebrow">Consulta Confidencial</div>
       <div className="section-title" style={{ marginBottom: '0.8rem' }}>
-        Pronto para cruzar o véu?
+        O que as cartas têm para lhe dizer hoje?
       </div>
-      <div className="section-desc">Os Arcanos já sabem o que você precisa ouvir. A questão é: você está pronto(a)?</div>
+      <div className="section-desc">Encontre as respostas que você procura e ilumine sua jornada espiritual agora mesmo.</div>
       <Link to="/servicos" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
-        Abrir um portal de consulta
+        Iniciar Minha Consulta de Tarot
       </Link>
     </div>
   );
@@ -109,10 +109,10 @@ function Home() {
 
       {/* SERVICES PREVIEW */}
       <div className="section">
-        <div className="section-eyebrow">Consultas Oraculares</div>
-        <div className="section-title">Abra um Portal</div>
+        <div className="section-eyebrow">Escolha sua Leitura</div>
+        <div className="section-title">Consultas de Tarot Online</div>
         <div className="divider" />
-        <div className="section-desc">Cada caminho revela uma face diferente do mesmo mistério eterno.</div>
+        <div className="section-desc">Selecione uma tiragem abaixo para receber orientação imediata dos arcanos.</div>
         <div className="services-grid">
           {SERVICES.slice(0, 3).map(s => (
             <ServiceCard key={s.id} s={s} />
@@ -120,7 +120,7 @@ function Home() {
         </div>
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <Link to="/servicos" className="btn-secondary" style={{ display: 'inline-block', textDecoration: 'none' }}>
-            Ver todos os portais de consulta →
+            Ver Todas as Consultas de Tarot →
           </Link>
         </div>
       </div>
