@@ -56,7 +56,7 @@ export default function PrivacyPage() {
           </h2>
           <p>Os seus dados pessoais são coletados com as seguintes finalidades legítimas:</p>
           <ul>
-            <li style={{ marginBottom: '0.5rem' }}>Alimentar o prompt de inteligência artificial (Sabia-3) para gerar uma leitura oracular 100% personalizada.</li>
+            <li style={{ marginBottom: '0.5rem' }}>Alimentar as variáveis do oráculo para gerar uma leitura oracular 100% personalizada.</li>
             <li style={{ marginBottom: '0.5rem' }}>Processar a transação financeira segura do pedido junto ao Mercado Pago.</li>
             <li style={{ marginBottom: '0.5rem' }}>Entregar o link privado da sua leitura no e-mail cadastrado.</li>
             <li style={{ marginBottom: '0.5rem' }}>Cumprimento de obrigações legais de faturamento e segurança cibernética.</li>

@@ -30,6 +30,8 @@ import FaqPage from './components/pages/FaqPage';
 import AboutPage from './components/pages/AboutPage';
 import PrivacyPage from './components/pages/PrivacyPage';
 import TermsPage from './components/pages/TermsPage';
+import PaymentErrorPage from './components/pages/PaymentErrorPage';
+import PaymentPendingPage from './components/pages/PaymentPendingPage';
 
 import { useData } from './context/DataContext';
 
@@ -100,6 +102,9 @@ function App() {
             <Route path="/loja" element={<ShopPage />} />
             <Route path="/resultado/:orderId" element={<ResultPage />} />
             <Route path="/pagamento-confirmado" element={<PaymentApprovedPage />} />
+            <Route path="/sucesso" element={<PaymentApprovedPage />} />
+            <Route path="/erro" element={<PaymentErrorPage />} />
+            <Route path="/pendente" element={<PaymentPendingPage />} />
           </Routes>
 
           {/* ── Footer ── */}

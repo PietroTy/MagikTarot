@@ -28,7 +28,7 @@ const RICH_PRODUCT_DATA = {
       'Direcionamento objetivo: Resposta clara de SIM, NÃO ou TALVEZ.',
       'Interpretação da carta: Análise simbólica da carta de tarot sorteada associada à sua pergunta.',
       'Conselho rápido: Uma frase de sabedoria prática para agir após a resposta.',
-      'Integração oracular: Uma leitura gerada por IA conectando a carta ao seu momento.'
+      'Integração oracular: Uma leitura profunda conectando a carta ao seu momento.'
     ],
     faqs: [
       { q: 'O Tarot Sim ou Não pode falhar?', a: 'O tarot reflete tendências energéticas do momento presente. Ele funciona como uma bússola de tendências, não como um destino inalterável.' },
@@ -100,7 +100,7 @@ const RICH_PRODUCT_DATA = {
     ],
     faqs: [
       { q: 'E se eu não souber a hora exata do meu nascimento?', a: 'A hora exata é muito importante para o cálculo preciso do Ascendente e das Casas Astrológicas. Se não souber, tente colocar uma hora aproximada ou consulte sua certidão de nascimento de inteiro teor.' },
-      { q: 'Como a IA faz o cálculo do mapa?', a: 'Nosso algoritmo calcula as posições astronômicas exatas dos planetas com base nos dados de nascimento fornecidos e a IA interpreta esse padrão de forma rica e poética.' }
+      { q: 'Como o portal faz o cálculo do mapa?', a: 'Nosso algoritmo calcula as posições astronômicas exatas dos planetas com base nos dados de nascimento fornecidos e o oráculo interpreta esse padrão de forma rica e poética.' }
     ]
   },
   'sinastria': {
@@ -227,7 +227,7 @@ export default function ProductPage() {
               Promessa do Oráculo
             </div>
             <div style={{ fontSize: '0.95rem', fontWeight: '500', color: 'var(--gold-light)' }}>
-              Leitura interpretativa profunda em minutos, gerada com o poder da IA Sabia-3.
+              Leitura interpretativa profunda em minutos, sintonizada especificamente para você.
             </div>
           </div>
 

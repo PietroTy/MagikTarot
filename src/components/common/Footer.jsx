@@ -71,7 +71,6 @@ function Footer() {
 
       <div className="footer-bottom">
         <div className="footer-copy">© 2026 Magik Tarot. Todos os direitos reservados.</div>
-        <div className="footer-copy">Desenvolvido com ✨ e muito propósito</div>
       </div>
     </footer>
   );
