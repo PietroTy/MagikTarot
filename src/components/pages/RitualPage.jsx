@@ -72,25 +72,105 @@ function CardImage({ card, revealed = true }) {
   );
 }
 
+// ── MAPEAMENTO DE TIRAGENS POR SERVIÇO ──
+const SPREADS_MAP = {
+  'tarot-sim-ou-nao': [
+    {
+      id: 'sim-nao-1',
+      name: 'Decisão Direta (1 Carta)',
+      cards: 1,
+      positions: ['Veredito / Resposta de Sim ou Não'],
+      desc: 'Resposta direta e objetiva para sua dúvida.'
+    },
+    {
+      id: 'sim-nao-3',
+      name: 'Tríade de Decisão (3 Cartas)',
+      cards: 3,
+      positions: ['O que ajuda (Prós)', 'O que bloqueia (Contras)', 'Veredito / Caminho Ideal'],
+      desc: 'Análise detalhada de prós, contras e a resposta definitiva.'
+    }
+  ],
+  'tarot-do-amor': [
+    {
+      id: 'amor-3',
+      name: 'Tríade Amorosa (3 Cartas)',
+      cards: 3,
+      positions: ['Sua energia na relação', 'A energia do parceiro', 'O futuro do relacionamento'],
+      desc: 'Entenda os sentimentos mútuos e a evolução do casal.'
+    },
+    {
+      id: 'amor-5',
+      name: 'Templo de Afrodite (5 Cartas)',
+      cards: 5,
+      positions: ['Sua mente na relação', 'A mente do parceiro', 'Seu coração na relação', 'O coração do parceiro', 'O destino da relação'],
+      desc: 'Consulta profunda sobre os pensamentos, sentimentos e futuro do casal.'
+    }
+  ],
+  'tarot-carreira': [
+    {
+      id: 'carreira-3',
+      name: 'Decisão Profissional (3 Cartas)',
+      cards: 3,
+      positions: ['Caminho A (Manter a situação)', 'Caminho B (Mudança de direção)', 'Conselho do Oráculo'],
+      desc: 'Ideal para quando você está dividido entre duas opções.'
+    },
+    {
+      id: 'carreira-4',
+      name: 'Caminho do Sucesso (4 Cartas)',
+      cards: 4,
+      positions: ['Situação Atual', 'O Desafio / Bloqueio', 'A Oportunidade Oculta', 'Resultado / Conselho Prático'],
+      desc: 'Descubra bloqueios de prosperidade e como superá-los.'
+    }
+  ],
+  'energia-do-mes': [
+    {
+      id: 'mes-3',
+      name: 'Tríade Mensal (3 Cartas)',
+      cards: 3,
+      positions: ['Energia Geral do Mês', 'O Desafio', 'A Oportunidade'],
+      desc: 'Panorama de tendências, obstáculos e bênçãos do mês.'
+    },
+    {
+      id: 'mes-4',
+      name: 'Previsão Semanal (4 Cartas)',
+      cards: 4,
+      positions: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+      desc: 'Uma carta guia para cada semana do seu mês.'
+    }
+  ]
+};
+
 // ── PROMPT BUILDER ──
 function buildPrompt(service, form, extra = {}) {
-  const base = `Você é Magik Tarot, um oráculo ancestral que habita o espaço entre os mundos. Responda SEMPRE em português, com linguagem profundamente poética, arcana e mística. Use metáforas cósmicas, arquetipais e esotéricas. Fale como um oráculo que conhece o consultante há eras. Nunca use linguagem banal ou comercial.
+  const systemPrompt = `Você é Magik Tarot, um(a) mestre oracular empático, assertivo(a) e misterioso(a).
+Siga RIGOROSAMENTE estas diretrizes em sua resposta:
+1. Você NUNCA deve utilizar emojis ou emoticons em sua resposta.
+2. Sempre inicie a resposta cumprimentando calorosamente o consultante pelo nome "${form.nome || 'Buscador(a)'}", desejando-lhe boas-vindas e clareza para a consulta.
+3. A formatação deve ser muito limpa, organizada e fácil de ler, dividida em parágrafos curtos, tópicos objetivos (bullet points) para conselhos práticos de ação, e com subtítulos em negrito ou destaque para cada seção.
+4. Evite floreios cósmicos excessivos e palavras excessivamente abstratas ou "viajadas". Foque nas reais dores humanas (medos, desejos, incertezas de relacionamento ou carreira) e dê respostas e direcionamentos práticos que tragam valor imediato.
+5. CADA CARTA deve receber um parágrafo próprio e dedicado. Nesse parágrafo, identifique o arcano e conecte sua energia diretamente ao tema, explicando o significado da posição da tiragem ("${extra.spreadName || 'posição da carta'}").`;
 
-REGRA FUNDAMENTAL: Quando interpretar cartas de tarot, CADA CARTA deve receber um parágrafo próprio e dedicado. Nesse parágrafo, você DEVE: (a) identificar a energia arquetípica da carta, (b) conectar essa energia DIRETAMENTE ao tema específico declarado pelo consultante, (c) revelar o que essa posição (passado/presente/futuro ou equivalente) significa para a situação dele. Nunca faça interpretações genéricas — seja cirúrgico e revelador sobre o tema em questão. Finalize com uma síntese das cartas unidas em mensagem coesa. A resposta deve ter entre 4 e 6 parágrafos.`;
+  const cardPositions = extra.positions || [];
+  const cardsPromptStr = `\n\nCartas sorteadas para a tiragem "${extra.spreadName || 'Tarot'}":\n` + 
+    (extra.cards || []).map((c, i) => {
+      const posName = cardPositions[i] || `Posição ${i+1}`;
+      return `- Posição "${posName}": Carta "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`;
+    }).join('\n') +
+    `\nPor favor, faça a leitura incorporando de forma integrada a energia de cada uma dessas cartas sorteadas em suas respectivas posições.`;
 
   const contexts = {
-    'tarot-sim-ou-nao': `O(a) consultante ${form.nome || 'buscador'} deseja uma resposta direta para a seguinte pergunta: "${form.pergunta}".\nCartas reveladas:\n${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}\nInstrução: Dê uma resposta direta de SIM, NÃO ou TALVEZ baseada na carta sorteada, justificando poeticamente o motivo.`,
-    'tarot-do-amor': `O(a) consultante ${form.nome || 'buscador'} busca clareza no amor. Status atual: ${form.status_amoroso || 'não informado'}. Dúvida principal: "${form.pergunta || 'não informada'}".\nCartas reveladas:\n${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}\nInstrução: Analise cada carta focando exclusivamente na dinâmica afetiva, revelando obstáculos e conselhos baseados no status amoroso.`,
-    'tarot-carreira': `O(a) consultante ${form.nome || 'buscador'} busca orientação profissional e financeira. Situação atual: ${form.situacao_atual || 'não informada'}.\nCartas reveladas:\n${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}\nInstrução: Analise as cartas reveladas focando em trabalho, direcionamento de carreira e caminhos para a abundância.`,
-    'energia-do-mes': `O(a) consultante ${form.nome || 'buscador'} busca as tendências e panorama para o mês selecionado: ${form.mes || 'este mês'}.\nCartas reveladas:\n${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}\nInstrução: Revele as tendências energéticas do mês, oportunidades que surgirão e bloqueios que precisam de atenção.`,
-    'mapa-astral': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura do Mapa Natal Astrológico. Data de nascimento: ${form.nascimento || 'não informada'}. Hora exata: ${form.hora || 'não informada'}. Local de nascimento: ${form.local || 'não informado'}.\nInstrução: Faça uma leitura profunda baseada nessas coordenadas, revelando os posicionamentos prováveis de Sol, Lua e Ascendente. Descreva os pontos fortes, desafios emocionais e propósito de vida.`,
-    'sinastria': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura de Sinastria. Dados do consultante: Nascido(a) em ${form.nascimento || 'não informado'}. Dados da outra pessoa (${form.nome2 || 'desconhecido'}): Nascido(a) em ${form.nascimento2 || 'não informado'}. Tipo de vínculo: ${form.vinculo || 'não especificado'}. O que deseja entender: "${form.pergunta || 'não declarado'}".\nInstrução: Revele a compatibilidade astrológica e energética entre essas duas pessoas. Explore os pontos de harmonia, tensões cármicas e a missão desse encontro.`
+    'tarot-sim-ou-nao': `O(a) consultante ${form.nome || 'buscador'} deseja uma resposta direta para a seguinte pergunta: "${form.pergunta}".${cardsPromptStr}\nInstrução: Dê uma resposta direta de SIM, NÃO ou TALVEZ baseada nas cartas sorteadas, justificando-a e dando direcionamentos claros de ação.`,
+    'tarot-do-amor': `O(a) consultante ${form.nome || 'buscador'} busca clareza no amor. Status atual: ${form.status_amoroso || 'não informado'}. Dúvida principal: "${form.pergunta || 'não informada'}".${cardsPromptStr}\nInstrução: Analise as cartas focando exclusivamente na dinâmica afetiva e sentimentos ocultos, dando conselhos práticos e diretos.`,
+    'tarot-carreira': `O(a) consultante ${form.nome || 'buscador'} busca orientação profissional e financeira. Situação atual: ${form.situacao_atual || 'não informada'}.${cardsPromptStr}\nInstrução: Analise as cartas focando em trabalho, direcionamento de carreira e caminhos para a abundância com conselhos de ação.`,
+    'energia-do-mes': `O(a) consultante ${form.nome || 'buscador'} busca as tendências e panorama para o mês selecionado: ${form.mes || 'este mês'}.${cardsPromptStr}\nInstrução: Revele as tendências energéticas do mês, oportunidades que surgirão e bloqueios que precisam de atenção, dando conselhos práticos.`,
+    'mapa-astral': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura do Mapa Natal Astrológico. Data de nascimento: ${form.nascimento || 'não informada'}. Hora exata: ${form.hora || 'não informada'}. Local de nascimento: ${form.local || 'não informado'}.\nInstrução: Faça uma leitura profunda baseada nessas coordenadas, revelando os posicionamentos prováveis de Sol, Lua e Ascendente. Descreva os pontos fortes, desafios emocionais e propósito de vida com conselhos práticos de ação.`,
+    'sinastria': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura de Sinastria. Dados do consultante: Nascido(a) em ${form.nascimento || 'não informado'}. Dados da outra pessoa (${form.nome2 || 'desconhecido'}): Nascido(a) em ${form.nascimento2 || 'não informado'}. Tipo de vínculo: ${form.vinculo || 'não especificado'}. O que deseja entender: "${form.pergunta || 'não declarado'}".\nInstrução: Revele a compatibilidade astrológica e energética entre essas duas pessoas. Explore os pontos de harmonia, tensões cármicas e conselhos práticos para a relação.`
   };
 
   const userContext = contexts[service.id] || contexts['tarot-sim-ou-nao'];
 
   return [
-    { role: 'system', content: base },
+    { role: 'system', content: systemPrompt },
     { role: 'user',   content: userContext },
   ];
 }
@@ -100,6 +180,28 @@ function FormFields({ service, form, updateForm }) {
   const id = service.id;
   return (
     <>
+      {service.type === 'tarot' && SPREADS_MAP[id] && (
+        <div className="form-group">
+          <label className="form-label">Tipo de Tiragem / Método</label>
+          <select 
+            className="form-select" 
+            value={form.tiragem} 
+            onChange={e => updateForm('tiragem', e.target.value)} 
+            required
+            style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: '#141419', color: '#fff' }}
+          >
+            {SPREADS_MAP[id].map(s => (
+              <option key={s.id} value={s.id}>
+                {s.name} ({s.cards} {s.cards === 1 ? 'carta' : 'cartas'})
+              </option>
+            ))}
+          </select>
+          <div style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '0.4rem', color: 'var(--gold-light)' }}>
+            {SPREADS_MAP[id].find(s => s.id === form.tiragem)?.desc}
+          </div>
+        </div>
+      )}
+
       <div className="form-group">
         <label className="form-label">Seu nome ou apelido</label>
         <input
@@ -258,12 +360,23 @@ const INITIAL_FORM = {
 export default function RitualPage() {
   const { serviceId } = useParams();
   const navigate = useNavigate();
-  const { data: { services, tarotSpreads: SPREADS, tarotCards: CARDS_DB } } = useData();
+  const { data: { services, tarotCards: CARDS_DB } } = useData();
 
   const service = services.find(s => s.id === serviceId);
 
   const [step, setStep] = useState('form');
-  const [form, setForm] = useState({ ...INITIAL_FORM, tiragem: serviceId });
+  const [form, setForm] = useState(() => {
+    const defaultTiragem = SPREADS_MAP[serviceId]?.[0]?.id || '';
+    return { ...INITIAL_FORM, tiragem: defaultTiragem };
+  });
+
+  // Atualiza a tiragem padrão quando muda de serviço
+  useEffect(() => {
+    if (serviceId) {
+      const defaultTiragem = SPREADS_MAP[serviceId]?.[0]?.id || '';
+      setForm(f => ({ ...f, tiragem: defaultTiragem }));
+    }
+  }, [serviceId]);
 
   // Pagamento
   const [orderId, setOrderId] = useState(null);
@@ -275,7 +388,6 @@ export default function RitualPage() {
   // Seleção de Cartas
   const [shuffledDeck, setShuffledDeck] = useState([]);
   const [pickedIndices, setPickedIndices] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [selectedCards, setSelectedCards] = useState([]);
   const [readingError, setReadingError] = useState('');
 
@@ -372,8 +484,9 @@ export default function RitualPage() {
   const handlePickCard = (index) => {
     if (pickedIndices.includes(index)) return;
     
-    const currentSpread = SPREADS.find(s => s.id === form.tiragem) || SPREADS[0];
-    const cardCount = currentSpread?.cards || 3;
+    const serviceSpreads = SPREADS_MAP[service.id] || [];
+    const currentSpread = serviceSpreads.find(s => s.id === form.tiragem) || serviceSpreads[0] || { cards: 3 };
+    const cardCount = currentSpread.cards;
     
     if (pickedIndices.length >= cardCount) return;
     
@@ -392,10 +505,11 @@ export default function RitualPage() {
     setStep('loading');
     setReadingError('');
 
-    const currentSpread = SPREADS.find(s => s.id === form.tiragem) || SPREADS[0];
+    const serviceSpreads = SPREADS_MAP[service.id] || [];
+    const currentSpread = serviceSpreads.find(s => s.id === form.tiragem) || serviceSpreads[0] || { cards: 3, name: 'Tarot', positions: [] };
     const messages = buildPrompt(service, form, {
-      spreadName: currentSpread?.name,
-      positions:  currentSpread?.positions,
+      spreadName: currentSpread.name,
+      positions:  currentSpread.positions,
       cards,
       allowReversed: form.permitirInvertidas,
     });
@@ -446,8 +560,9 @@ export default function RitualPage() {
 
   // ── PASSO DE ESCOLHA DE CARTAS (PICKING - TELA CHEIA) ──
   if (step === 'picking') {
-    const currentSpread = SPREADS.find(s => s.id === form.tiragem) || SPREADS[0];
-    const cardCount = currentSpread?.cards || 3;
+    const serviceSpreads = SPREADS_MAP[service.id] || [];
+    const currentSpread = serviceSpreads.find(s => s.id === form.tiragem) || serviceSpreads[0] || { cards: 3 };
+    const cardCount = currentSpread.cards;
     const remaining = cardCount - pickedIndices.length;
     return (
       <div className="picking-page" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999, background: '#0a0a0d' }}>

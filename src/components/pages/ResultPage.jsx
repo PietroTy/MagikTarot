@@ -210,13 +210,16 @@ export default function ResultPage() {
                           position: 'absolute',
                           inset: 0,
                           backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           borderRadius: '12px',
                           overflow: 'hidden',
                           background: 'var(--deep)',
-                          zIndex: 2,
+                          zIndex: isRevealed ? 1 : 2,
+                          opacity: isRevealed ? 0 : 1,
+                          transition: 'opacity 0.4s ease',
                         }}>
                           <img 
                             src="https://raw.githubusercontent.com/PietroTy/MagikTarot/main/public/assets/tarot-cards/back.png" 
@@ -230,6 +233,7 @@ export default function ResultPage() {
                           position: 'absolute',
                           inset: 0,
                           backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
                           transform: 'rotateY(180deg)',
                           display: 'flex',
                           flexDirection: 'column',
@@ -238,7 +242,9 @@ export default function ResultPage() {
                           borderRadius: '12px',
                           overflow: 'hidden',
                           background: 'linear-gradient(135deg, rgba(20, 20, 25, 0.95) 0%, rgba(10, 10, 12, 0.95) 100%)',
-                          zIndex: 1,
+                          zIndex: isRevealed ? 2 : 1,
+                          opacity: isRevealed ? 1 : 0,
+                          transition: 'opacity 0.4s ease',
                         }}>
                           {card.id ? (
                             <img 

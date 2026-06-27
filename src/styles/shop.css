@@ -13,13 +13,18 @@
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   display: flex;
   flex-direction: column;
-  aspect-ratio: 1 / 1.6; /* Tarot Proportion */
   position: relative;
 }
 .shop-card:hover { 
   border-color: var(--gold); 
-  transform: translateY(-10px) rotateX(5deg) rotateY(5deg); 
-  box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px var(--gold-dim);
+  transform: translateY(-8px); 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.15);
+}
+.product-hover-zoom {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.shop-card:hover .product-hover-zoom {
+  transform: scale(1.08);
 }
 .shop-img {
   flex: 1;
