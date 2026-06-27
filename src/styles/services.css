@@ -218,12 +218,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .zigzag-card:hover .zigzag-icon-container {
   border-color: rgba(255, 215, 0, 0.5);
   box-shadow: 0 15px 45px rgba(255, 215, 0, 0.15), 0 0 35px rgba(0, 0, 0, 0.8);
-  transform: scale(1.04) rotate(1.5deg);
+  transform: scale(1.04) rotate(1.5deg) translateZ(0);
 }
 
 .zigzag-icon-img {
@@ -231,10 +233,13 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  will-change: transform;
+  transform: translateZ(0);
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .zigzag-card:hover .zigzag-icon-img {
-  transform: scale(1.08);
+  transform: scale(1.08) translateZ(0);
 }
 
 /* Elegant glowing orb/ray behind image */
@@ -376,6 +381,10 @@
   .zigzag-btn {
     width: 100%;
     text-align: center;
+  }
+  .reviews-grid-layout {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
   }
 }
 

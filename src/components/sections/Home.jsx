@@ -63,50 +63,7 @@ function HowItWorks() {
   );
 }
 
-function Testimonials() {
-  const { data: { testimonials: TESTIMONIALS } } = useData();
-  return (
-    <div className="section">
-      <div className="section-eyebrow">Depoimentos</div>
-      <div className="section-title">O que nossos consulentes dizem</div>
-      <div className="divider" />
-      <div className="section-desc" style={{ marginBottom: '2.5rem' }}>
-        Mais de 12.000 leituras realizadas.
-      </div>
-      <div className="testimonials-grid">
-        {TESTIMONIALS.map((t, i) => (
-          <div key={i} className="testimonial-card">
-            <div className="testimonial-stars">{t.stars}</div>
-            <div className="testimonial-text">"{t.text}"</div>
-            <div className="testimonial-author">
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: 'rgba(255, 215, 0, 0.05)',
-              border: '1px solid rgba(255, 215, 0, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '0.9rem',
-              fontWeight: 'bold',
-              color: 'var(--gold)',
-              marginRight: '1rem',
-              flexShrink: 0
-            }}>
-              {t.name ? t.name[0] : '✦'}
-            </div>
-              <div>
-                <div className="testimonial-name">{t.name}</div>
-                <div className="testimonial-meta">{t.meta}</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+
 
 function CtaBanner() {
   return (
@@ -167,9 +124,6 @@ function Home() {
           </Link>
         </div>
       </div>
-
-      {/* TESTIMONIALS */}
-      <Testimonials />
 
       {/* CTA */}
       <CtaBanner />

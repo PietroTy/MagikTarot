@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useData } from '../../context/DataContext';
+import { API_CONFIG } from '../../config/apiConfig';
 
 // Mapeamento de apelidos de URL para IDs reais do catálogo
 const ALIAS_MAP = {
@@ -127,10 +128,89 @@ export default function ProductPage() {
   const { data: { services } } = useData();
   const [activeFaq, setActiveFaq] = useState(null);
 
+  // States para Avaliações Dinâmicas
+  const [reviewsList, setReviewsList] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState(0);
+  const [reviewsAvg, setReviewsAvg] = useState(5.0);
+  const [showAllReviews, setShowAllReviews] = useState(false);
+  
+  // Form states
+  const [newReviewName, setNewReviewName] = useState('');
+  const [newReviewRating, setNewReviewRating] = useState(5);
+  const [newReviewComment, setNewReviewComment] = useState('');
+  const [reviewSubmitSuccess, setReviewSubmitSuccess] = useState(false);
+  const [reviewSubmitError, setReviewSubmitError] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+
   // Resolve o ID real a partir do apelido (alias)
   const resolvedId = ALIAS_MAP[serviceId] || serviceId;
   const service = services.find(s => s.id === resolvedId);
   const richData = RICH_PRODUCT_DATA[resolvedId];
+
+  useEffect(() => {
+    if (resolvedId) {
+      fetchReviews();
+      setReviewSubmitSuccess(false);
+      setReviewSubmitError('');
+      setNewReviewName('');
+      setNewReviewComment('');
+      setNewReviewRating(5);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resolvedId]);
+
+  async function fetchReviews() {
+    try {
+      const res = await fetch(`${API_CONFIG.BACKEND_URL}/reviews/${resolvedId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setReviewsList(data);
+        setReviewsCount(data.length);
+        if (data.length > 0) {
+          const sum = data.reduce((acc, curr) => acc + curr.rating, 0);
+          setReviewsAvg((sum / data.length).toFixed(1));
+        } else {
+          setReviewsAvg(5.0);
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching reviews:", e);
+    }
+  }
+
+  async function handleReviewSubmit(e) {
+    e.preventDefault();
+    if (!newReviewName.trim() || !newReviewComment.trim()) {
+      setReviewSubmitError('Por favor, preencha todos os campos.');
+      return;
+    }
+    setSubmittingReview(true);
+    setReviewSubmitError('');
+    try {
+      const res = await fetch(`${API_CONFIG.BACKEND_URL}/reviews/${resolvedId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newReviewName,
+          rating: newReviewRating,
+          comment: newReviewComment
+        })
+      });
+      if (res.ok) {
+        setReviewSubmitSuccess(true);
+        setNewReviewName('');
+        setNewReviewComment('');
+        setNewReviewRating(5);
+        fetchReviews();
+      } else {
+        setReviewSubmitError('Erro ao enviar avaliação. Tente novamente.');
+      }
+    } catch {
+      setReviewSubmitError('Erro ao conectar com o servidor.');
+    } finally {
+      setSubmittingReview(false);
+    }
+  }
 
   if (!service) {
     return (
@@ -413,6 +493,187 @@ export default function ProductPage() {
           </div>
         </div>
       )}
+
+      {/* ── SEÇÃO DE AVALIAÇÕES ── */}
+      <div style={{ marginBottom: '5rem', borderTop: '1px solid rgba(255,215,0,0.15)', paddingTop: '4rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{ color: 'var(--gold)', letterSpacing: '0.2em', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.8rem' }}>
+            ✦ CONEXÃO E DEPOIMENTOS ✦
+          </div>
+          <h2 style={{ fontSize: '1.8rem', color: '#fff', margin: 0, fontWeight: 700 }}>
+            Vozes de quem já cruzou o portal
+          </h2>
+          <p style={{ opacity: 0.6, fontSize: '0.9rem', marginTop: '0.5rem' }}>
+            Depoimentos reais deixados por consulentes após suas sintonizações.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '3rem', maxWidth: '950px', margin: '0 auto' }} className="reviews-grid-layout">
+          {/* Coluna Esquerda: Média e Formulário */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* Box de Média */}
+            <div style={{
+              background: 'rgba(20, 20, 25, 0.75)',
+              border: '1px solid rgba(255, 215, 0, 0.15)',
+              borderRadius: '16px',
+              padding: '2rem',
+              textAlign: 'center',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.3)'
+            }}>
+              <div style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--gold-light)', lineHeight: '1.1' }}>
+                {reviewsAvg}
+              </div>
+              <div style={{ color: 'var(--gold)', fontSize: '1.2rem', margin: '0.5rem 0 0.2rem' }}>
+                {'★'.repeat(Math.round(parseFloat(reviewsAvg)))}
+                {'☆'.repeat(5 - Math.round(parseFloat(reviewsAvg)))}
+              </div>
+              <div style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                Média de {reviewsCount} consultas realizadas
+              </div>
+            </div>
+
+            {/* Formulário de Envio */}
+            <div style={{
+              background: 'rgba(20, 20, 25, 0.5)',
+              border: '1px solid rgba(255, 215, 0, 0.1)',
+              borderRadius: '16px',
+              padding: '1.8rem',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.2)'
+            }}>
+              <h3 style={{ fontSize: '1.05rem', color: 'var(--gold-light)', marginBottom: '1.2rem', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em' }}>
+                Avalie sua Experiência
+              </h3>
+
+              {reviewSubmitSuccess ? (
+                <div style={{ textAlign: 'center', padding: '1rem 0' }}>
+                  <div style={{ fontSize: '2.5rem', marginBottom: '0.8rem' }}>🙏</div>
+                  <p style={{ color: 'var(--gold-light)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                    Sua avaliação foi registrada com sucesso nos anais do oráculo. Agradecemos!
+                  </p>
+                  <button 
+                    className="btn-secondary" 
+                    onClick={() => setReviewSubmitSuccess(false)}
+                    style={{ marginTop: '1rem', width: '100%', fontSize: '0.8rem', padding: '0.6rem' }}
+                  >
+                    Enviar outra
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>Nome ou Apelido</label>
+                    <input 
+                      type="text" 
+                      value={newReviewName} 
+                      onChange={e => setNewReviewName(e.target.value)} 
+                      placeholder="Ex: Mariana S." 
+                      required
+                      style={{
+                        width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,215,0,0.15)',
+                        borderRadius: '6px', padding: '0.65rem 0.8rem', color: '#fff', fontSize: '0.9rem', outline: 'none'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>Nota Espiritual</label>
+                    <select 
+                      value={newReviewRating} 
+                      onChange={e => setNewReviewRating(parseInt(e.target.value))}
+                      style={{
+                        width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,215,0,0.15)',
+                        borderRadius: '6px', padding: '0.65rem 0.8rem', color: '#fff', fontSize: '0.9rem', outline: 'none'
+                      }}
+                    >
+                      <option value="5" style={{ background: '#0a0a0d' }}>5 Estrelas (Excelente)</option>
+                      <option value="4" style={{ background: '#0a0a0d' }}>4 Estrelas (Muito Bom)</option>
+                      <option value="3" style={{ background: '#0a0a0d' }}>3 Estrelas (Regular)</option>
+                      <option value="2" style={{ background: '#0a0a0d' }}>2 Estrelas (Ruim)</option>
+                      <option value="1" style={{ background: '#0a0a0d' }}>1 Estrela (Péssimo)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>Comentário</label>
+                    <textarea 
+                      value={newReviewComment} 
+                      onChange={e => setNewReviewComment(e.target.value)} 
+                      placeholder="Descreva a precisão e a energia revelada..." 
+                      required
+                      rows={3}
+                      style={{
+                        width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,215,0,0.15)',
+                        borderRadius: '6px', padding: '0.65rem 0.8rem', color: '#fff', fontSize: '0.9rem', outline: 'none', resize: 'none'
+                      }}
+                    />
+                  </div>
+
+                  {reviewSubmitError && (
+                    <div style={{ color: '#ff6b6b', fontSize: '0.8rem' }}>{reviewSubmitError}</div>
+                  )}
+
+                  <button 
+                    type="submit" 
+                    disabled={submittingReview} 
+                    className="btn-primary" 
+                    style={{ width: '100%', padding: '0.75rem', fontSize: '0.85rem', cursor: submittingReview ? 'not-allowed' : 'pointer' }}
+                  >
+                    {submittingReview ? 'Enviando...' : 'Registrar Avaliação ✦'}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+
+          {/* Coluna Direita: Lista de Depoimentos */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            {reviewsList.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '3rem', opacity: 0.5 }}>
+                Ainda não há avaliações para esta consulta. Seja o primeiro a registrar!
+              </div>
+            ) : (
+              <>
+                {reviewsList.slice(0, showAllReviews ? 25 : 6).map((rev) => (
+                  <div key={rev.id} style={{
+                    background: 'rgba(20, 20, 25, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: '12px',
+                    padding: '1.4rem',
+                    transition: 'border-color 0.2s',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+                      <div style={{ fontWeight: '600', color: '#fff', fontSize: '0.95rem' }}>
+                        {rev.name}
+                      </div>
+                      <div style={{ color: 'var(--gold)', fontSize: '0.85rem' }}>
+                        {'★'.repeat(rev.rating)}
+                        {'☆'.repeat(5 - rev.rating)}
+                      </div>
+                    </div>
+                    <p style={{ margin: 0, opacity: 0.85, fontSize: '0.9rem', lineHeight: '1.5', fontStyle: 'italic' }}>
+                      "{rev.comment}"
+                    </p>
+                    <div style={{ textAlign: 'right', fontSize: '0.7rem', opacity: 0.4, marginTop: '0.6rem' }}>
+                      {new Date(rev.date).toLocaleDateString('pt-BR')}
+                    </div>
+                  </div>
+                ))}
+
+                {reviewsList.length > 6 && !showAllReviews && (
+                  <button 
+                    onClick={() => setShowAllReviews(true)}
+                    className="btn-secondary"
+                    style={{ alignSelf: 'center', marginTop: '1rem', padding: '0.8rem 2rem', fontSize: '0.85rem' }}
+                  >
+                    Ver mais avaliações (+{reviewsList.length - 6})
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Disclaimer Responsável */}
       <div style={{
