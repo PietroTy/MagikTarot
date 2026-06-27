@@ -1,9 +1,32 @@
+import { useState, useEffect } from 'react';
 import '../../styles/hero.css';
 import Sigil from '../common/Sigil';
 
 import { Link } from 'react-router-dom';
 
 function Hero() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToServices = () => {
+    const element = document.getElementById('servicos-preview');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="hero">
       <Sigil />
@@ -21,7 +44,12 @@ function Hero() {
           Ver Meu Horóscopo do Dia
         </Link>
       </div>
-      <div className="hero-scroll">
+      <div 
+        className={`hero-scroll ${!isVisible ? 'hidden' : ''}`}
+        onClick={scrollToServices}
+        style={{ cursor: 'pointer' }}
+        title="Rolar para explorar"
+      >
         <span>Rolar para explorar</span>↓
       </div>
     </section>

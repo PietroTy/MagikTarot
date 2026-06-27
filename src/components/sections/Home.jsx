@@ -84,7 +84,7 @@ function Home() {
       </Helmet>
 
       {/* SERVICES PREVIEW */}
-      <div className="section">
+      <div className="section" id="servicos-preview">
         <div className="section-eyebrow">Escolha sua Leitura</div>
         <div className="section-title">Consultas de Tarot Online</div>
         <div className="divider" />

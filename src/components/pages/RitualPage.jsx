@@ -228,7 +228,10 @@ function FormFields({ service, form, updateForm }) {
       {id === 'tarot-do-amor' && (
         <>
           <div className="form-group">
-            <label className="form-label">Status amoroso atual</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">Status amoroso atual</label>
+              <button type="button" onClick={() => updateForm('status_amoroso', 'Não sei / Prefiro não dizer')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei</button>
+            </div>
             <select className="form-select" value={form.status_amoroso} onChange={e => updateForm('status_amoroso', e.target.value)} required>
               <option value="">Selecione...</option>
               <option value="solteiro">Solteiro(a)</option>
@@ -236,6 +239,7 @@ function FormFields({ service, form, updateForm }) {
               <option value="relacionamento">Em um relacionamento sério</option>
               <option value="termino">Término recente</option>
               <option value="reconexao">Buscando reconexão</option>
+              <option value="Não sei / Prefiro não dizer">Não sei / Prefiro não dizer</option>
             </select>
           </div>
           <div className="form-group">
@@ -253,12 +257,15 @@ function FormFields({ service, form, updateForm }) {
 
       {id === 'tarot-carreira' && (
         <div className="form-group">
-          <label className="form-label">Qual a sua situação profissional atual?</label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label className="form-label">Qual a sua situação profissional atual?</label>
+            <button type="button" onClick={() => updateForm('situacao_atual', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei</button>
+          </div>
           <textarea
             className="form-textarea"
             value={form.situacao_atual}
             onChange={e => updateForm('situacao_atual', e.target.value)}
-            placeholder="Ex: Estou buscando emprego, quero mudar de área, tenho um negócio..."
+            placeholder="Ex: Estou buscando emprego, quero mudar de área, tenho um negócio ou 'Não sei'..."
             required
           />
         </div>
@@ -266,12 +273,16 @@ function FormFields({ service, form, updateForm }) {
 
       {id === 'energia-do-mes' && (
         <div className="form-group">
-          <label className="form-label">Mês desejado para a leitura</label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label className="form-label">Mês desejado para a leitura</label>
+            <button type="button" onClick={() => updateForm('mes', 'Não sei / Próximo mês')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei / Próximo mês</button>
+          </div>
           <input
-            type="month"
+            type="text"
             className="form-input"
             value={form.mes}
             onChange={e => updateForm('mes', e.target.value)}
+            placeholder="Ex: Julho/2026, Próximo mês ou 'Não sei'"
             required
           />
         </div>
@@ -282,16 +293,22 @@ function FormFields({ service, form, updateForm }) {
           <div className="form-grid">
             <div className="form-group">
               <label className="form-label">Data de nascimento</label>
-              <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} required />
+              <input type="text" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} placeholder="DD/MM/AAAA" required />
             </div>
             <div className="form-group">
-              <label className="form-label">Hora exata</label>
-              <input type="time" className="form-input" value={form.hora} onChange={e => updateForm('hora', e.target.value)} required />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label className="form-label">Hora exata</label>
+                <button type="button" onClick={() => updateForm('hora', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei a hora</button>
+              </div>
+              <input type="text" className="form-input" value={form.hora} onChange={e => updateForm('hora', e.target.value)} placeholder="Ex: 14:30 ou 'Não sei'" required />
             </div>
           </div>
           <div className="form-group">
-            <label className="form-label">Cidade e Estado de nascimento</label>
-            <input className="form-input" value={form.local} onChange={e => updateForm('local', e.target.value)} placeholder="Ex: São Paulo, SP" required />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">Cidade e Estado de nascimento</label>
+              <button type="button" onClick={() => updateForm('local', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei o local</button>
+            </div>
+            <input className="form-input" value={form.local} onChange={e => updateForm('local', e.target.value)} placeholder="Ex: São Paulo, SP ou 'Não sei'" required />
           </div>
         </>
       )}
@@ -301,7 +318,7 @@ function FormFields({ service, form, updateForm }) {
           <div className="form-grid">
             <div className="form-group">
               <label className="form-label">Sua data de nascimento</label>
-              <input type="date" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} required />
+              <input type="text" className="form-input" value={form.nascimento} onChange={e => updateForm('nascimento', e.target.value)} placeholder="DD/MM/AAAA" required />
             </div>
             <div className="form-group">
               <label className="form-label">Nome da outra pessoa</label>
@@ -309,17 +326,24 @@ function FormFields({ service, form, updateForm }) {
             </div>
           </div>
           <div className="form-group">
-            <label className="form-label">Data de nascimento da outra pessoa</label>
-            <input type="date" className="form-input" value={form.nascimento2} onChange={e => updateForm('nascimento2', e.target.value)} required />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">Data de nascimento da outra pessoa</label>
+              <button type="button" onClick={() => updateForm('nascimento2', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei a data</button>
+            </div>
+            <input type="text" className="form-input" value={form.nascimento2} onChange={e => updateForm('nascimento2', e.target.value)} placeholder="DD/MM/AAAA ou 'Não sei'" required />
           </div>
           <div className="form-group">
-            <label className="form-label">Tipo de vínculo</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">Tipo de vínculo</label>
+              <button type="button" onClick={() => updateForm('vinculo', 'Não sei / Outro')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei</button>
+            </div>
             <select className="form-select" value={form.vinculo} onChange={e => updateForm('vinculo', e.target.value)} required>
               <option value="">Selecione...</option>
               <option value="amoroso">Romântico / Amoroso</option>
               <option value="amizade">Amizade</option>
               <option value="profissional">Profissional / Sociedade</option>
               <option value="familiar">Familiar</option>
+              <option value="Não sei / Outro">Não sei / Outro</option>
             </select>
           </div>
           <div className="form-group">
