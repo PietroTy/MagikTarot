@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../../styles/shop.css';
 import { useData } from '../../context/DataContext';
+import { Helmet } from 'react-helmet';
 
 const SHOP_TABS = ['Todos', 'Cristais'];
 
@@ -14,6 +15,11 @@ function ShopPage() {
 
   return (
     <div className="section" style={{ paddingTop: '7rem' }}>
+      <Helmet>
+        <title>Loja Sagrada | Cristais e Ferramentas Místicas - Magik Tarot</title>
+        <meta name="description" content="Adquira cristais de alta qualidade selecionados para limpeza energética e proteção: Selenita, Quartzo Verde, Turmalina Negra, Cianita Negra e Sodalita." />
+        <link rel="canonical" href="https://pietroty.github.io/MagikTarot/#/loja" />
+      </Helmet>
       <div className="section-eyebrow">Loja Magik Tarot</div>
       <div className="section-title">Ferramentas Sagradas</div>
       <div className="divider" />

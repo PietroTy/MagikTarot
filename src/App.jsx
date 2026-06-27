@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 // Styles
 import './styles/global.css';
@@ -37,7 +37,13 @@ import { useData } from './context/DataContext';
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { loading } = useData();
+
+  // Sempre que mudar de rota, rola a página para o topo
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   // Detecta retorno do Mercado Pago pela URL e redireciona para resultado
   useEffect(() => {

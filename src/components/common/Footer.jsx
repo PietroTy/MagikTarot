@@ -22,7 +22,7 @@ function Footer() {
             {SERVICES.map(s => (
               <li key={s.id}>
                 <Link to={`/consulta/${s.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  {s.name}
+                  {s.name.split(' - ')[0]}
                 </Link>
               </li>
             ))}

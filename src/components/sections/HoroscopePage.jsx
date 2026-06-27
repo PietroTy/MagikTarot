@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../../styles/horoscope.css';
 import { useData } from '../../context/DataContext';
+import { Helmet } from 'react-helmet';
 
 function HoroscopePage() {
   const { data: { zodiac: ZODIAC, horoscopes: HOROSCOPES } } = useData();
@@ -8,6 +9,11 @@ function HoroscopePage() {
 
   return (
     <div className="section" style={{ paddingTop: '7rem' }}>
+      <Helmet>
+        <title>Horóscopo do Dia | Previsões Diárias dos Signos - Magik Tarot</title>
+        <meta name="description" content="Confira o horóscopo do dia para todos os signos do zodíaco. Receba orientações diárias sobre amor, trabalho e espiritualidade gratuitas." />
+        <link rel="canonical" href="https://pietroty.github.io/MagikTarot/#/horoscopo" />
+      </Helmet>
       <div className="section-eyebrow">Atualizado diariamente</div>
       <div className="section-title">Horóscopo do Dia</div>
       <div className="divider" />
