@@ -248,9 +248,23 @@ export default function BlogPostPage() {
         boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
         marginBottom: '3rem'
       }}>
-        <span style={{ fontSize: '5rem', display: 'block', marginBottom: '1.5rem', animation: 'float 3s ease-in-out infinite' }}>
-          {post.icon}
-        </span>
+        <div style={{
+          width: '90px',
+          height: '90px',
+          borderRadius: '50%',
+          background: 'rgba(255, 255, 255, 0.03)',
+          border: '1px solid rgba(255, 215, 0, 0.25)',
+          boxShadow: '0 0 30px rgba(255, 215, 0, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '2.8rem',
+          color: 'var(--gold)',
+          margin: '0 auto 1.5rem',
+          animation: 'float 3s ease-in-out infinite'
+        }}>
+          ✦
+        </div>
         <span style={{
           fontSize: '0.75rem',
           color: 'var(--gold)',
@@ -305,7 +319,22 @@ export default function BlogPostPage() {
         boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
         marginBottom: '4rem'
       }}>
-        <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔮</div>
+        <div style={{
+          width: '50px',
+          height: '50px',
+          borderRadius: '50%',
+          background: 'rgba(255, 215, 0, 0.04)',
+          border: '1px solid rgba(255, 215, 0, 0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '1.2rem',
+          color: 'var(--gold)',
+          margin: '0 auto 1rem',
+          boxShadow: '0 0 15px rgba(255, 215, 0, 0.05)'
+        }}>
+          ✦
+        </div>
         <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#fff', marginBottom: '0.8rem' }}>
           Quer aprofundar suas revelações?
         </h3>

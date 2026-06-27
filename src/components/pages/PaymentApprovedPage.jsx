@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 export default function PaymentApprovedPage() {
   const params = new URLSearchParams(window.location.search);
@@ -29,6 +30,10 @@ export default function PaymentApprovedPage() {
       margin: '0 auto',
       textAlign: 'center'
     }}>
+      <Helmet>
+        <title>Pagamento Confirmado | Magik Tarot</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div style={{
         background: 'rgba(20, 20, 25, 0.85)',
         border: '1px solid rgba(255, 215, 0, 0.15)',

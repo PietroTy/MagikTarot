@@ -22,7 +22,7 @@ function HoroscopePage() {
             className={`zodiac-btn ${activeZodiac?.sign === z.sign ? 'active' : ''}`}
             onClick={() => setActiveZodiac(prev => prev?.sign === z.sign ? null : z)}
           >
-            <span className="zodiac-symbol">{z.sign}</span>
+            <span className="zodiac-symbol">{z.sign}&#xFE0E;</span>
             <span className="zodiac-name">{z.name}</span>
           </div>
         ))}
@@ -33,7 +33,7 @@ function HoroscopePage() {
         return (
           <div className="horoscope-card">
             <div className="horoscope-header">
-              <div className="horoscope-sign">{activeZodiac.sign}</div>
+              <div className="horoscope-sign">{activeZodiac.sign}&#xFE0E;</div>
               <div>
                 <div className="horoscope-title">{activeZodiac.name}</div>
                 <div className="horoscope-date">{activeZodiac.dates}</div>

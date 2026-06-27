@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useData } from '../../context/DataContext';
 
-export default function CategoryPage({ setActiveModal }) {
+export default function CategoryPage() {
   const { category } = useParams();
   const { data: { services } } = useData();
 
@@ -10,14 +10,14 @@ export default function CategoryPage({ setActiveModal }) {
     tarot: {
       title: 'Portal do Tarot Online',
       subtitle: 'Consulte os arcanos sagrados para obter clareza, direção e sabedoria imediata.',
-      desc: 'O Tarot é um espelho da alma. Nossas consultas utilizam inteligência artificial treinada na sabedoria dos arcanos maiores para interpretar os caminhos do seu destino.',
+      desc: 'O Tarot é um espelho da alma. Nossas consultas oferecem uma leitura aprofundada baseada na sabedoria dos arcanos maiores para interpretar os caminhos do seu destino.',
       metaDesc: 'Consulte o Tarot Online. Leituras personalizadas sobre amor, carreira e decisões com interpretação profunda dos arcanos.'
     },
     astrologia: {
       title: 'Estudos Astrológicos e Mapas',
       subtitle: 'Decifre a posição dos astros no momento exato do seu nascimento.',
       desc: 'A astrologia estuda a harmonia entre o macrocosmo e o microcosmo. Encontre clareza através do seu Mapa Astral de Nascimento ou calcule a compatibilidade com a Sinastria.',
-      metaDesc: 'Descubra a influência dos astros na sua vida. Mapa Astral por IA e Sinastria Amorosa para entender suas conexões.'
+      metaDesc: 'Descubra a influência dos astros na sua vida. Mapa Astral Completo e Sinastria Amorosa para entender suas conexões.'
     },
     numerologia: {
       title: 'Portal da Numerologia Hermética',
@@ -28,9 +28,9 @@ export default function CategoryPage({ setActiveModal }) {
   };
 
   const currentCat = categoryTitles[category] || {
-    title: 'Nossas Consultas Cómicas',
+    title: 'Nossas Consultas Cósmicas',
     subtitle: 'Escolha seu portal de entrada para o autoconhecimento.',
-    desc: 'Explore oráculos sagrados interpretados por inteligência artificial.',
+    desc: 'Explore oráculos sagrados e desvele os caminhos do seu destino.',
     metaDesc: 'Explore consultas online de tarot, astrologia e numerologia.'
   };
 
@@ -93,7 +93,29 @@ export default function CategoryPage({ setActiveModal }) {
             >
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                  <span style={{ fontSize: '2.5rem' }}>{service.icon}</span>
+                  <div style={{
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255, 215, 0, 0.25)',
+                    overflow: 'hidden',
+                    background: 'rgba(5, 5, 8, 0.6)',
+                    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.05)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <img 
+                      src={`${process.env.PUBLIC_URL}/assets/services/${service.image}`}
+                      alt={service.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
+                  </div>
                   {service.badge && (
                     <span style={{
                       fontSize: '0.7rem',
@@ -135,13 +157,13 @@ export default function CategoryPage({ setActiveModal }) {
                   >
                     Detalhes ✦
                   </Link>
-                  <button 
-                    onClick={() => setActiveModal(service.id)} 
+                  <Link 
+                    to={`/ritual/${service.id}`} 
                     className="btn-primary" 
-                    style={{ flex: 1.5, fontSize: '0.9rem', padding: '0.8rem 0', border: 'none', cursor: 'pointer' }}
+                    style={{ flex: 1.5, textDecoration: 'none', textAlign: 'center', fontSize: '0.9rem', padding: '0.8rem 0' }}
                   >
-                    Consultar
-                  </button>
+                    Consultar ✦
+                  </Link>
                 </div>
               </div>
             </div>
@@ -160,7 +182,23 @@ export default function CategoryPage({ setActiveModal }) {
           backdropFilter: 'blur(8px)',
           boxShadow: '0 10px 40px rgba(0,0,0,0.4)'
         }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1.5rem', animation: 'float 3s ease-in-out infinite' }}>🔢</div>
+          <div style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 215, 0, 0.25)',
+            boxShadow: '0 0 25px rgba(255, 215, 0, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2.5rem',
+            color: 'var(--gold)',
+            margin: '0 auto 1.5rem',
+            animation: 'float 4s ease-in-out infinite'
+          }}>
+            ✦
+          </div>
           <h2 style={{ fontSize: '1.6rem', color: 'var(--gold)', marginBottom: '1rem' }}>Em Breve no Oráculo</h2>
           <p style={{ lineHeight: '1.7', opacity: 0.8, marginBottom: '2rem' }}>
             Estamos sintonizando os canais cósmicos para trazer leituras completas de Numerologia Pitagórica e Cabalística. Em breve você poderá decifrar os segredos contidos nos números do seu destino!

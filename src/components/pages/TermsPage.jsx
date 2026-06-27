@@ -6,6 +6,7 @@ export default function TermsPage() {
       <Helmet>
         <title>Termos de Uso | Magik Tarot</title>
         <meta name="description" content="Leia os Termos de Uso do Magik Tarot. Entenda os limites de responsabilidade, a natureza simbólica do serviço e a política comercial." />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div style={{

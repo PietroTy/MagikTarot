@@ -177,7 +177,7 @@ export default function ResultPage() {
                           width: '100%',
                           transform: isReversed ? 'rotate(180deg)' : 'none',
                         }}>
-                          <span style={{ fontSize: '2.5rem', marginBottom: '0.8rem' }}>{card.icon || '🃏'}</span>
+                          <span style={{ fontSize: '1.5rem', color: 'var(--gold)', marginBottom: '0.8rem' }}>✦</span>
                           <span style={{ fontSize: '0.75rem', fontWeight: '600', opacity: 0.8 }}>{card.name}</span>
                         </div>
                       </div>

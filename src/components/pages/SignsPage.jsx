@@ -163,7 +163,7 @@ export default function SignsPage() {
               }}
             >
               <div style={{ fontSize: '3rem', marginBottom: '0.8rem', color: sign.color || '#fff' }}>
-                {sign.sign}
+                {sign.sign}&#xFE0E;
               </div>
               <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#fff', margin: 0 }}>
                 {sign.name}
@@ -209,7 +209,7 @@ export default function SignsPage() {
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '4rem', color: selectedSign.color }}>{selectedSign.sign}</span>
+            <span style={{ fontSize: '4rem', color: selectedSign.color }}>{selectedSign.sign}&#xFE0E;</span>
             <div>
               <h2 style={{ fontSize: '2rem', fontWeight: '800', color: '#fff', margin: 0 }}>
                 {selectedSign.name}
@@ -235,7 +235,7 @@ export default function SignsPage() {
             {/* No Amor */}
             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '12px', borderLeft: '3px solid #ff6b6b' }}>
               <h4 style={{ color: '#ff8b8b', fontSize: '1.05rem', fontWeight: '700', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                ❤️ Dinâmica de Relacionamento (No Amor)
+                ✦ Dinâmica de Relacionamento (No Amor)
               </h4>
               <p style={{ margin: 0, lineHeight: '1.7', opacity: 0.9 }}>
                 {signInfo(selectedSign.name).love}
@@ -245,7 +245,7 @@ export default function SignsPage() {
             {/* Carreira */}
             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '12px', borderLeft: '3px solid #4ade80' }}>
               <h4 style={{ color: '#86efac', fontSize: '1.05rem', fontWeight: '700', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                💼 Alinhamento Profissional (Na Carreira)
+                ✦ Alinhamento Profissional (Na Carreira)
               </h4>
               <p style={{ margin: 0, lineHeight: '1.7', opacity: 0.9 }}>
                 {signInfo(selectedSign.name).career}

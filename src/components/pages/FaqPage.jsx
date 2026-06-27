@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const GENERAL_FAQS = [
   {
-    q: 'As consultas são feitas por Inteligência Artificial?',
-    a: 'Sim! Nosso portal utiliza modelos avançados de inteligência artificial generativa (Sabiá-3, treinado especificamente na sabedoria dos arcanos e astros) para interpretar as tiragens de forma personalizada, baseando-se exatamente nos dados e cartas que você escolhe.'
+    q: 'Como as consultas são interpretadas?',
+    a: 'Nosso portal místico utiliza cálculos astrológicos e rituais digitais personalizados para sintonizar a sabedoria oracular ancestral, baseando-se exatamente nos dados de nascimento e nas cartas que você escolhe.'
   },
   {
     q: 'As previsões do oráculo são absolutas?',
@@ -13,11 +13,11 @@ const GENERAL_FAQS = [
   },
   {
     q: 'Quanto tempo leva para receber o resultado da minha consulta?',
-    a: 'A geração da consulta é quase instantânea. Assim que o pagamento via PIX é processado pelo Mercado Pago (geralmente em menos de 10 segundos), o oráculo é ativado e a sua leitura completa é renderizada na tela em menos de um minuto.'
+    a: 'A revelação da consulta é quase instantânea. Assim que o pagamento via PIX é processado pelo Mercado Pago (geralmente em menos de 10 segundos), o oráculo é ativado e a sua leitura completa é renderizada na tela em menos de um minuto.'
   },
   {
     q: 'Meus dados pessoais e perguntas são confidenciais?',
-    a: 'Absolutamente. Respeitamos integralmente a LGPD. Seus dados de nascimento, nome e perguntas são trafegados de forma criptografada, usados apenas para alimentar o prompt da IA no momento da geração e armazenados de forma ultra-segura. Além disso, todas as páginas de resultado possuem diretivas "noindex" para que o Google nunca exponha suas consultas.'
+    a: 'Absolutamente. Respeitamos integralmente a LGPD. Seus dados de nascimento, nome e perguntas são trafegados de forma criptografada e armazenados de forma ultra-segura. Além disso, todas as páginas de resultado possuem diretivas "noindex" para que o Google nunca exponha suas consultas.'
   },
   {
     q: 'Posso fazer consultas sobre terceiros?',
@@ -25,7 +25,7 @@ const GENERAL_FAQS = [
   },
   {
     q: 'Como funciona a política de reembolso?',
-    a: 'Por se tratar de um produto digital personalizado gerado de forma imediata por IA sob demanda, as consultas não podem ser devolvidas após a geração da leitura. No entanto, se você enfrentar qualquer falha técnica de processamento ou queda de conexão durante o pagamento, entre em contato e resolveremos seu caso imediatamente.'
+    a: 'Por se tratar de uma revelação personalizada de produto digital gerado sob demanda, as consultas não podem ser devolvidas após o acesso à leitura. No entanto, se você enfrentar qualquer falha técnica de processamento ou queda de conexão durante o pagamento, entre em contato e resolveremos seu caso imediatamente.'
   }
 ];
 
@@ -40,7 +40,7 @@ export default function FaqPage() {
     <div style={{ minHeight: '100vh', padding: '8rem 2rem 4rem', maxWidth: '800px', margin: '0 auto' }}>
       <Helmet>
         <title>Dúvidas Frequentes | Magik Tarot</title>
-        <meta name="description" content="Tire todas as suas dúvidas sobre o funcionamento do Magik Tarot. Entenda sobre o uso de IA, tempos de processamento e privacidade." />
+        <meta name="description" content="Tire todas as suas dúvidas sobre o funcionamento do Magik Tarot. Entenda sobre tempos de processamento, privacidade e consultas." />
       </Helmet>
 
       {/* Header */}
@@ -52,7 +52,7 @@ export default function FaqPage() {
           Dúvidas Frequentes (FAQ)
         </h1>
         <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.7)', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
-          Tem alguma dúvida sobre como a inteligência artificial lê as cartas ou sobre seu pagamento? Encontre respostas rápidas aqui.
+          Tem alguma dúvida sobre como funciona a revelação das cartas ou sobre seu pagamento? Encontre respostas rápidas aqui.
         </p>
       </div>
 

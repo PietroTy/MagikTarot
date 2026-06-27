@@ -20,7 +20,7 @@ export default function BlogPage() {
     <div style={{ minHeight: '100vh', padding: '8rem 2rem 4rem', maxWidth: '1100px', margin: '0 auto' }}>
       <Helmet>
         <title>Blog do Oráculo | Magik Tarot</title>
-        <meta name="description" content="Leia artigos profundos sobre tarot, astrologia, rituais, numerologia e o uso de inteligência artificial no autoconhecimento." />
+        <meta name="description" content="Leia artigos profundos sobre tarot, astrologia, rituais, numerologia e autoconhecimento sob a perspectiva hermética." />
       </Helmet>
 
       {/* Header do Blog */}
@@ -82,7 +82,22 @@ export default function BlogPage() {
                   fontSize: '4rem',
                   position: 'relative'
                 }}>
-                  <span style={{ animation: 'float 4s ease-in-out infinite' }}>{post.icon}</span>
+                  <div style={{
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 215, 0, 0.25)',
+                    boxShadow: '0 0 25px rgba(255, 215, 0, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '2.2rem',
+                    color: 'var(--gold)',
+                    animation: 'float 4s ease-in-out infinite'
+                  }}>
+                    ✦
+                  </div>
                   <span style={{
                     position: 'absolute',
                     bottom: '12px',

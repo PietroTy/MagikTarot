@@ -6,6 +6,7 @@ export default function PrivacyPage() {
       <Helmet>
         <title>Política de Privacidade | Magik Tarot</title>
         <meta name="description" content="Leia nossa Política de Privacidade. Saiba como o Magik Tarot protege seus dados pessoais de acordo com a LGPD." />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div style={{

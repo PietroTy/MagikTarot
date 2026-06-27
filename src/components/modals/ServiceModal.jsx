@@ -273,7 +273,7 @@ function CardImage({ card, revealed = true }) {
   if (error || !card?.id) {
     return (
       <div className="tarot-card revealed" style={reverseStyle}>
-        <span className="card-fallback-icon">{card?.icon || '🃏'}</span>
+        <span className="card-fallback-icon">✦</span>
         <span className="card-fallback-name">
           {card?.name}{isReversed ? ' ↑↓' : ''}
         </span>
@@ -553,7 +553,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
         {/* ── FORM ── */}
         {step === 'form' && (
           <>
-            <div className="modal-eyebrow">{service.icon} {service.name}</div>
+            <div className="modal-eyebrow">✦ {service.name}</div>
             <div className="modal-title">Abrir o Portal</div>
             <div className="modal-subtitle">
               Os Arcanos aguardam sua intenção. Cada resposta abre um véu adicional — seja preciso(a).

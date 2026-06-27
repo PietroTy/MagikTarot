@@ -21,6 +21,7 @@ import ResultPage    from './components/pages/ResultPage';
 import PaymentApprovedPage from './components/pages/PaymentApprovedPage';
 import CategoryPage from './components/pages/CategoryPage';
 import ProductPage from './components/pages/ProductPage';
+import RitualPage from './components/pages/RitualPage';
 import BlogPage from './components/pages/BlogPage';
 import BlogPostPage from './components/pages/BlogPostPage';
 import ArcanaPage from './components/pages/ArcanaPage';
@@ -30,15 +31,10 @@ import AboutPage from './components/pages/AboutPage';
 import PrivacyPage from './components/pages/PrivacyPage';
 import TermsPage from './components/pages/TermsPage';
 
-// Modal
-import ServiceModal  from './components/modals/ServiceModal';
-
 import { useData } from './context/DataContext';
 
 function App() {
   const navigate = useNavigate();
-  const [activeModal, setActiveModal] = useState(null);
-  const [modalStep,   setModalStep]   = useState('form');
   const { loading } = useData();
 
   // Detecta retorno do Mercado Pago pela URL e redireciona para resultado
@@ -64,8 +60,6 @@ function App() {
     );
   }
 
-  const isModalFullScreen = activeModal && (modalStep === 'picking' || modalStep === 'result');
-
   return (
     <>
       {/* ── Animated Background ── */}
@@ -82,41 +76,31 @@ function App() {
 
         {/* ── Pages ── */}
         <div className="app">
-          {!isModalFullScreen && (
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <Hero />
-                  <Home setActiveModal={setActiveModal} />
-                </>
-              } />
-              <Route path="/servicos" element={<ServicesPage setActiveModal={setActiveModal} />} />
-              <Route path="/consultas" element={<ServicesPage setActiveModal={setActiveModal} />} />
-              <Route path="/consultas/:category" element={<CategoryPage setActiveModal={setActiveModal} />} />
-              <Route path="/consulta/:serviceId" element={<ProductPage setActiveModal={setActiveModal} />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:postSlug" element={<BlogPostPage />} />
-              <Route path="/significados/arcanos-maiores" element={<ArcanaPage />} />
-              <Route path="/significados/signos" element={<SignsPage />} />
-              <Route style={{ cursor: 'pointer' }} path="/duvidas-frequentes" element={<FaqPage />} />
-              <Route path="/sobre" element={<AboutPage />} />
-              <Route path="/politica-de-privacidade" element={<PrivacyPage />} />
-              <Route path="/termos-de-uso" element={<TermsPage />} />
-              <Route path="/horoscopo" element={<HoroscopePage />} />
-              <Route path="/loja" element={<ShopPage />} />
-              <Route path="/resultado/:orderId" element={<ResultPage />} />
-              <Route path="/pagamento-confirmado" element={<PaymentApprovedPage />} />
-            </Routes>
-          )}
-
-          {/* ── Modal ── */}
-          {activeModal && (
-            <ServiceModal
-              service={activeModal}
-              onClose={() => { setActiveModal(null); setModalStep('form'); }}
-              onStepChange={setModalStep}
-            />
-          )}
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Hero />
+                <Home />
+              </>
+            } />
+            <Route path="/servicos" element={<ServicesPage />} />
+            <Route path="/consultas" element={<ServicesPage />} />
+            <Route path="/consultas/:category" element={<CategoryPage />} />
+            <Route path="/consulta/:serviceId" element={<ProductPage />} />
+            <Route path="/ritual/:serviceId" element={<RitualPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:postSlug" element={<BlogPostPage />} />
+            <Route path="/significados/arcanos-maiores" element={<ArcanaPage />} />
+            <Route path="/significados/signos" element={<SignsPage />} />
+            <Route style={{ cursor: 'pointer' }} path="/duvidas-frequentes" element={<FaqPage />} />
+            <Route path="/sobre" element={<AboutPage />} />
+            <Route path="/politica-de-privacidade" element={<PrivacyPage />} />
+            <Route path="/termos-de-uso" element={<TermsPage />} />
+            <Route path="/horoscopo" element={<HoroscopePage />} />
+            <Route path="/loja" element={<ShopPage />} />
+            <Route path="/resultado/:orderId" element={<ResultPage />} />
+            <Route path="/pagamento-confirmado" element={<PaymentApprovedPage />} />
+          </Routes>
 
           {/* ── Footer ── */}
           <Footer />

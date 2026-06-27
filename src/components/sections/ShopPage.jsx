@@ -36,7 +36,24 @@ function ShopPage() {
       <div className="shop-grid">
         {filtered.map(p => (
           <div key={p.id} className="shop-card">
-            <div className="shop-img">{p.icon}</div>
+            <div className="shop-img" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '50%',
+                background: 'rgba(255, 215, 0, 0.04)',
+                border: '1px solid rgba(255, 215, 0, 0.22)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.5rem',
+                color: 'var(--gold)',
+                boxShadow: '0 0 15px rgba(255, 215, 0, 0.1)',
+                transition: 'all 0.3s ease'
+              }}>
+                ✦
+              </div>
+            </div>
             <div className="shop-body">
               <div className="shop-name">{p.name}</div>
               <div className="shop-desc">{p.desc}</div>

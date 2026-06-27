@@ -122,7 +122,7 @@ const RICH_PRODUCT_DATA = {
   }
 };
 
-export default function ProductPage({ setActiveModal }) {
+export default function ProductPage() {
   const { serviceId } = useParams();
   const { data: { services } } = useData();
   const [activeFaq, setActiveFaq] = useState(null);
@@ -151,8 +151,8 @@ export default function ProductPage({ setActiveModal }) {
   return (
     <div style={{ minHeight: '100vh', padding: '8rem 2rem 4rem', maxWidth: '1000px', margin: '0 auto' }}>
       <Helmet>
-        <title>{`${service.name} Online com IA | Magik Tarot`}</title>
-        <meta name="description" content={`Consulte o ${service.name} online com IA. ${service.hook} Leitura personalizada, confidencial e profunda.`} />
+        <title>{`${service.name} Online | Magik Tarot`}</title>
+        <meta name="description" content={`Consulte o ${service.name} online. ${service.hook} Leitura personalizada, confidencial e profunda.`} />
       </Helmet>
 
       {/* breadcrumbs */}
@@ -178,8 +178,30 @@ export default function ProductPage({ setActiveModal }) {
       }}>
         {/* Lado Esquerdo - Info de Venda */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-            <span style={{ fontSize: '3rem' }}>{service.icon}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1.5rem' }}>
+            <div style={{
+              width: '90px',
+              height: '90px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 215, 0, 0.25)',
+              overflow: 'hidden',
+              background: 'rgba(5, 5, 8, 0.6)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <img 
+                src={`${process.env.PUBLIC_URL}/assets/services/${service.image}`}
+                alt={service.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
             <div>
               <div style={{ color: 'var(--gold-light)', fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                 {service.arcane}
@@ -214,20 +236,20 @@ export default function ProductPage({ setActiveModal }) {
               <div style={{ fontSize: '0.8rem', opacity: 0.5 }}>Valor da consulta:</div>
               <div style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--gold)' }}>{service.price}</div>
             </div>
-            <button 
-              onClick={() => setActiveModal(service.id)} 
+            <Link 
+              to={`/ritual/${service.id}`} 
               className="btn-primary" 
               style={{ 
                 padding: '1.1rem 3rem', 
                 fontSize: '1rem', 
                 fontWeight: '700', 
-                cursor: 'pointer',
-                border: 'none',
+                textDecoration: 'none',
+                textAlign: 'center',
                 boxShadow: '0 0 20px rgba(255,215,0,0.2)'
               }}
             >
               Iniciar Minha Leitura ✦
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -271,7 +293,7 @@ export default function ProductPage({ setActiveModal }) {
             backdropFilter: 'blur(5px)'
           }}>
             <h3 style={{ color: 'var(--gold)', fontSize: '1.2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span>🎯</span> Para quem é indicado?
+              <span>✦</span> Para quem é indicado?
             </h3>
             <ul style={{ paddingLeft: '1.2rem', margin: 0 }}>
               {richData.whoIsItFor.map((item, idx) => (
@@ -291,7 +313,7 @@ export default function ProductPage({ setActiveModal }) {
             backdropFilter: 'blur(5px)'
           }}>
             <h3 style={{ color: 'var(--gold)', fontSize: '1.2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span>📜</span> O que a leitura entrega?
+              <span>✦</span> O que a leitura entrega?
             </h3>
             <ul style={{ paddingLeft: '1.2rem', margin: 0 }}>
               {richData.whatItDelivers.map((item, idx) => (
@@ -318,7 +340,7 @@ export default function ProductPage({ setActiveModal }) {
             { step: '01', title: 'Preencha os Dados', desc: 'Informe seu nome, e-mail e intenção para sintonizar a consulta.' },
             { step: '02', title: 'Faça a Tiragem', desc: 'Misture as cartas digitais e escolha as que chamam a sua alma (apenas no Tarot).' },
             { step: '03', title: 'Pagamento Seguro', desc: 'Realize o pagamento por PIX através do Mercado Pago.' },
-            { step: '04', title: 'Receba a Revelação', desc: 'A IA oracular Sabia-3 gera sua leitura detalhada e poética imediatamente.' }
+            { step: '04', title: 'Receba a Revelação', desc: 'O oráculo revela sua leitura detalhada e poética imediatamente na tela.' }
           ].map((item, idx) => (
             <div key={idx} style={{
               padding: '1.5rem',

@@ -149,3 +149,233 @@
   .steps-row { flex-direction: column; align-items: center; }
   .steps-row::before { display: none; }
 }
+
+/* ── ZIG ZAG SERVICES LAYOUT ── */
+.services-zigzag-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  max-width: 950px;
+  margin: 3.5rem auto 0;
+  padding: 0;
+}
+
+.zigzag-card {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  background: rgba(20, 20, 25, 0.6);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+  border-radius: 20px;
+  padding: 2.8rem;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.zigzag-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.04), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.zigzag-card:hover::before {
+  opacity: 1;
+}
+
+.zigzag-card:hover {
+  border-color: rgba(255, 215, 0, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.08), 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.zigzag-card.even {
+  flex-direction: row;
+}
+
+.zigzag-card.odd {
+  flex-direction: row-reverse;
+}
+
+.zigzag-icon-container {
+  position: relative;
+  flex-shrink: 0;
+  width: 190px;
+  height: 190px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 215, 0, 0.22);
+  background: rgba(5, 5, 8, 0.8);
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.05);
+  transition: all 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zigzag-card:hover .zigzag-icon-container {
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 15px 45px rgba(255, 215, 0, 0.15), 0 0 35px rgba(0, 0, 0, 0.8);
+  transform: scale(1.04) rotate(1.5deg);
+}
+
+.zigzag-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.zigzag-card:hover .zigzag-icon-img {
+  transform: scale(1.08);
+}
+
+/* Elegant glowing orb/ray behind image */
+.zigzag-icon-glow {
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.07), transparent 60%);
+  animation: rotateGlow 25s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes rotateGlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.zigzag-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+  text-align: left;
+}
+
+.zigzag-badge {
+  align-self: flex-start;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255, 215, 0, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: var(--gold-light);
+  border-radius: 20px;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.zigzag-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.3rem;
+  line-height: 1.25;
+}
+
+.zigzag-arcane {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.9rem;
+  font-weight: 600;
+}
+
+.zigzag-desc {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0 0 1.2rem;
+}
+
+.zigzag-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1rem;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.zigzag-price {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.zigzag-price-val {
+  color: var(--gold-light);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-left: 0.4rem;
+}
+
+.zigzag-btn {
+  padding: 0.75rem 1.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  background: var(--gold);
+  color: #050508;
+  border: 1px solid var(--gold);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.15);
+}
+
+.zigzag-card:hover .zigzag-btn {
+  background: var(--gold-light);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .zigzag-card.even,
+  .zigzag-card.odd {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2.2rem 1.8rem;
+    gap: 1.8rem;
+  }
+  .zigzag-icon-container {
+    width: 170px;
+    height: 170px;
+  }
+  .zigzag-content {
+    text-align: center;
+    align-items: center;
+  }
+  .zigzag-badge {
+    align-self: center;
+  }
+  .zigzag-footer {
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+  .zigzag-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+

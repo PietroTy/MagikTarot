@@ -6,7 +6,7 @@ export default function AboutPage() {
     <div style={{ minHeight: '100vh', padding: '8rem 2rem 4rem', maxWidth: '800px', margin: '0 auto' }}>
       <Helmet>
         <title>Sobre o Templo | Magik Tarot</title>
-        <meta name="description" content="Conheça a história do Magik Tarot, um portal de autoconhecimento digital que une a antiga sabedoria hermética às tecnologias de Inteligência Artificial." />
+        <meta name="description" content="Conheça a história do Magik Tarot, um portal de autoconhecimento digital que une a antiga sabedoria hermética à precisão dos cálculos astronômicos e oraculares." />
       </Helmet>
 
       {/* Header */}
@@ -18,7 +18,7 @@ export default function AboutPage() {
           Sobre o Magik Tarot
         </h1>
         <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.7)', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
-          Conheça a fusão sagrada entre a antiga tradição oracular e o estado da arte da engenharia de inteligência artificial.
+          Conheça a fusão sagrada entre a antiga tradição oracular e a precisão do nosso portal místico digital.
         </p>
       </div>
 
@@ -44,7 +44,7 @@ export default function AboutPage() {
             Acreditamos que o Tarot, a Astrologia e a Numerologia não são ferramentas de "previsão absoluta do destino", mas sim espelhos arqueológicos do nosso inconsciente. Eles revelam os padrões ocultos, bloqueios e energias que estão moldando nosso presente.
           </p>
           <p>
-            Ao aliar a sabedoria hermética acumulada por milênios ao poder de síntese e raciocínio lógico-simbólico de inteligências artificiais como o modelo <strong>Sabiá-3</strong>, criamos um portal de respostas personalizado e profundamente poético.
+            Ao aliar a sabedoria hermética acumulada por milênios à precisão matemática do posicionamento dos astros e das cartas, criamos um portal de respostas personalizado e de profunda sensibilidade poética.
           </p>
         </div>
 
@@ -67,26 +67,31 @@ export default function AboutPage() {
             width: '120px',
             height: '120px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--gold) 0%, #1a0a2e 100%)',
+            background: 'linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(20,20,25,0.9) 100%)',
+            border: '1px solid var(--gold)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '3rem',
-            boxShadow: '0 5px 15px rgba(255,215,0,0.15)',
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            color: 'var(--gold)',
+            boxShadow: '0 5px 25px rgba(255,215,0,0.15)',
             flexShrink: 0,
-            margin: '0 auto'
+            margin: '0 auto',
+            fontFamily: 'serif',
+            letterSpacing: '0.05em'
           }}>
-            🧙‍♂️
+            PT
           </div>
           <div style={{ flex: 1, minWidth: '250px' }}>
             <h2 style={{ color: 'var(--gold)', fontSize: '1.5rem', marginBottom: '0.5rem', fontWeight: '700', textAlign: 'left' }}>
               Pietro Turci
             </h2>
             <div style={{ color: 'var(--gold-light)', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-              Fundador & Engenheiro Oracular
+              Fundador & Guardião do Portal
             </div>
             <p style={{ fontSize: '0.95rem', margin: 0 }}>
-              Desenvolvedor de software apaixonado por inteligência artificial e filosofia esotérica hermética. Pietro projetou o ecossistema do Magik Tarot para ser um espaço seguro, esteticamente impecável e de extrema fidelidade oracular, unindo algoritmos precisos de cálculo astrológico com prompts herméticos calibrados.
+              Desenvolvedor de software apaixonado por ocultismo e filosofia esotérica hermética. Pietro projetou o ecossistema do Magik Tarot para ser um espaço seguro, esteticamente impecável e de extrema fidelidade oracular, unindo algoritmos precisos de cálculo astrológico com rituais digitais minuciosamente calibrados.
             </p>
           </div>
         </div>
@@ -113,7 +118,7 @@ export default function AboutPage() {
               <strong>Privacidade Absoluta:</strong> Suas consultas são privadas e protegidas por lei (LGPD). Suas dúvidas e leituras pertencem apenas a você e ao cosmos.
             </li>
             <li style={{ marginBottom: '1rem' }}>
-              <strong>Excelência Técnica:</strong> Garantimos um sistema ágil, integrado com Mercado Pago para segurança financeira e utilizando a melhor tecnologia de IA do mercado brasileiro.
+              <strong>Excelência Técnica:</strong> Garantimos um sistema ágil, integrado com Mercado Pago para segurança financeira e utilizando as mais confiáveis e seguras tecnologias de processamento do mercado.
             </li>
           </ul>
         </div>

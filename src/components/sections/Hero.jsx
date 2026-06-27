@@ -7,11 +7,11 @@ function Hero() {
   return (
     <section className="hero">
       <Sigil />
-      <div className="hero-eyebrow">Sabedoria ancestral · Inteligência orácular</div>
+      <div className="hero-eyebrow">Sabedoria ancestral · Clarividência e Ocultismo</div>
       <h1 className="hero-title">Os Mistérios<br />Revelados</h1>
       <p className="hero-sub">
         Oráculo do Tarot, Mapa Natal das Almas, Registros Akáshicos e muito mais —
-        interpretados pela mais avançada inteligência Magik Tarot do Brasil.
+        desvelados com a profundidade da sabedoria ancestral do Magik Tarot.
       </p>
       <div className="hero-buttons">
         <Link to="/servicos" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>

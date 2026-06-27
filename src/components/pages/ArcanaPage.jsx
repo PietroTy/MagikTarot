@@ -208,8 +208,29 @@ export default function ArcanaPage() {
                 }
               }}
             >
-              <div style={{ fontSize: '3.5rem', marginBottom: '1rem', animation: 'float 4s ease-in-out infinite' }}>
-                {card.icon}
+              <div style={{
+                width: '90px',
+                height: '150px',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                border: '1px solid rgba(255, 215, 0, 0.25)',
+                background: 'linear-gradient(135deg, rgba(20, 20, 25, 0.95) 0%, rgba(10, 10, 12, 0.95) 100%)',
+                boxShadow: '0 6px 16px rgba(0, 0, 0, 0.4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1.2rem',
+                position: 'relative'
+              }}>
+                <img 
+                  src={`${process.env.PUBLIC_URL}/assets/tarot-cards/${card.id}.png`}
+                  alt={card.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
               </div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#fff', margin: 0 }}>
                 {card.name}
@@ -251,8 +272,27 @@ export default function ArcanaPage() {
             ×
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '4rem' }}>{selectedCard.icon}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+            <div style={{
+              width: '80px',
+              height: '133px',
+              borderRadius: '6px',
+              overflow: 'hidden',
+              border: '1px solid rgba(255, 215, 0, 0.3)',
+              background: 'linear-gradient(135deg, rgba(20, 20, 25, 0.95) 0%, rgba(10, 10, 12, 0.95) 100%)',
+              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.5)',
+              flexShrink: 0
+            }}>
+              <img 
+                src={`${process.env.PUBLIC_URL}/assets/tarot-cards/${selectedCard.id}.png`}
+                alt={selectedCard.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
             <div>
               <h2 style={{ fontSize: '2rem', fontWeight: '800', color: '#fff', margin: 0 }}>
                 {selectedCard.name}
@@ -278,7 +318,7 @@ export default function ArcanaPage() {
             {/* No Amor */}
             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '12px', borderLeft: '3px solid #ff6b6b' }}>
               <h4 style={{ color: '#ff8b8b', fontSize: '1rem', fontWeight: '700', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                ❤️ Caminho das Relações (Amor)
+                ✦ Caminho das Relações (Amor)
               </h4>
               <p style={{ margin: 0, lineHeight: '1.7', opacity: 0.9 }}>
                 {cardDetails(selectedCard.id).love}
@@ -288,7 +328,7 @@ export default function ArcanaPage() {
             {/* Carreira */}
             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '12px', borderLeft: '3px solid #4ade80' }}>
               <h4 style={{ color: '#86efac', fontSize: '1rem', fontWeight: '700', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                💼 Caminho da Prosperidade (Carreira e Finanças)
+                ✦ Caminho da Prosperidade (Carreira e Finanças)
               </h4>
               <p style={{ margin: 0, lineHeight: '1.7', opacity: 0.9 }}>
                 {cardDetails(selectedCard.id).career}
