@@ -4,9 +4,7 @@ import '../../styles/modal.css';
 import { solicitarLeitura } from '../../services/aiService';
 import { createOrder, checkPaymentStatus } from '../../services/paymentService';
 import { useData } from '../../context/DataContext';
-import { API_CONFIG } from '../../config/apiConfig';
 
-const BACKEND = API_CONFIG.BACKEND_URL;
 
 // ─────────────────────────────────────────────────────────
 // PROMPT BUILDER — transforma o formulário em contexto para a IA
@@ -557,40 +555,6 @@ function ServiceModal({ service, onClose, onStepChange }) {
             <button className="btn-primary" onClick={handleSubmit}>
               Selar o Ritual de Acesso →
             </button>
-
-            {/* DEBUG: Pular Pagamento */}
-            <button 
-              onClick={() => {
-                fetch(`${BACKEND}/payment/debug/create`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    serviceId: service.id,
-                    serviceName: service.name,
-                    price: service.price,
-                    formData: form
-                  })
-                })
-                .then(r => r.json())
-                .then(order => {
-                  setOrderId(order.orderId);
-                  prepararMesa();
-                });
-              }}
-              style={{
-                marginTop: '1.5rem',
-                background: 'transparent',
-                border: '1px dashed #666',
-                color: '#888',
-                fontSize: '0.65rem',
-                padding: '6px 10px',
-                cursor: 'pointer',
-                borderRadius: '4px',
-                width: '100%'
-              }}
-            >
-              DEBUG: Pular Pagamento (Burlar Erro MP)
-            </button>
           </>
         )}
 
@@ -652,23 +616,6 @@ function ServiceModal({ service, onClose, onStepChange }) {
             <div style={{ fontSize: '0.72rem', opacity: 0.4, textAlign: 'center', marginTop: '1rem' }}>
               Após pagar, o oráculo se ativa automaticamente — não é preciso voltar aqui.
             </div>
-
-            <button 
-              onClick={() => {
-                fetch(`${BACKEND}/payment/debug/approve/${orderId}`)
-                  .then(r => r.json())
-                  .then(() => prepararMesa());
-              }}
-              style={{
-                marginTop: '1.5rem', background: 'transparent',
-                border: '1px dashed #444', color: '#666',
-                fontSize: '0.65rem', padding: '4px 8px', cursor: 'pointer',
-                borderRadius: '4px', display: 'block',
-                marginLeft: 'auto', marginRight: 'auto'
-              }}
-            >
-              DEBUG: Pular Pagamento
-            </button>
           </div>
         )}
 

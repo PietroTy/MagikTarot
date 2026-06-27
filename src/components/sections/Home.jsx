@@ -42,27 +42,6 @@ function ServiceCard({ s }) {
   );
 }
 
-function HowItWorks() {
-  const { data: { howItWorks: HOW_IT_WORKS } } = useData();
-  return (
-    <div className="section">
-      <div className="section-eyebrow">Como funciona</div>
-      <div className="section-title">Sua Consulta em 3 Passos</div>
-      <div className="divider" />
-      <div className="section-desc">Um processo simples, 100% confidencial e com respostas na hora.</div>
-      <div className="steps-row">
-        {HOW_IT_WORKS.map((s, i) => (
-          <div key={i} className="step">
-            <div className="step-num">{s.n}</div>
-            <div className="step-title">{s.t}</div>
-            <div className="step-desc">{s.d}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 
 
 function CtaBanner() {
@@ -103,9 +82,6 @@ function Home() {
           })}
         </script>
       </Helmet>
-
-      {/* HOW IT WORKS */}
-      <HowItWorks />
 
       {/* SERVICES PREVIEW */}
       <div className="section">

@@ -5,9 +5,7 @@ import '../../styles/modal.css'; // Reutiliza as classes de estilo místicas
 import { solicitarLeitura } from '../../services/aiService';
 import { createOrder, checkPaymentStatus } from '../../services/paymentService';
 import { useData } from '../../context/DataContext';
-import { API_CONFIG } from '../../config/apiConfig';
 
-const BACKEND = API_CONFIG.BACKEND_URL;
 
 // ── RITUAL DE EMBARALHAR E FALLBACKS DE CARTAS ──
 const CARD_BACK_URL = `${process.env.PUBLIC_URL}/assets/tarot-cards/back.png`;
@@ -676,40 +674,6 @@ export default function RitualPage() {
             >
               Selar o Ritual e Seguir →
             </button>
-
-            {/* DEBUG: Pular Pagamento */}
-            <button 
-              onClick={() => {
-                fetch(`${BACKEND}/payment/debug/create`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    serviceId: service.id,
-                    serviceName: service.name,
-                    price: service.price,
-                    formData: form
-                  })
-                })
-                .then(r => r.json())
-                .then(order => {
-                  setOrderId(order.orderId);
-                  prepararMesa();
-                });
-              }}
-              style={{
-                marginTop: '1.5rem',
-                background: 'transparent',
-                border: '1px dashed #666',
-                color: '#888',
-                fontSize: '0.65rem',
-                padding: '8px 10px',
-                cursor: 'pointer',
-                borderRadius: '6px',
-                width: '100%'
-              }}
-            >
-              DEBUG: Burlar Pagamento (Testes Locais)
-            </button>
           </>
         )}
 
@@ -778,24 +742,6 @@ export default function RitualPage() {
             <div style={{ fontSize: '0.78rem', opacity: 0.5, textAlign: 'center', marginTop: '1.5rem', lineHeight: '1.5' }}>
               Após o pagamento, esta tela se atualizará automaticamente para o início do seu ritual. Não feche esta página.
             </div>
-
-            {/* DEBUG: Pular Pagamento */}
-            <button 
-              onClick={() => {
-                fetch(`${BACKEND}/payment/debug/approve/${orderId}`)
-                  .then(r => r.json())
-                  .then(() => prepararMesa());
-              }}
-              style={{
-                marginTop: '2rem', background: 'transparent',
-                border: '1px dashed #444', color: '#555',
-                fontSize: '0.65rem', padding: '6px 12px', cursor: 'pointer',
-                borderRadius: '4px', display: 'block',
-                marginLeft: 'auto', marginRight: 'auto'
-              }}
-            >
-              DEBUG: Forçar Aprovação (Burlar Checkout)
-            </button>
           </div>
         )}
 
