@@ -42,6 +42,22 @@ export default function ResultPage() {
     }
   }, [answer, cards]);
 
+  const trackConversion = (id) => {
+    if (!id) return;
+    const key = `gtag_conv_${id}`;
+    if (!localStorage.getItem(key)) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          'send_to': 'AW-18279016188/wrl4CPvf7sYcEPzNjoxE',
+          'value': 1.0,
+          'currency': 'BRL',
+          'transaction_id': id
+        });
+        localStorage.setItem(key, 'true');
+      }
+    }
+  };
+
   async function fetchOrGenerate() {
     setLoading(true);
     setError('');
@@ -55,6 +71,7 @@ export default function ResultPage() {
         setCards(found.cards || []);
         setServiceId(found.serviceId || '');
         setLoading(false);
+        trackConversion(orderId);
         return;
       }
 
@@ -68,6 +85,7 @@ export default function ResultPage() {
       setAnswer(data.answer);
       setCards(data.cards || []);
       setServiceId(data.serviceId || '');
+      trackConversion(orderId);
     } catch (err) {
       setError(err.message);
     } finally {

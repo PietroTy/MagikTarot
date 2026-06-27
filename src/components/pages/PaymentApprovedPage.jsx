@@ -7,13 +7,28 @@ export default function PaymentApprovedPage() {
   const orderId = params.get('external_reference');
 
   useEffect(() => {
+    if (orderId) {
+      const key = `gtag_conv_${orderId}`;
+      if (!localStorage.getItem(key)) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'conversion', {
+            'send_to': 'AW-18279016188/wrl4CPvf7sYcEPzNjoxE',
+            'value': 1.0,
+            'currency': 'BRL',
+            'transaction_id': orderId
+          });
+          localStorage.setItem(key, 'true');
+        }
+      }
+    }
+
     // Tenta fechar a aba automaticamente após 4 segundos
     const timer = setTimeout(() => {
       window.close();
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [orderId]);
 
   const handleClose = () => {
     window.close();
