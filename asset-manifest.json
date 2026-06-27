@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/MagikTarot/static/css/main.9d11ae77.css",
-    "main.js": "/MagikTarot/static/js/main.827639aa.js",
+    "main.js": "/MagikTarot/static/js/main.2b3921b3.js",
     "static/js/453.a163a4c5.chunk.js": "/MagikTarot/static/js/453.a163a4c5.chunk.js",
     "index.html": "/MagikTarot/index.html",
     "main.9d11ae77.css.map": "/MagikTarot/static/css/main.9d11ae77.css.map",
-    "main.827639aa.js.map": "/MagikTarot/static/js/main.827639aa.js.map",
+    "main.2b3921b3.js.map": "/MagikTarot/static/js/main.2b3921b3.js.map",
     "453.a163a4c5.chunk.js.map": "/MagikTarot/static/js/453.a163a4c5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9d11ae77.css",
-    "static/js/main.827639aa.js"
+    "static/js/main.2b3921b3.js"
   ]
 }
