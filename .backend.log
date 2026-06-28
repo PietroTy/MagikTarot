@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.3.1] injecting env (6) from .env -- tip: 🛡️ auth for agents: https://vestauth.com
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -9,3 +9,13 @@ Catálogo : /data/services | /data/products | /data/zodiac ...
 Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
 Leituras : POST /readings | GET /readings/:id
 
+[MP] Criando preferência para ORD-000001. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000001 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP] Criando preferência para ORD-000002. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000002 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 165335437099
+[MP Webhook] ❌ Assinatura inválida! Esperado: 8531a1bf0389fc8845860f3ed38534fb3c44fc7233b7b8364c2cad7a0e8ffff3, Recebido: 2182ed0967141390f96194175c8b13d00396a70c70aa4533387114218a1d698a
+[MP Webhook] Status "pending" para ORD-000002
+[MP Webhook] ❌ Assinatura inválida! Esperado: e75aa6ee3e119c4ed5602c8c26604a9ae95fcd5663ff397d9a7a4104e050d33a, Recebido: f88c2224c6b03449da2771ffd33dfd210d8422aea0d91ad922dad5716b80f2df
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 165335437099
+[MP Webhook] ✅ Pagamento aprovado: ORD-000002 (MP #165335437099)

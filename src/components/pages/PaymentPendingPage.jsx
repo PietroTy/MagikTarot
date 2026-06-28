@@ -1,9 +1,67 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { API_CONFIG } from '../../config/apiConfig';
+
+const BASE = API_CONFIG.BACKEND_URL;
 
 export default function PaymentPendingPage() {
-  const params = new URLSearchParams(window.location.search);
-  const orderId = params.get('external_reference');
+  const navigate = useNavigate();
+
+  // Helper para obter parâmetros da URL de forma robusta com HashRouter
+  const getQueryParam = (name) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has(name)) return searchParams.get(name);
+    
+    const hash = window.location.hash;
+    const hashSearchIndex = hash.indexOf('?');
+    if (hashSearchIndex !== -1) {
+      const hashSearchParams = new URLSearchParams(hash.slice(hashSearchIndex));
+      if (hashSearchParams.has(name)) return hashSearchParams.get(name);
+    }
+    return null;
+  };
+
+  const orderId = getQueryParam('external_reference');
+
+  useEffect(() => {
+    if (!orderId) return;
+
+    let intervalId;
+
+    const checkStatus = async () => {
+      try {
+        const res = await fetch(`${BASE}/payment/${orderId}/status`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === 'approved') {
+            clearInterval(intervalId);
+            // Tenta obter o estado do pedido salvo no localStorage para ir para o ritual ou resultado direto
+            const saved = localStorage.getItem(`pending_order_${orderId}`);
+            if (saved) {
+              try {
+                const { service } = JSON.parse(saved);
+                if (service && service.id) {
+                  navigate(`/ritual/${service.id}?orderId=${orderId}&approved=true`);
+                  return;
+                }
+              } catch (e) {
+                console.error('Erro ao ler order do localStorage:', e);
+              }
+            }
+            navigate(`/resultado/${orderId}`);
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao verificar status do pagamento:', err);
+      }
+    };
+
+    checkStatus();
+    intervalId = setInterval(checkStatus, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [orderId, navigate]);
 
   return (
     <div style={{
