@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  override existing env vars with { override: true }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -9,3 +9,11 @@ Catálogo : /data/services | /data/products | /data/zodiac ...
 Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
 Leituras : POST /readings | GET /readings/:id
 
+[MP] Criando preferência para ORD-000001. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000001 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP] Criando preferência para ORD-000002. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000002 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP] Criando preferência para ORD-000003. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000003 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP] Criando preferência para ORD-000004. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000004 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99

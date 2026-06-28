@@ -410,7 +410,8 @@ function ServiceModal({ service, onClose, onStepChange }) {
   const trackConversion = (orderId) => {
     if (orderId) {
       const key = `gtag_conv_${orderId}`;
-      if (!localStorage.getItem(key)) {
+      const isDebug = window.location.href.includes('gtm_debug');
+      if (!localStorage.getItem(key) || isDebug) {
         if (typeof window.gtag === 'function') {
           let numValue = 10.0;
           if (service && service.price) {

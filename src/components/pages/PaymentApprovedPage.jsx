@@ -42,7 +42,8 @@ export default function PaymentApprovedPage() {
 
       // Envia evento de conversão do Google Ads
       const key = `gtag_conv_${orderId}`;
-      if (!localStorage.getItem(key)) {
+      const isDebug = window.location.href.includes('gtm_debug');
+      if (!localStorage.getItem(key) || isDebug) {
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'conversion', {
             'send_to': 'AW-18279016188/wrl4CPvf7sYcEPzNjoxE',
