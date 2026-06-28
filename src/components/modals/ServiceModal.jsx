@@ -421,7 +421,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
             }
           }
           window.gtag('event', 'conversion', {
-            'send_to': 'AW-18279016188/V9GgCMK2x-MZEPy637I-',
+            'send_to': 'AW-18279016188/wrl4CPvf7sYcEPzNjoxE',
             'value': numValue,
             'currency': 'BRL',
             'transaction_id': orderId
