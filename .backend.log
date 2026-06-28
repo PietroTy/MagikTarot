@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -9,12 +9,3 @@ Catálogo : /data/services | /data/products | /data/zodiac ...
 Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
 Leituras : POST /readings | GET /readings/:id
 
-[MP] Criando preferência para ORD-000001. FrontURL: https://magiktarot.com.br
-[MP] Preferência criada: ORD-000001 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
-[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 166222288582
-[MP Webhook] ❌ Assinatura inválida! Esperado: 15ffc7f3321e2816797eca335d31b8e889ac0a5fab7cce338c004a5e14e89efd, Recebido: 468febeff20f80b763339d8ba2438c5433d67e9741dd93bf55e04f5e5278c05e
-[MP Webhook] Status "pending" para ORD-000001
-[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 166222288582
-[MP Webhook] ❌ Assinatura inválida! Esperado: 04fa645eb35a9e39957ffc3d0f09a53666a3cf0131777eab93fd9f8f6b27a9cd, Recebido: 0187647d9dc59d47c1b879d98a1677e2b01e20e418d61acb41887585618ba6c3
-[MP Webhook] ✅ Pagamento aprovado: ORD-000001 (MP #166222288582)
-[Reading] Leitura #1 gerada para pedido ORD-000001
