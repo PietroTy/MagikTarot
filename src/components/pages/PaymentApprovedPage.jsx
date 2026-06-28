@@ -1,38 +1,77 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 export default function PaymentApprovedPage() {
-  const params = new URLSearchParams(window.location.search);
-  const orderId = params.get('external_reference');
+  const navigate = useNavigate();
+
+  // Helper para obter parâmetros da URL de forma robusta com HashRouter
+  const getQueryParam = (name) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has(name)) return searchParams.get(name);
+    
+    const hash = window.location.hash;
+    const hashSearchIndex = hash.indexOf('?');
+    if (hashSearchIndex !== -1) {
+      const hashSearchParams = new URLSearchParams(hash.slice(hashSearchIndex));
+      if (hashSearchParams.has(name)) return hashSearchParams.get(name);
+    }
+    return null;
+  };
+
+  const orderId = getQueryParam('external_reference');
 
   useEffect(() => {
     if (orderId) {
+      let purchaseValue = 1.0;
+      let serviceId = null;
+
+      // Tenta obter o estado do pedido salvo no localStorage para pegar o valor real
+      const saved = localStorage.getItem(`pending_order_${orderId}`);
+      if (saved) {
+        try {
+          const { service } = JSON.parse(saved);
+          if (service) {
+            if (service.price) purchaseValue = Number(service.price);
+            if (service.id) serviceId = service.id;
+          }
+        } catch (e) {
+          console.error('Erro ao ler order do localStorage:', e);
+        }
+      }
+
+      // Envia evento de conversão do Google Ads
       const key = `gtag_conv_${orderId}`;
       if (!localStorage.getItem(key)) {
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'conversion', {
             'send_to': 'AW-18279016188/wrl4CPvf7sYcEPzNjoxE',
-            'value': 1.0,
+            'value': purchaseValue,
             'currency': 'BRL',
             'transaction_id': orderId
           });
           localStorage.setItem(key, 'true');
+          console.log(`[Gtag] Conversão enviada: R$ ${purchaseValue} para o pedido ${orderId}`);
+        } else {
+          console.warn('[Gtag] gtag.js não carregado no escopo global');
         }
       }
+
+      if (serviceId) {
+        // Redireciona de volta para o ritual para escolher cartas / iniciar leitura em 1.5s
+        const timer = setTimeout(() => {
+          navigate(`/ritual/${serviceId}?orderId=${orderId}&approved=true`);
+        }, 1500);
+        return () => clearTimeout(timer);
+      }
+
+      // Caso não tenha localStorage correspondente, redireciona direto para o resultado
+      const timer = setTimeout(() => {
+        navigate(`/resultado/${orderId}`);
+      }, 2000);
+      return () => clearTimeout(timer);
     }
-
-    // Tenta fechar a aba automaticamente após 4 segundos
-    const timer = setTimeout(() => {
-      window.close();
-    }, 4000);
-
-    return () => clearTimeout(timer);
-  }, [orderId]);
-
-  const handleClose = () => {
-    window.close();
-  };
+  }, [orderId, navigate]);
 
   return (
     <div style={{
@@ -46,7 +85,7 @@ export default function PaymentApprovedPage() {
       textAlign: 'center'
     }}>
       <Helmet>
-        <title>Pagamento Confirmado | Magik Tarot</title>
+        <title>Sintonizando o Portal | Magik Tarot</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div style={{
@@ -70,12 +109,12 @@ export default function PaymentApprovedPage() {
           pointerEvents: 'none'
         }} />
 
-        <div style={{ color: 'var(--gold)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>
-          ✦
+        <div className="ai-loading" style={{ margin: '0 auto 1.5rem' }}>
+          <div className="ai-orb" style={{ margin: '0 auto 1.5rem', width: '60px', height: '60px' }} />
         </div>
 
         <h1 style={{ 
-          fontSize: '1.8rem', 
+          fontSize: '1.6rem', 
           fontWeight: 700, 
           marginBottom: '1rem',
           letterSpacing: '0.1em',
@@ -100,61 +139,43 @@ export default function PaymentApprovedPage() {
           color: 'rgba(255, 255, 255, 0.8)',
           fontSize: '1.05rem'
         }}>
-          Seu pagamento foi aprovado com sucesso e o portal de leitura já está ativo na sua **aba anterior**!
+          Seu pagamento foi verificado com sucesso! Os canais cósmicos estão prontos.
         </p>
 
         <p style={{ 
-          fontSize: '0.85rem', 
-          color: 'rgba(255, 255, 255, 0.5)', 
+          fontSize: '0.9rem', 
+          color: 'var(--gold)', 
           marginBottom: '2.5rem',
-          lineHeight: '1.5'
+          lineHeight: '1.5',
+          fontWeight: '500'
         }}>
-          Volte para a outra aba para escolher suas cartas e ver sua revelação.<br />
-          Esta aba se fechará automaticamente em instantes...
+          Você está sendo redirecionado(a) automaticamente para dar início ao seu ritual e ver sua revelação...
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
-          <button 
-            onClick={handleClose} 
-            className="btn-primary" 
-            style={{ 
-              display: 'inline-block', 
-              padding: '1rem 2.5rem',
-              fontSize: '0.95rem',
-              cursor: 'pointer',
-              border: 'none',
-              width: '100%',
-              maxWidth: '280px'
-            }}
-          >
-            Fechar esta aba ✦
-          </button>
-
-          {orderId && (
-            <div style={{ 
-              marginTop: '1rem', 
-              fontSize: '0.8rem', 
-              color: 'rgba(255,255,255,0.4)',
-              borderTop: '1px solid rgba(255,255,255,0.08)',
-              paddingTop: '1.2rem',
-              width: '100%'
-            }}>
-              Fechou a aba do oráculo por acidente? <br />
-              <Link 
-                to={`/resultado/${orderId}`} 
-                style={{ 
-                  color: 'var(--gold)', 
-                  textDecoration: 'none', 
-                  fontWeight: '600',
-                  display: 'inline-block',
-                  marginTop: '0.4rem'
-                }}
-              >
-                Clique aqui para abrir seu resultado nesta aba 🔮
-              </Link>
-            </div>
-          )}
-        </div>
+        {orderId && (
+          <div style={{ 
+            marginTop: '1rem', 
+            fontSize: '0.8rem', 
+            color: 'rgba(255,255,255,0.4)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            paddingTop: '1.2rem',
+            width: '100%'
+          }}>
+            O redirecionamento falhou? <br />
+            <Link 
+              to={`/resultado/${orderId}`} 
+              style={{ 
+                color: 'var(--gold)', 
+                textDecoration: 'none', 
+                fontWeight: '600',
+                display: 'inline-block',
+                marginTop: '0.4rem'
+              }}
+            >
+              Clique aqui para acessar sua revelação manualmente 🔮
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

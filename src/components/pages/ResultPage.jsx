@@ -126,18 +126,98 @@ export default function ResultPage() {
 
   function formatReading(text) {
     if (!text) return null;
-    return text.split('\n').filter(p => p.trim()).map((para, pi) => {
-      const parts = para.split(/\*\*(.*?)\*\*/g);
-      return (
-        <p key={pi} style={{ marginBottom: '1.4rem', lineHeight: '1.9' }}>
-          {parts.map((part, i) =>
-            i % 2 === 1
-              ? <strong key={i} style={{ color: 'var(--gold-light)' }}>{part}</strong>
-              : part
-          )}
+
+    // Programmatic cleanup of emojis, sparks, crystals, etc.
+    let cleaned = text;
+    try {
+      cleaned = cleaned.replace(/\p{Extended_Pictographic}/gu, '');
+    } catch (e) {
+      // Fallback if property is not supported
+      cleaned = cleaned.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu, '');
+    }
+    // Remove specific graphic symbols
+    cleaned = cleaned.replace(/[✦✨🔮⭐🌟🌠🌌☄️💫]/g, '');
+
+    const lines = cleaned.split('\n');
+    const elements = [];
+    let currentList = [];
+
+    const parseInlineStyles = (lineStr, keyIdx) => {
+      const parts = lineStr.split(/\*\*(.*?)\*\*/g);
+      return parts.map((part, i) =>
+        i % 2 === 1
+          ? <strong key={`${keyIdx}-${i}`} style={{ color: 'var(--gold-light)' }}>{part}</strong>
+          : part
+      );
+    };
+
+    lines.forEach((line, li) => {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        if (currentList.length > 0) {
+          elements.push(
+            <ul key={`list-${li}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.4rem', listStyleType: 'disc' }}>
+              {[...currentList]}
+            </ul>
+          );
+          currentList = [];
+        }
+        return;
+      }
+
+      // Check for horizontal divider
+      if (trimmed === '---' || trimmed === '***') {
+        if (currentList.length > 0) {
+          elements.push(
+            <ul key={`list-${li}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.4rem', listStyleType: 'disc' }}>
+              {[...currentList]}
+            </ul>
+          );
+          currentList = [];
+        }
+        elements.push(<hr key={`hr-${li}`} style={{ border: 'none', borderTop: '1px dashed rgba(255,215,0,0.15)', margin: '1.8rem 0' }} />);
+        return;
+      }
+
+      // Check for bullet list item
+      if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ')) {
+        const itemContent = trimmed.substring(2);
+        currentList.push(
+          <li key={`li-${li}-${currentList.length}`} style={{ marginBottom: '0.6rem', lineHeight: '1.8' }}>
+            {parseInlineStyles(itemContent, li)}
+          </li>
+        );
+        return;
+      }
+
+      // If it's a regular paragraph but list was open, close it
+      if (currentList.length > 0) {
+        elements.push(
+          <ul key={`list-${li}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.4rem', listStyleType: 'disc' }}>
+            {[...currentList]}
+          </ul>
+        );
+        currentList = [];
+      }
+
+      // Render paragraph
+      elements.push(
+        <p key={`p-${li}`} style={{ marginBottom: '1.4rem', lineHeight: '1.9' }}>
+          {parseInlineStyles(trimmed, li)}
         </p>
       );
     });
+
+    // Close any trailing lists
+    if (currentList.length > 0) {
+      elements.push(
+        <ul key={`list-end`} style={{ paddingLeft: '1.5rem', marginBottom: '1.4rem', listStyleType: 'disc' }}>
+          {[...currentList]}
+        </ul>
+      );
+    }
+
+    return elements;
   }
 
   return (

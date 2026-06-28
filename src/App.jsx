@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 // Styles
 import './styles/global.css';
@@ -36,7 +36,6 @@ import PaymentPendingPage from './components/pages/PaymentPendingPage';
 import { useData } from './context/DataContext';
 
 function App() {
-  const navigate = useNavigate();
   const location = useLocation();
   const { loading } = useData();
 
@@ -45,17 +44,7 @@ function App() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // Detecta retorno do Mercado Pago pela URL e redireciona para resultado
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const status = params.get('status') || params.get('collection_status');
-    const orderId = params.get('external_reference');
-    if (status === 'approved' && orderId) {
-      // Limpa os parâmetros da URL e vai para a página de resultado
-      window.history.replaceState({}, '', window.location.pathname);
-      navigate(`/resultado/${orderId}`);
-    }
-  }, [navigate]);
+
 
   if (loading) {
     return (

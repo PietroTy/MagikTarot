@@ -35,18 +35,30 @@ Cartas reveladas:
 ${(extra.cards || []).map((c, i) => `- Carta ${i+1}: "${c.name}"${c.reversed ? ' [INVERTIDA]' : ''}`).join('\n')}
 Instrução: Revele as tendências energéticas do mês, oportunidades que surgirão e bloqueios que precisam de atenção.`,
 
-    'mapa-astral': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura do Mapa Natal Astrológico.
-Data de nascimento: ${form.nascimento || 'não informada'}.
-Hora exata: ${form.hora || 'não informada'}.
-Local de nascimento: ${form.local || 'não informado'}.
-Instrução: Faça uma leitura profunda baseada nessas coordenadas, revelando os posicionamentos prováveis de Sol, Lua e Ascendente. Descreva os pontos fortes, desafios emocionais e propósito de vida.`,
+    'mapa-astral': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura detalhada do seu Mapa Natal Astrológico.
+Dados de nascimento: nascido(a) em ${form.nascimento || 'não informada'} às ${form.hora || 'não informada'} na cidade/estado de ${form.local || 'não informado'}.
+Residência atual: ${form.local_atual || 'não informado'}.
+Área de prioridade/foco desejada para análise profunda: ${form.foco_mapa || 'Geral'}.
 
-    'sinastria': `O(a) consultante ${form.nome || 'buscador'} solicita a leitura de Sinastria.
-Dados do consultante: Nascido(a) em ${form.nascimento || 'não informado'}.
-Dados da outra pessoa (${form.nome2 || 'desconhecido'}): Nascido(a) em ${form.nascimento2 || 'não informado'}.
+Instrução:
+Gere uma leitura astrológica extremamente extensa, rica e aprofundada (mínimo de 6 parágrafos longos, aproximadamente 600-800 palavras).
+Adote um tom oracular, acolhedor, misterioso e introspectivo (como o tarot), fazendo reflexões abertas para que o consultante use sua própria intuição para compreender, evitando previsões deterministas ou absolutas.
+Divida a leitura rigorosamente em 3 grandes seções com títulos em negrito exatamente assim:
+**I. A Assinatura de sua Alma (Sol, Lua e Ascendente)**: Analise os posicionamentos prováveis e a energia desses três pilares de identidade, ego, emoção e projeção externa.
+**II. As Correntes do Inconsciente e Bloqueios Cármicos**: Detalhe os desafios psicológicos profundos, medos inconscientes e lições de vida/carmas indicados no mapa.
+**III. O Propósito Divino e Caminhos de Evolução**: Ofereça conselhos práticos de ação, orientações de sabedoria e rumos futuros específicos para a área de foco (${form.foco_mapa || 'Geral'}).`,
+    
+    'sinastria': `O(a) consultante ${form.nome || 'buscador'} (nascido em ${form.nascimento || 'não informado'}) solicita a leitura de Sinastria Amorosa/Relacional com ${form.nome2 || 'a outra pessoa'} (nascido em ${form.nascimento2 || 'não informado'} às ${form.hora2 || 'não informada'} em ${form.local2 || 'não informado'}).
 Tipo de vínculo: ${form.vinculo || 'não especificado'}.
-O que deseja entender: "${form.pergunta || 'não declarado'}".
-Instrução: Revele a compatibilidade astrológica e energética entre essas duas pessoas. Explore os pontos de harmonia, tensões cármicas e a missão desse encontro.`
+O que deseja entender e sanar sobre essa relação: "${form.pergunta || 'não declarado'}".
+
+Instrução:
+Gere uma análise de compatibilidade astrológica e energética extremamente extensa, rica e aprofundada (mínimo de 6 parágrafos longos, aproximadamente 600-800 palavras).
+Adote um tom oracular, poético, misterioso e curativo (como o tarot), levantando reflexões abertas sobre a dinâmica oculta do casal sem fazer afirmações deterministas sobre o fim ou a permanência eterna da relação.
+Divida a leitura rigorosamente em 3 grandes seções com títulos em negrito exatamente assim:
+**I. O Encontro de Dois Céus (Atração e Magnetismo)**: Analise o que uniu as almas energeticamente, o fluxo inicial de atração e afinidades de personalidade.
+**II. Desafios de Convivência e Lições Cármicas**: Detalhe os pontos de atrito, as quadraturas ou oposições prováveis que testam a maturidade do casal e as dívidas cármicas/aprendizados mútuos.
+**III. Alinhamento de Destino e Evolução Compartilhada**: Ofereça conselhos práticos de ação, caminhos para a harmonia e sabedoria para lidar com a dúvida apresentada: "${form.pergunta || 'não declarado'}"`
   };
 
   const userContext = contexts[service.id] || contexts['tarot-sim-ou-nao'];
@@ -175,6 +187,20 @@ function FormFields({ service, form, updateForm }) {
             </div>
             <input className="form-input" value={form.local} onChange={e => updateForm('local', e.target.value)} placeholder="Ex: São Paulo, SP ou 'Não sei'" />
           </div>
+          <div className="form-group">
+            <label className="form-label">Cidade e Estado onde reside atualmente</label>
+            <input className="form-input" value={form.local_atual} onChange={e => updateForm('local_atual', e.target.value)} placeholder="Ex: Rio de Janeiro, RJ" />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Qual área da sua vida você gostaria de priorizar?</label>
+            <select className="form-select" value={form.foco_mapa} onChange={e => updateForm('foco_mapa', e.target.value)}>
+              <option value="">Selecione...</option>
+              <option value="Geral & Destino de Alma">Geral & Destino de Alma</option>
+              <option value="Amor & Conexões Afetivas">Amor & Conexões Afetivas</option>
+              <option value="Carreira, Finanças & Missão de Vida">Carreira, Finanças & Missão de Vida</option>
+              <option value="Energia Espiritual & Autoconhecimento">Energia Espiritual & Autoconhecimento</option>
+            </select>
+          </div>
         </>
       )}
 
@@ -197,6 +223,22 @@ function FormFields({ service, form, updateForm }) {
               <button type="button" onClick={() => updateForm('nascimento2', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei a data</button>
             </div>
             <input type="text" className="form-input" value={form.nascimento2} onChange={e => updateForm('nascimento2', e.target.value)} placeholder="DD/MM/AAAA ou 'Não sei'" />
+          </div>
+          <div className="form-grid">
+            <div className="form-group">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label className="form-label">Hora de nascimento da outra pessoa</label>
+                <button type="button" onClick={() => updateForm('hora2', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei</button>
+              </div>
+              <input type="text" className="form-input" value={form.hora2} onChange={e => updateForm('hora2', e.target.value)} placeholder="Ex: 09:15 ou 'Não sei'" />
+            </div>
+            <div className="form-group">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label className="form-label">Cidade/Estado de nascimento dela</label>
+                <button type="button" onClick={() => updateForm('local2', 'Não sei')} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.72rem', cursor: 'pointer', opacity: 0.8, textDecoration: 'underline', padding: 0 }}>Não sei</button>
+              </div>
+              <input className="form-input" value={form.local2} onChange={e => updateForm('local2', e.target.value)} placeholder="Ex: Belo Horizonte, MG ou 'Não sei'" />
+            </div>
           </div>
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -232,6 +274,10 @@ const INITIAL_FORM = {
   tiragem: 'tarot-sim-ou-nao', 
   incluirMenores: false,
   permitirInvertidas: false,
+  local_atual: '',
+  foco_mapa: '',
+  hora2: '',
+  local2: '',
 };
 
 const TAROT_CARDS_FALLBACK = [
@@ -320,6 +366,35 @@ function ServiceModal({ service, onClose, onStepChange }) {
   const [payError,     setPayError]    = useState('');
   const [payStatus,    setPayStatus]   = useState('pending');
   const pollingRef = useRef(null);
+  const hasRedirectedRef = useRef(false);
+  
+  const [loadingText, setLoadingText] = useState('Atravessando o véu...');
+
+  useEffect(() => {
+    if (step === 'loading') {
+      const isAstrological = service?.id === 'mapa-astral' || service?.id === 'sinastria';
+      if (isAstrological) {
+        const phrases = [
+          'Calculando posições planetárias e cúspides das casas...',
+          'Mapeando aspectos, trígonos e quadraturas do seu céu natal...',
+          'Interpretando trânsitos e regências astrológicas...',
+          'Tecendo revelações profundas sobre seu propósito e caminhos...',
+          'Sintonizando orientações finais do Oráculo...'
+        ];
+        setLoadingText(phrases[0]);
+        let idx = 1;
+        const interval = setInterval(() => {
+          if (idx < phrases.length) {
+            setLoadingText(phrases[idx]);
+            idx++;
+          }
+        }, 2200);
+        return () => clearInterval(interval);
+      } else {
+        setLoadingText('Atravessando o véu...');
+      }
+    }
+  }, [step, service]);
 
   // Resultado
   const [shuffledDeck,  setShuffledDeck]  = useState([]);
@@ -376,6 +451,14 @@ function ServiceModal({ service, onClose, onStepChange }) {
         price:       service.price,
         formData:    form,
       });
+
+      // Salva o estado no localStorage para persistência se a página recarregar
+      localStorage.setItem(`pending_order_${order.orderId}`, JSON.stringify({
+        form,
+        service,
+        orderId: order.orderId
+      }));
+
       setOrderId(order.orderId);
       setCheckoutUrl(order.checkoutUrl);
       setPayStatus('pending');
@@ -438,6 +521,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
       allowReversed: form.permitirInvertidas,
     });
 
+    const startTime = Date.now();
     try {
       await solicitarLeitura({
         orderId:     orderId,
@@ -445,6 +529,14 @@ function ServiceModal({ service, onClose, onStepChange }) {
         messages,
         cards,
       });
+      // Garante uma espera mínima para serviços astrológicos de 10s para simular cálculos complexos
+      const isAstrological = service.id === 'mapa-astral' || service.id === 'sinastria';
+      const elapsed = Date.now() - startTime;
+      const minDelay = isAstrological ? 10000 : 0;
+      const remaining = minDelay - elapsed;
+      if (remaining > 0) {
+        await new Promise(resolve => setTimeout(resolve, remaining));
+      }
       // Fechar modal e navegar para página de resultado
       onClose();
       navigate(`/resultado/${orderId}`);
@@ -478,10 +570,20 @@ function ServiceModal({ service, onClose, onStepChange }) {
     }, 4000);
   };
 
-  // ── Abrir checkout MP em nova aba ─────────────────────
+  // ── Abrir checkout MP no mesmo tab ─────────────────────
   const handleOpenCheckout = () => {
-    if (checkoutUrl) window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
   };
+
+  // Redireciona automaticamente quando o checkoutUrl estiver pronto
+  useEffect(() => {
+    if (checkoutUrl && step === 'mp_checkout' && !hasRedirectedRef.current) {
+      hasRedirectedRef.current = true;
+      window.location.href = checkoutUrl;
+    }
+  }, [checkoutUrl, step]);
 
 
   // ─────────────────────────────────────────────────────
@@ -665,7 +767,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
               ✦ Os fios do destino estão sendo tecidos
             </div>
             <div className="ai-orb" />
-            <div className="ai-text">Atravessando o véu...</div>
+            <div className="ai-text">{loadingText}</div>
             <div className="modal-subtitle" style={{ textAlign: 'center', marginBottom: 0 }}>
               O oráculo ancestral está lendo os padrões cósmicos tecidos especificamente para {form.nome || 'você'}.
             </div>
