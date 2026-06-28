@@ -407,6 +407,34 @@ function ServiceModal({ service, onClose, onStepChange }) {
 
   const updateForm = (field, value) => setForm(f => ({ ...f, [field]: value }));
 
+  const trackConversion = (orderId) => {
+    if (orderId) {
+      const key = `gtag_conv_${orderId}`;
+      if (!localStorage.getItem(key)) {
+        if (typeof window.gtag === 'function') {
+          let numValue = 10.0;
+          if (service && service.price) {
+            const clean = service.price.replace(/[^\d,.-]/g, '').replace(',', '.');
+            const parsed = parseFloat(clean);
+            if (!isNaN(parsed)) {
+              numValue = parsed;
+            }
+          }
+          window.gtag('event', 'conversion', {
+            'send_to': 'AW-18279016188/V9GgCMK2x-MZEPy637I-',
+            'value': numValue,
+            'currency': 'BRL',
+            'transaction_id': orderId
+          });
+          localStorage.setItem(key, 'true');
+          console.log('[Gtag] Conversão enviada no clique do checkout:', orderId, 'Valor:', numValue);
+        } else {
+          console.warn('[Gtag] gtag.js não carregado no escopo global para conversão de clique');
+        }
+      }
+    }
+  };
+
   // ── limpar polling ao desmontar ───────────────────────
   useEffect(() => {
     return () => { if (pollingRef.current) clearInterval(pollingRef.current); };
@@ -460,10 +488,12 @@ function ServiceModal({ service, onClose, onStepChange }) {
       }));
 
       setOrderId(order.orderId);
-      setCheckoutUrl(order.checkoutUrl);
-      setPayStatus('pending');
-      handleSetStep('mp_checkout');
-      startPolling(order.orderId);
+      trackConversion(order.orderId);
+
+      // Espera 500ms para garantir o disparo e registro da tag antes do redirecionamento direto
+      setTimeout(() => {
+        window.location.href = order.checkoutUrl;
+      }, 500);
     } catch (err) {
       setPayError('Não foi possível iniciar o pagamento. Tente novamente.');
       handleSetStep('form');
@@ -573,17 +603,12 @@ function ServiceModal({ service, onClose, onStepChange }) {
   // ── Abrir checkout MP no mesmo tab ─────────────────────
   const handleOpenCheckout = () => {
     if (checkoutUrl) {
-      window.location.href = checkoutUrl;
+      trackConversion(orderId);
+      setTimeout(() => {
+        window.location.href = checkoutUrl;
+      }, 200);
     }
   };
-
-  // Redireciona automaticamente quando o checkoutUrl estiver pronto
-  useEffect(() => {
-    if (checkoutUrl && step === 'mp_checkout' && !hasRedirectedRef.current) {
-      hasRedirectedRef.current = true;
-      window.location.href = checkoutUrl;
-    }
-  }, [checkoutUrl, step]);
 
 
   // ─────────────────────────────────────────────────────
