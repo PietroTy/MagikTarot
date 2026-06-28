@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -9,3 +9,21 @@ Catálogo : /data/services | /data/products | /data/zodiac ...
 Pagamento: POST /payment/create | GET /payment/:id/status | POST /payment/webhook
 Leituras : POST /readings | GET /readings/:id
 
+[MP] Criando preferência para ORD-000001. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000001 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 165337424667
+[MP Webhook] ❌ Assinatura inválida! Esperado: a99cf6a358b3cc5c7465986b360abf8650ede3f6e6cd9b30ebd662ad901c5095, Recebido: fd7759f304c36c1c1dd13befad9fa4a78925872427fbf180a267f834fd3351a7
+[MP Webhook] Status "pending" para ORD-000001
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 165337424667
+[MP Webhook] ❌ Assinatura inválida! Esperado: eb3eb4f4bd3793a7b923fe1ac689b02875fd1ff645f00ffb3f157410caeed3d6, Recebido: d5fc3d2c88393b407a5f8250df5bfd3d6772cd1cf9ecb3d4e2a0726856c86f48
+[MP Webhook] ✅ Pagamento aprovado: ORD-000001 (MP #165337424667)
+[Reading] Leitura #1 gerada para pedido ORD-000001
+[MP] Criando preferência para ORD-000002. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000002 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 166167615098
+[MP Webhook] ❌ Assinatura inválida! Esperado: b34a035ccc070beb640bea7ed4c35ec7d7dde2a67dd971194ab00b1baa0b6027, Recebido: 1dda3c010cb4c41dd6ac8a1e887f1c3948ee15b6300d7f860f5046719ef20f2b
+[MP Webhook] Status "pending" para ORD-000002
+[MP Webhook] ❌ Assinatura inválida! Esperado: 5589ee0d1bfdb812e7cfe9d109721df760eb5deb6ce66deb110b58173af01def, Recebido: e325bdb61174c3057af614a75b4f68e44b6be0464b35a9367180b271bc7ed396
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 166167615098
+[MP Webhook] ✅ Pagamento aprovado: ORD-000002 (MP #166167615098)
+[Reading] Leitura #2 gerada para pedido ORD-000002
