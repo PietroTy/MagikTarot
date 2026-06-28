@@ -86,22 +86,30 @@ function App() {
           const orderId = order.orderId;
           if (!orderId) continue;
 
-          const res = await fetch(`${BASE}/payment/${orderId}/status`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.status === 'pending' || data.status === 'approved') {
-              activeList.push({
-                orderId,
-                serviceName: order.service?.name || 'Consulta de Tarot',
-                serviceId: order.service?.id || 'tarot-sim-ou-nao',
-                status: data.status
-              });
-            } else {
-              localStorage.removeItem(key);
+          let status = 'pending';
+          try {
+            const res = await fetch(`${BASE}/payment/${orderId}/status`);
+            if (res.ok) {
+              const data = await res.json();
+              status = data.status;
             }
+          } catch (netErr) {
+            console.warn('Erro de rede ao verificar status, assumindo pendente:', netErr);
+            status = 'pending';
+          }
+
+          if (status === 'pending' || status === 'approved') {
+            activeList.push({
+              orderId,
+              serviceName: order.service?.name || 'Consulta de Tarot',
+              serviceId: order.service?.id || 'tarot-sim-ou-nao',
+              status: status
+            });
+          } else {
+            localStorage.removeItem(key);
           }
         } catch (e) {
-          console.error('Erro ao verificar status do pedido pendente:', e);
+          console.error('Erro ao processar pedido pendente:', e);
         }
       }
 
