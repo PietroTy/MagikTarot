@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -11,6 +11,3 @@ Leituras : POST /readings | GET /readings/:id
 
 [MP] Criando preferência para ORD-000001. FrontURL: https://magiktarot.com.br
 [MP] Preferência criada: ORD-000001 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
-[MP Webhook] ❌ Assinatura inválida! Esperado: 9baa40ca638717b6c9b34c51b8bafe80f60534bf2565a75761dfdae1b0e83437, Recebido: 2b78be43e210bdf4207a3f3a71795a22616b8cae1aaaf4fde06c21d7314c6a9a
-[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 165383094709
-[MP Webhook] Status "pending" para ORD-000001

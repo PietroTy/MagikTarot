@@ -144,7 +144,7 @@ function App() {
         </div>
 
         {/* ── Navigation ── */}
-        <Nav />
+        <Nav hasBanner={pendingOrders.length > 0} />
 
         {/* ── Active Pending Orders Banner ── */}
         {pendingOrders.map(order => (
@@ -156,15 +156,18 @@ function App() {
                 : 'rgba(20, 20, 25, 0.95)',
               borderBottom: '1px solid rgba(255, 215, 0, 0.3)',
               color: order.status === 'approved' ? '#000' : '#fff',
-              padding: '0.8rem 1.5rem',
+              height: '40px',
               fontSize: '0.88rem',
               textAlign: 'center',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '0.5rem',
-              position: 'relative',
-              zIndex: 100,
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1001,
               boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
               fontWeight: '500',
               backdropFilter: 'blur(8px)',
@@ -192,11 +195,14 @@ function App() {
             {order.status === 'approved' ? (
               <>
                 <span style={{ fontSize: '1.1rem' }}>✨</span>
-                <span>
+                <span className="banner-text-desktop">
                   Sua consulta <strong>{order.serviceName}</strong> está confirmada e pronta! 
                   <span style={{ textDecoration: 'underline', marginLeft: '0.5rem', fontWeight: 'bold' }}>
                     Clique aqui para iniciar sua leitura 🔮
                   </span>
+                </span>
+                <span className="banner-text-mobile">
+                  Consulta pronta! <strong>Clique para iniciar 🔮</strong>
                 </span>
               </>
             ) : (
@@ -216,12 +222,29 @@ function App() {
                     0% { transform: rotate(0deg); }
                     100% { transform: rotate(360deg); }
                   }
+                  .banner-text-desktop {
+                    display: inline;
+                  }
+                  .banner-text-mobile {
+                    display: none;
+                  }
+                  @media (max-width: 768px) {
+                    .banner-text-desktop {
+                      display: none !important;
+                    }
+                    .banner-text-mobile {
+                      display: inline !important;
+                    }
+                  }
                 `}</style>
-                <span>
+                <span className="banner-text-desktop">
                   Aguardando confirmação do pagamento para: <strong>{order.serviceName}</strong>. 
                   <span style={{ textDecoration: 'underline', color: 'var(--gold-light)', marginLeft: '0.5rem' }}>
                     Clique aqui para acompanhar ⌛
                   </span>
+                </span>
+                <span className="banner-text-mobile">
+                  Pagamento pendente. <strong>Clique para acompanhar ⌛</strong>
                 </span>
               </>
             )}
@@ -229,7 +252,7 @@ function App() {
         ))}
 
         {/* ── Pages ── */}
-        <div className="app">
+        <div className="app" style={pendingOrders.length > 0 ? { paddingTop: '40px' } : {}}>
           <Routes>
             <Route path="/" element={
               <>

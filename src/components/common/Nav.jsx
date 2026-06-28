@@ -7,14 +7,14 @@ const NAV_LINKS = [
   { label: 'Loja',              path: '/loja'      },
 ];
 
-function Nav() {
+function Nav({ hasBanner }) {
   const location = useLocation();
   const isBlockedPage = location.pathname.includes('/pendente') || 
                         location.pathname.includes('/sucesso') || 
                         location.pathname.includes('/pagamento-confirmado');
 
   return (
-    <nav className="nav">
+    <nav className="nav" style={hasBanner ? { top: '40px' } : {}}>
       <Link 
         to={isBlockedPage ? "#" : "/"} 
         className="nav-logo" 
