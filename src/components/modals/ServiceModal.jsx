@@ -488,12 +488,11 @@ function ServiceModal({ service, onClose, onStepChange }) {
       }));
 
       setOrderId(order.orderId);
+      setCheckoutUrl(order.checkoutUrl);
       trackConversion(order.orderId);
 
-      // Espera 500ms para garantir o disparo e registro da tag antes do redirecionamento direto
-      setTimeout(() => {
-        window.location.href = order.checkoutUrl;
-      }, 500);
+      handleSetStep('mp_checkout');
+      startPolling(order.orderId);
     } catch (err) {
       setPayError('Não foi possível iniciar o pagamento. Tente novamente.');
       handleSetStep('form');
@@ -603,10 +602,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
   // ── Abrir checkout MP no mesmo tab ─────────────────────
   const handleOpenCheckout = () => {
     if (checkoutUrl) {
-      trackConversion(orderId);
-      setTimeout(() => {
-        window.location.href = checkoutUrl;
-      }, 200);
+      window.location.href = checkoutUrl;
     }
   };
 

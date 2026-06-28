@@ -671,10 +671,8 @@ export default function RitualPage() {
       setCheckoutUrl(order.checkoutUrl);
       trackConversion(order.orderId);
 
-      // Espera 500ms para garantir o disparo e registro da tag antes do redirecionamento direto
-      setTimeout(() => {
-        window.location.href = order.checkoutUrl;
-      }, 500);
+      setStep('mp_checkout');
+      startPolling(order.orderId);
     } catch (err) {
       setPayError('Não foi possível iniciar o pagamento. Tente novamente.');
       setStep('form');
