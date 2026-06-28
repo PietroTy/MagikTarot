@@ -449,7 +449,6 @@ export default function RitualPage() {
   const [payError, setPayError] = useState('');
   const [payStatus, setPayStatus] = useState('pending');
   const pollingRef = useRef(null);
-  const hasRedirectedRef = useRef(false);
 
   // Seleção de Cartas
   const [shuffledDeck, setShuffledDeck] = useState([]);
@@ -548,13 +547,7 @@ export default function RitualPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serviceId, service, CARDS_DB]);
 
-  // Redireciona automaticamente quando o checkoutUrl estiver pronto
-  useEffect(() => {
-    if (checkoutUrl && step === 'mp_checkout' && !hasRedirectedRef.current) {
-      hasRedirectedRef.current = true;
-      window.location.href = checkoutUrl;
-    }
-  }, [checkoutUrl, step]);
+
 
   const [loadingText, setLoadingText] = useState('O Oráculo está decifrando suas chaves...');
 
@@ -597,6 +590,34 @@ export default function RitualPage() {
       </div>
     );
   }
+
+  const trackConversion = (orderId) => {
+    if (orderId) {
+      const key = `gtag_conv_${orderId}`;
+      if (!localStorage.getItem(key)) {
+        if (typeof window.gtag === 'function') {
+          let numValue = 10.0;
+          if (service && service.price) {
+            const clean = service.price.replace(/[^\d,.-]/g, '').replace(',', '.');
+            const parsed = parseFloat(clean);
+            if (!isNaN(parsed)) {
+              numValue = parsed;
+            }
+          }
+          window.gtag('event', 'conversion', {
+            'send_to': 'AW-18279016188/V9GgCMK2x-MZEPy637I-',
+            'value': numValue,
+            'currency': 'BRL',
+            'transaction_id': orderId
+          });
+          localStorage.setItem(key, 'true');
+          console.log('[Gtag] Conversão enviada no clique do checkout (RitualPage):', orderId, 'Valor:', numValue);
+        } else {
+          console.warn('[Gtag] gtag.js não carregado no escopo global para conversão de clique (RitualPage)');
+        }
+      }
+    }
+  };
 
   // ── SUBMIT DO FORMULÁRIO ──
   const handleSubmit = async () => {
@@ -648,9 +669,12 @@ export default function RitualPage() {
 
       setOrderId(order.orderId);
       setCheckoutUrl(order.checkoutUrl);
-      setPayStatus('pending');
-      setStep('mp_checkout');
-      startPolling(order.orderId);
+      trackConversion(order.orderId);
+
+      // Espera 500ms para garantir o disparo e registro da tag antes do redirecionamento direto
+      setTimeout(() => {
+        window.location.href = order.checkoutUrl;
+      }, 500);
     } catch (err) {
       setPayError('Não foi possível iniciar o pagamento. Tente novamente.');
       setStep('form');
@@ -732,6 +756,7 @@ export default function RitualPage() {
   };
 
   // ── POLLING DO PAGAMENTO ──
+  // eslint-disable-next-line no-unused-vars
   const startPolling = (id) => {
     if (pollingRef.current) clearInterval(pollingRef.current);
     pollingRef.current = setInterval(async () => {
