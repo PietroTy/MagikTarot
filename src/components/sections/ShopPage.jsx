@@ -18,7 +18,7 @@ function ShopPage() {
       <Helmet>
         <title>Loja Sagrada | Cristais e Ferramentas Místicas - Magik Tarot</title>
         <meta name="description" content="Adquira cristais de alta qualidade selecionados para limpeza energética e proteção: Selenita, Quartzo Verde, Turmalina Negra, Cianita Negra e Sodalita." />
-        <link rel="canonical" href="https://magiktarot.com.br/#/loja" />
+        <link rel="canonical" href="https://magiktarot.com.br/loja" />
       </Helmet>
       <div className="section-eyebrow">Loja Magik Tarot</div>
       <div className="section-title">Ferramentas Sagradas</div>

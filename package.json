@@ -16,7 +16,7 @@
   "homepage": "https://magiktarot.com.br/",
   "scripts": {
     "start": "PORT=3002 react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node generate-static-routes.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
