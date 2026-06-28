@@ -23,5 +23,5 @@ Disallow: /#/politica-de-privacidade
 Disallow: /#/termos-de-uso
 
 # Host & Sitemap
-Host: https://pietroty.github.io/MagikTarot
-Sitemap: https://pietroty.github.io/MagikTarot/sitemap.xml
+Host: https://magiktarot.com.br
+Sitemap: https://magiktarot.com.br/sitemap.xml

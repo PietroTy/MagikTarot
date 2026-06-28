@@ -221,7 +221,7 @@ export default function ResultPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', padding: '8rem 2rem 4rem', maxWidth: '860px', margin: '0 auto' }}>
+    <div className="result-page-container">
       <Helmet>
         <title>Sua Leitura | Magik Tarot</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -411,13 +411,7 @@ export default function ResultPage() {
             </div>
           )}
 
-          <div style={{
-            background: 'rgba(20,20,25,0.8)',
-            border: '1px solid rgba(255,215,0,0.15)',
-            borderRadius: '16px',
-            padding: '2.5rem',
-            marginBottom: '3rem',
-          }}>
+          <div className="result-box">
             {formatReading(answer)}
             <div style={{ marginTop: '2rem', opacity: 0.5, fontSize: '0.8rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>
               — Oráculo gerado em {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
@@ -425,14 +419,7 @@ export default function ResultPage() {
           </div>
 
           {/* Formulário de Depoimento de Fim de Consulta */}
-          <div style={{
-            background: 'rgba(20, 20, 25, 0.65)',
-            border: '1px solid rgba(255, 215, 0, 0.18)',
-            borderRadius: '16px',
-            padding: '2.5rem',
-            marginBottom: '3rem',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-          }}>
+          <div className="feedback-box">
             <h3 style={{
               fontFamily: 'Cinzel, serif',
               fontSize: '1.2rem',

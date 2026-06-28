@@ -578,7 +578,48 @@
 }
 
 @media (max-width: 768px) {
+  .modal {
+    padding: 2rem 1.2rem;
+    max-height: 95vh;
+  }
+  .modal-title {
+    font-size: 1.25rem;
+  }
+  .modal-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
   .form-grid { grid-template-columns: 1fr; }
+  
+  /* Fan picking adjustments on mobile */
+  .picking-page-fan {
+    min-height: 320px;
+  }
+  .picking-page-fan .fan-card-wrap {
+    width: 60px;
+    margin-left: -30px;
+    transform-origin: 30px -180px;
+  }
+  .picking-page-fan .fan-card-body {
+    width: 60px;
+    border-radius: 6px;
+  }
+  .picking-page-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+  
+  .fan-table {
+    height: 260px;
+  }
+  .fan-card-wrap {
+    width: 50px;
+    margin-left: -25px;
+    transform-origin: 25px -150px;
+  }
+  .fan-card-body {
+    width: 50px;
+    border-radius: 4px;
+  }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -777,7 +818,11 @@
 @media (max-width: 768px) {
   .revelation-header { padding: 2rem 1.5rem 1.5rem; }
   .revelation-title  { font-size: 1.4rem; }
-  .revelation-cards-strip { padding: 1.5rem 1rem; gap: 1rem; }
+  .revelation-cards-strip { 
+    padding: 1.5rem 1rem; 
+    gap: 1rem; 
+    justify-content: flex-start; 
+  }
   .revelation-card-wrap { width: 120px; }
   .revelation-reading-wrap { padding: 0 1rem; }
   .revelation-footer { padding: 1rem 1rem 2rem; }

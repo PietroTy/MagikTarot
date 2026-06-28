@@ -66,14 +66,14 @@ function Home() {
       <Helmet>
         <title>Magik Tarot | Consultas de Tarot Online e Astrologia Sagrada</title>
         <meta name="description" content="Abra portais de autoconhecimento. Magik Tarot oferece consultas personalizadas de Tarot do Amor, Carreira, Sim ou Não, Mapa Astral e Sinastria com a precisão e profundidade da sabedoria oracular." />
-        <link rel="canonical" href="https://pietroty.github.io/MagikTarot/" />
+        <link rel="canonical" href="https://magiktarot.com.br/" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Magik Tarot",
-            "url": "https://pietroty.github.io/MagikTarot/",
-            "logo": "https://pietroty.github.io/MagikTarot/favicon.ico",
+            "url": "https://magiktarot.com.br/",
+            "logo": "https://magiktarot.com.br/favicon.ico",
             "description": "Portal místico de consultas de Tarot e Astrologia Online com sabedoria ancestral oracular.",
             "founder": {
               "@type": "Person",

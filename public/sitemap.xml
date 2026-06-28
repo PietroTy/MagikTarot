@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/</loc>
+    <loc>https://magiktarot.com.br/</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -10,13 +10,13 @@
   
   <!-- Horóscopo e Loja -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/horoscopo</loc>
+    <loc>https://magiktarot.com.br/#/horoscopo</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/loja</loc>
+    <loc>https://magiktarot.com.br/#/loja</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -24,7 +24,7 @@
 
   <!-- Catálogo de Consultas -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consultas</loc>
+    <loc>https://magiktarot.com.br/#/consultas</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -32,19 +32,19 @@
   
   <!-- Categorias de Consultas -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consultas/tarot</loc>
+    <loc>https://magiktarot.com.br/#/consultas/tarot</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consultas/astrologia</loc>
+    <loc>https://magiktarot.com.br/#/consultas/astrologia</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consultas/numerologia</loc>
+    <loc>https://magiktarot.com.br/#/consultas/numerologia</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -52,37 +52,37 @@
 
   <!-- Consultas Individuais (Produtos) -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consulta/tarot-sim-ou-nao</loc>
+    <loc>https://magiktarot.com.br/#/consulta/tarot-sim-ou-nao</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consulta/tarot-do-amor</loc>
+    <loc>https://magiktarot.com.br/#/consulta/tarot-do-amor</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consulta/tarot-carreira</loc>
+    <loc>https://magiktarot.com.br/#/consulta/tarot-carreira</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consulta/energia-do-mes</loc>
+    <loc>https://magiktarot.com.br/#/consulta/energia-do-mes</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consulta/mapa-astral</loc>
+    <loc>https://magiktarot.com.br/#/consulta/mapa-astral</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/consulta/sinastria</loc>
+    <loc>https://magiktarot.com.br/#/consulta/sinastria</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -90,7 +90,7 @@
 
   <!-- Blog -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog</loc>
+    <loc>https://magiktarot.com.br/#/blog</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -98,37 +98,37 @@
   
   <!-- Artigos do Blog -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog/o-arcano-da-torre-quando-tudo-desmorona-para-renascer</loc>
+    <loc>https://magiktarot.com.br/#/blog/o-arcano-da-torre-quando-tudo-desmorona-para-renascer</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog/jupiter-em-gemeos-expansao-pelo-conhecimento-e-comunicacao</loc>
+    <loc>https://magiktarot.com.br/#/blog/jupiter-em-gemeos-expansao-pelo-conhecimento-e-comunicacao</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog/o-numero-do-destino-como-calcula-lo-e-o-que-ele-revela</loc>
+    <loc>https://magiktarot.com.br/#/blog/o-numero-do-destino-como-calcula-lo-e-o-que-ele-revela</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog/ritual-de-lua-nova-semear-intencoes-no-solo-do-cosmos</loc>
+    <loc>https://magiktarot.com.br/#/blog/ritual-de-lua-nova-semear-intencoes-no-solo-do-cosmos</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog/ametista-a-pedra-da-transmutacao-e-sabedoria-superior</loc>
+    <loc>https://magiktarot.com.br/#/blog/ametista-a-pedra-da-transmutacao-e-sabedoria-superior</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/blog/horoscopo-de-abril-reorientacao-e-clareza-para-todos-os-signos</loc>
+    <loc>https://magiktarot.com.br/#/blog/horoscopo-de-abril-reorientacao-e-clareza-para-todos-os-signos</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -136,13 +136,13 @@
 
   <!-- Portais de Significado -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/significados/arcanos-maiores</loc>
+    <loc>https://magiktarot.com.br/#/significados/arcanos-maiores</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/significados/signos</loc>
+    <loc>https://magiktarot.com.br/#/significados/signos</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -150,13 +150,13 @@
 
   <!-- Institucional e Central de Ajuda -->
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/duvidas-frequentes</loc>
+    <loc>https://magiktarot.com.br/#/duvidas-frequentes</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pietroty.github.io/MagikTarot/#/sobre</loc>
+    <loc>https://magiktarot.com.br/#/sobre</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

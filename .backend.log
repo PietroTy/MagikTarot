@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  enable debug logging with { debug: true }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok

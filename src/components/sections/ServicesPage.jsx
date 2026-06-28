@@ -12,7 +12,7 @@ function ServicesPage() {
       <Helmet>
         <title>Consultas Oraculares e Leituras Online | Magik Tarot</title>
         <meta name="description" content="Explore nossos portais de autoconhecimento. Escolha entre Tarot do Amor, Tarot de Carreira, Sim ou Não, Mapa Astral Completo e Sinastria Amorosa com revelações profundas imediatas." />
-        <link rel="canonical" href="https://pietroty.github.io/MagikTarot/#/consultas" />
+        <link rel="canonical" href="https://magiktarot.com.br/#/consultas" />
       </Helmet>
       <div className="section-eyebrow">Portais do Conhecimento Oculto</div>
       <div className="section-title">Consultas Oraculares</div>

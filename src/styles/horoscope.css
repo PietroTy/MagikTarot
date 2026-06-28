@@ -85,3 +85,9 @@
   .zodiac-grid           { grid-template-columns: repeat(3, 1fr); }
   .horoscope-aspects     { grid-template-columns: 1fr 1fr 1fr; }
 }
+
+@media (max-width: 480px) {
+  .zodiac-grid           { grid-template-columns: repeat(2, 1fr); }
+  .horoscope-aspects     { grid-template-columns: 1fr; }
+  .horoscope-card        { padding: 1.5rem; }
+}
