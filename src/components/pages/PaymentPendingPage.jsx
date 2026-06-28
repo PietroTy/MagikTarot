@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { API_CONFIG } from '../../config/apiConfig';
@@ -7,6 +7,9 @@ const BASE = API_CONFIG.BACKEND_URL;
 
 export default function PaymentPendingPage() {
   const navigate = useNavigate();
+
+  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutos em segundos
+  const [expired, setExpired] = useState(false);
 
   // Helper para obter parâmetros da URL de forma robusta com HashRouter
   const getQueryParam = (name) => {
@@ -28,6 +31,7 @@ export default function PaymentPendingPage() {
     if (!orderId) return;
 
     let intervalId;
+    let timerId;
 
     const checkStatus = async () => {
       try {
@@ -36,6 +40,7 @@ export default function PaymentPendingPage() {
           const data = await res.json();
           if (data.status === 'approved') {
             clearInterval(intervalId);
+            clearInterval(timerId);
             // Tenta obter o estado do pedido salvo no localStorage para ir para o ritual ou resultado direto
             const saved = localStorage.getItem(`pending_order_${orderId}`);
             if (saved) {
@@ -60,8 +65,36 @@ export default function PaymentPendingPage() {
     checkStatus();
     intervalId = setInterval(checkStatus, 3000);
 
-    return () => clearInterval(intervalId);
+    timerId = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalId);
+          clearInterval(timerId);
+          setExpired(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+      clearInterval(timerId);
+    };
   }, [orderId, navigate]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleCancelReading = () => {
+    if (window.confirm('Tem certeza que deseja cancelar esta leitura? Seu pedido atual será descartado.')) {
+      localStorage.removeItem(`pending_order_${orderId}`);
+      navigate('/consultas');
+    }
+  };
 
   return (
     <div style={{
@@ -99,7 +132,11 @@ export default function PaymentPendingPage() {
         }} />
 
         <div className="ai-loading" style={{ margin: '0 auto 2rem' }}>
-          <div className="ai-orb" style={{ margin: '0 auto', width: '60px', height: '60px' }} />
+          {expired ? (
+            <div style={{ fontSize: '3rem', margin: '0 auto' }}>⏳</div>
+          ) : (
+            <div className="ai-orb" style={{ margin: '0 auto', width: '60px', height: '60px' }} />
+          )}
         </div>
 
         <h1 style={{ 
@@ -110,17 +147,17 @@ export default function PaymentPendingPage() {
           color: '#fff',
           textTransform: 'uppercase'
         }}>
-          Processando Transação
+          {expired ? 'Verificação Expirada' : 'Processando Transação'}
         </h1>
 
         <div style={{ 
-          color: 'var(--gold-light)', 
+          color: expired ? '#ff6b6b' : 'var(--gold-light)', 
           fontSize: '0.8rem', 
           letterSpacing: '0.15em', 
           marginBottom: '2rem',
           fontWeight: '600'
         }}>
-          AGUARDANDO CONFIRMAÇÃO DO PIX
+          {expired ? 'TEMPO LIMITE EXCEDIDO (20 MINUTOS)' : 'AGUARDANDO CONFIRMAÇÃO DO PIX'}
         </div>
 
         <p style={{ 
@@ -129,8 +166,9 @@ export default function PaymentPendingPage() {
           color: 'rgba(255, 255, 255, 0.8)',
           fontSize: '1.05rem'
         }}>
-          Estamos conectados ao Mercado Pago aguardando a confirmação do seu pagamento. 
-          O PIX costuma ser aprovado em poucos segundos.
+          {expired 
+            ? 'O tempo limite de 20 minutos para confirmação automática do PIX expirou. Se você já efetuou o pagamento, utilize a verificação manual abaixo para resgatar sua leitura.'
+            : 'Estamos conectados ao Mercado Pago aguardando a confirmação do seu pagamento. O PIX costuma ser aprovado em poucos segundos.'}
         </p>
 
         <p style={{ 
@@ -140,7 +178,19 @@ export default function PaymentPendingPage() {
           lineHeight: '1.6',
           fontWeight: '500'
         }}>
-          Por favor, <strong>mantenha esta tela aberta</strong>. Assim que o pagamento for detectado, iniciaremos a sua leitura automaticamente.
+          {expired ? (
+            <>
+              Caso ainda não tenha realizado o pagamento, por favor, volte ao início para iniciar uma nova consulta.
+            </>
+          ) : (
+            <>
+              Por favor, <strong>mantenha esta tela aberta</strong>. Assim que o pagamento for detectado, iniciaremos a sua leitura automaticamente.
+              <br />
+              <span style={{ display: 'inline-block', marginTop: '0.6rem', opacity: 0.85 }}>
+                Tempo restante de verificação: <strong>{formatTime(timeLeft)}</strong>
+              </span>
+            </>
+          )}
         </p>
 
         {orderId ? (
@@ -169,6 +219,28 @@ export default function PaymentPendingPage() {
                 Clique aqui para verificar manualmente 🔮
               </Link>
             </span>
+            <div style={{ marginTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <button 
+                onClick={handleCancelReading}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(255, 107, 107, 0.4)',
+                  color: '#ff6b6b',
+                  padding: '0.8rem 2rem',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                  width: '100%',
+                  maxWidth: '280px'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255, 107, 107, 0.1)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                Cancelar Leitura ✕
+              </button>
+            </div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
