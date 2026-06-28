@@ -246,3 +246,8 @@ body {
     border-radius: 12px;
   }
 }
+
+@keyframes pulseGold {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 1; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.6); }
+}

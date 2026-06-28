@@ -98,19 +98,19 @@ export default function PaymentPendingPage() {
           pointerEvents: 'none'
         }} />
 
-        <div style={{ color: 'var(--gold)', fontSize: '2.5rem', marginBottom: '1.5rem' }}>
-          ⌛
+        <div className="ai-loading" style={{ margin: '0 auto 2rem' }}>
+          <div className="ai-orb" style={{ margin: '0 auto', width: '60px', height: '60px' }} />
         </div>
 
         <h1 style={{ 
-          fontSize: '1.8rem', 
+          fontSize: '1.6rem', 
           fontWeight: 700, 
           marginBottom: '1rem',
           letterSpacing: '0.1em',
           color: '#fff',
           textTransform: 'uppercase'
         }}>
-          Processando Sintonização
+          Processando Transação
         </h1>
 
         <div style={{ 
@@ -120,44 +120,58 @@ export default function PaymentPendingPage() {
           marginBottom: '2rem',
           fontWeight: '600'
         }}>
-          AGUARDANDO CONFIRMAÇÃO
+          AGUARDANDO CONFIRMAÇÃO DO PIX
         </div>
 
         <p style={{ 
           lineHeight: '1.7', 
-          marginBottom: '2rem', 
+          marginBottom: '1.5rem', 
           color: 'rgba(255, 255, 255, 0.8)',
           fontSize: '1.05rem'
         }}>
-          O Mercado Pago está processando a transação. O PIX costuma ser aprovado em poucos segundos, mas outros métodos podem demorar um pouco mais.
+          Estamos conectados ao Mercado Pago aguardando a confirmação do seu pagamento. 
+          O PIX costuma ser aprovado em poucos segundos.
         </p>
 
         <p style={{ 
-          fontSize: '0.85rem', 
-          color: 'rgba(255, 255, 255, 0.5)', 
+          fontSize: '0.9rem', 
+          color: 'var(--gold)', 
           marginBottom: '2.5rem',
-          lineHeight: '1.5'
+          lineHeight: '1.6',
+          fontWeight: '500'
         }}>
-          Assim que for confirmado, sua leitura será gerada automaticamente. Você pode acompanhar pelo botão abaixo ou verificar seu e-mail cadastrado.
+          Por favor, <strong>mantenha esta tela aberta</strong>. Assim que o pagamento for detectado, iniciaremos a sua leitura automaticamente.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
-          {orderId ? (
-            <Link 
-              to={`/resultado/${orderId}`} 
-              className="btn-primary" 
-              style={{ 
-                display: 'inline-block', 
-                padding: '1rem 2.5rem',
-                fontSize: '0.95rem',
-                width: '100%',
-                maxWidth: '280px',
-                textDecoration: 'none'
-              }}
-            >
-              Verificar Leitura ✦
-            </Link>
-          ) : (
+        {orderId ? (
+          <div style={{ 
+            marginTop: '2rem', 
+            fontSize: '0.8rem', 
+            color: 'rgba(255,255,255,0.4)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            paddingTop: '1.2rem',
+            width: '100%'
+          }}>
+            Identificador do Pedido: <code style={{ color: '#fff', fontSize: '0.8rem' }}>{orderId}</code>
+            <br />
+            <span style={{ display: 'inline-block', marginTop: '1rem' }}>
+              Se você já realizou o PIX e o redirecionamento demorar mais de 1 minuto, <br />
+              <Link 
+                to={`/resultado/${orderId}`} 
+                style={{ 
+                  color: 'var(--gold)', 
+                  textDecoration: 'none', 
+                  fontWeight: '600',
+                  display: 'inline-block',
+                  marginTop: '0.4rem'
+                }}
+              >
+                Clique aqui para verificar manualmente 🔮
+              </Link>
+            </span>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', alignItems: 'center' }}>
             <Link 
               to="/consultas" 
               className="btn-primary" 
@@ -172,8 +186,8 @@ export default function PaymentPendingPage() {
             >
               Voltar ao Início ✦
             </Link>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

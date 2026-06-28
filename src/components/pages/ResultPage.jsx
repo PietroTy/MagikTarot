@@ -72,6 +72,7 @@ export default function ResultPage() {
         setServiceId(found.serviceId || '');
         setLoading(false);
         trackConversion(orderId);
+        localStorage.removeItem(`pending_order_${orderId}`);
         return;
       }
 
@@ -86,6 +87,7 @@ export default function ResultPage() {
       setCards(data.cards || []);
       setServiceId(data.serviceId || '');
       trackConversion(orderId);
+      localStorage.removeItem(`pending_order_${orderId}`);
     } catch (err) {
       setError(err.message);
     } finally {

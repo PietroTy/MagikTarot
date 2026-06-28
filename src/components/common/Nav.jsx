@@ -1,6 +1,5 @@
 import '../../styles/nav.css';
-
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const NAV_LINKS = [
   { label: 'Consultas',         path: '/consultas' },
@@ -9,9 +8,19 @@ const NAV_LINKS = [
 ];
 
 function Nav() {
+  const location = useLocation();
+  const isBlockedPage = location.pathname.includes('/pendente') || 
+                        location.pathname.includes('/sucesso') || 
+                        location.pathname.includes('/pagamento-confirmado');
+
   return (
     <nav className="nav">
-      <Link to="/" className="nav-logo" style={{ textDecoration: 'none' }}>
+      <Link 
+        to={isBlockedPage ? "#" : "/"} 
+        className="nav-logo" 
+        style={{ textDecoration: 'none', cursor: isBlockedPage ? 'default' : 'pointer' }}
+        onClick={(e) => isBlockedPage && e.preventDefault()}
+      >
         <svg viewBox="0 0 24 24" fill="none" style={{ width: '28px', height: '28px', marginRight: '10px', flexShrink: 0 }}>
           <circle cx="12" cy="12" r="10" stroke="url(#goldGrad)" strokeWidth="1" />
           <circle cx="12" cy="12" r="8.5" stroke="url(#goldGrad)" strokeWidth="0.5" opacity="0.6" />
@@ -26,15 +35,17 @@ function Nav() {
         <span className="logo-text">Magik Tarot</span>
       </Link>
 
-      <ul className="nav-links">
-        {NAV_LINKS.map(l => (
-          <li key={l.path}>
-            <Link to={l.path} className="nav-link-btn" style={{ textDecoration: 'none' }}>
-              {l.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {!isBlockedPage && (
+        <ul className="nav-links">
+          {NAV_LINKS.map(l => (
+            <li key={l.path}>
+              <Link to={l.path} className="nav-link-btn" style={{ textDecoration: 'none' }}>
+                {l.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </nav>
   );
 }
