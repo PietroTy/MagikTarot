@@ -102,7 +102,7 @@ export default function PaymentPendingPage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '2rem',
+      padding: '8rem 2rem 4rem',
       maxWidth: '600px',
       margin: '0 auto',
       textAlign: 'center'

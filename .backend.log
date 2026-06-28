@@ -1,4 +1,4 @@
-[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
 Backend Magik Tarot iniciado
 Maritaca API Key : ok
 MP Access Token  : ok
@@ -13,5 +13,13 @@ Leituras : POST /readings | GET /readings/:id
 [MP] Preferência criada: ORD-000001 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
 [MP] Criando preferência para ORD-000002. FrontURL: https://magiktarot.com.br
 [MP] Preferência criada: ORD-000002 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 166212474922
+[MP Webhook] ❌ Assinatura inválida! Esperado: 8369dcf2f756f5c09fa7a6f670ae8a4b3464d64ccaaca24c23489d82f455b374, Recebido: 17c20448ffad44b7b3c85a4814d81d1b30534d0d6eb86519f2d368288e970770
+[MP Webhook] Status "pending" para ORD-000002
 [MP] Criando preferência para ORD-000003. FrontURL: https://magiktarot.com.br
 [MP] Preferência criada: ORD-000003 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP] Criando preferência para ORD-000004. FrontURL: https://magiktarot.com.br
+[MP] Preferência criada: ORD-000004 — Tarot Sim ou Não - Decisão Rápida e Resposta Direta R$4.99
+[MP Webhook] ❌ Assinatura inválida! Esperado: 745302dc70b3ff6f2f38cbf01d74153bfff6c53352eee5f8a6652a5983b3e9f5, Recebido: c4d38463225fc80dc4e13ff55530b708c9df6123939437ea821e7fafe3d6b864
+[MP Webhook] 🔒 Assinatura verificada com sucesso para o pagamento 166212561604
+[MP Webhook] Status "pending" para ORD-000004
