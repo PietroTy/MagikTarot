@@ -631,7 +631,7 @@ export default function RitualPage() {
 
     try {
       if (DEBUG_BYPASS_PAYMENT) {
-        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3003';
+        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3002';
         const res = await fetch(`${baseUrl}/payment/debug/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

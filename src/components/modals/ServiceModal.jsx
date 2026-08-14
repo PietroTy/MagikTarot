@@ -451,7 +451,7 @@ function ServiceModal({ service, onClose, onStepChange }) {
     try {
       if (DEBUG_BYPASS_PAYMENT) {
         // Cria um pedido já aprovado sem abrir o MP
-        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3003';
+        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3002';
         const res = await fetch(`${baseUrl}/payment/debug/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

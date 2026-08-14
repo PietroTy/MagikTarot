@@ -4,7 +4,7 @@
  */
 
 export const API_CONFIG = {
-    BACKEND_URL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:3003',
+    BACKEND_URL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:3002',
 
     ENDPOINTS: {
         chat:         '/chat',
